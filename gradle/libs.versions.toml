@@ -1,0 +1,92 @@
+[versions]
+
+agp = "8.1.0-beta05"
+ksp = "1.8.10-1.0.9"
+
+kotlin = "1.8.10"
+kotlin-coroutines = "1.6.4"
+kotlin-datetime = "0.4.0"
+
+androidx-appcompat = "1.6.1"
+androidx-core = "1.10.1"
+androidx-lifecycle = "2.6.1"
+androidx-billing = "6.0.1"
+
+compose = "1.4.3"
+compose-activity = "1.7.2"
+compose-lifecycle = "2.6.1"
+compose-material3 = "1.1.1"
+compose-compiler = "1.4.4"
+compose-accompanist = "0.31.3-beta"
+
+google-material = "1.9.0"
+google-services = "4.3.14"
+google-ps-ads = "22.2.0"
+google-firebase-bom = "32.1.1"
+google-firebase-crashlytics = "2.9.2"
+
+navigation = "1.9.42-beta"
+koin = "3.4.2"
+multiplatformsettings = "1.0.0"
+sqldelight = "2.0.0-alpha05"
+kmm-viewmodel = "1.0.0-ALPHA-4"
+kmm-coroutines = "1.0.0-ALPHA-5"
+
+[libraries]
+
+kotlin-coroutines = { module = "org.jetbrains.kotlinx:kotlinx-coroutines-core", version.ref = "kotlin-coroutines" }
+kotlin-datetime = { module = "org.jetbrains.kotlinx:kotlinx-datetime", version.ref = "kotlin-datetime" }
+
+androidx-appcompat = { module = "androidx.appcompat:appcompat", version.ref = "androidx-appcompat" }
+androidx-core = { module = "androidx.core:core-ktx", version.ref = "androidx-core" }
+androidx-lifecycle-viewmodel = { module = "androidx.lifecycle:lifecycle-viewmodel-ktx", version.ref = "androidx-lifecycle" }
+androidx-lifecycle-runtime = { module = "androidx.lifecycle:lifecycle-runtime-ktx", version.ref = "androidx-lifecycle" }
+androidx-billing = { module = "com.android.billingclient:billing-ktx", version.ref = "androidx-billing" }
+
+compose-activity = { module = "androidx.activity:activity-compose", version.ref = "compose-activity" }
+compose-lifecycle = { module = "androidx.lifecycle:lifecycle-runtime-compose", version.ref = "compose-lifecycle" }
+compose-material = { module = "androidx.compose.material:material", version.ref = "compose" }
+compose-material3 = { module = "androidx.compose.material3:material3", version.ref = "compose-material3" }
+compose-foundation = { module = "androidx.compose.foundation:foundation", version.ref = "compose" }
+compose-ui = { module = "androidx.compose.ui:ui", version.ref = "compose" }
+compose-ui-tooling-preview = { module = "androidx.compose.ui:ui-tooling-preview", version.ref = "compose" }
+compose-ui-tooling = { module = "androidx.compose.ui:ui-tooling", version.ref = "compose" }
+compose-runtime = { module = "androidx.compose.runtime:runtime", version.ref = "compose" }
+compose-compiler = { module = "androidx.compose.compiler:compiler", version.ref = "compose-compiler" }
+compose-accompanist-permissions = { module = "com.google.accompanist:accompanist-permissions", version.ref = "compose-accompanist" }
+
+google-material = { module = "com.google.android.material:material", version.ref = "google-material" }
+google-ps-ads = { module = "com.google.android.gms:play-services-ads", version.ref = "google-ps-ads" }
+google-firebase-bom = { module = "com.google.firebase:firebase-bom", version.ref = "google-firebase-bom" }
+google-firebase-crashlytics = { module = "com.google.firebase:firebase-crashlytics-ktx" }
+google-firebase-analytics = { module = "com.google.firebase:firebase-analytics-ktx" }
+
+navigation-core = { module = "io.github.raamcosta.compose-destinations:core", version.ref = "navigation" }
+navigation-ksp = { module = "io.github.raamcosta.compose-destinations:ksp", version.ref = "navigation" }
+
+koin-core = { module = "io.insert-koin:koin-core", version.ref = "koin" }
+koin-android = { module = "io.insert-koin:koin-android", version.ref = "koin" }
+
+sqldelight-runtime = { module = "app.cash.sqldelight:runtime", version.ref = "sqldelight" }
+sqldelight-android = { module = "app.cash.sqldelight:android-driver", version.ref = "sqldelight" }
+sqldelight-native = { module = "app.cash.sqldelight:native-driver", version.ref = "sqldelight" }
+sqldelight-extensions = { module = "app.cash.sqldelight:coroutines-extensions", version.ref = "sqldelight" }
+
+multiplatformsettings = { module = "com.russhwolf:multiplatform-settings", version.ref = "multiplatformsettings" }
+kmm-viewmodel = { module = "com.rickclephas.kmm:kmm-viewmodel-core", version.ref = "kmm-viewmodel" }
+
+[plugins]
+
+android-application = { id = "com.android.application", version.ref = "agp" }
+android-library = { id = "com.android.library", version.ref = "agp" }
+
+kotlin-multiplatform = { id = "org.jetbrains.kotlin.multiplatform", version.ref = "kotlin" }
+kotlin-android = { id = "org.jetbrains.kotlin.android", version.ref = "kotlin" }
+kotlin-cocoapods = { id = "org.jetbrains.kotlin.native.cocoapods", version.ref = "kotlin" }
+
+google-ksp = { id = "com.google.devtools.ksp", version.ref = "ksp" }
+google-services = { id = "com.google.gms.google-services", version.ref = "google-services" }
+google-firebase-crashlytics = { id = "com.google.firebase.crashlytics", version.ref = "google-firebase-crashlytics" }
+
+sqldelight = { id = "app.cash.sqldelight", version.ref = "sqldelight" }
+kmm-coroutines = { id = "com.rickclephas.kmp.nativecoroutines", version.ref = "kmm-coroutines" }

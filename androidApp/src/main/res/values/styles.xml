@@ -1,0 +1,4 @@
+<resources>
+
+    <style name="Theme.App" parent="Theme.Material3.DayNight" />
+</resources>

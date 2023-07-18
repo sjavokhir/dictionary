@@ -2,10 +2,19 @@ package com.translator.uzbek.english.dictionary.data.datastore
 
 import com.russhwolf.settings.ObservableSettings
 import com.russhwolf.settings.set
+import com.translator.uzbek.english.dictionary.core.helpers.Constants
 import com.translator.uzbek.english.dictionary.data.model.mode.FirstLanguageMode
 import com.translator.uzbek.english.dictionary.data.util.Keys
 
 class DictionaryStore(private val settings: ObservableSettings) {
+
+    fun setDailyGoal(goal: Int) {
+        settings[Keys.DAILY_GOAL] = goal
+    }
+
+    fun getDailyGoal(): Int {
+        return settings.getInt(Keys.DAILY_GOAL, Constants.defaultDailyGoal)
+    }
 
     fun getNewWordFirstLanguage(): FirstLanguageMode {
         return try {

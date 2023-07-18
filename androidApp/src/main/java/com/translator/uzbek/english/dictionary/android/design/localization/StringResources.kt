@@ -7,7 +7,7 @@ val LocalStrings = staticCompositionLocalOf { stringResourcesEnglish() }
 
 @Immutable
 data class StringResources(
-    val appName: String = "Uzbek-English dictionary",
+    val appName: String,
     val learn: String,
     val dictionary: String,
     val statistics: String,
@@ -30,7 +30,7 @@ data class StringResources(
     val everyDay: String,
     val soundEffects: String,
     val autoPronounce: String,
-    val countNewWords: String,
+    val countNewWords: (Int) -> String,
     val progress: String,
     val createBackup: String,
     val restoreData: String,
@@ -47,4 +47,8 @@ data class StringResources(
     val sendUs: String,
     val feedbackDescription: String,
     val helpUsImprove: String,
+    val dailyGoalDescription: String,
+    val youWillLearn: (Int) -> String,
+    val save: String,
+    val notSet: String,
 )

@@ -37,14 +37,13 @@ fun QRBottomBar(
                     painterResource(id = destination.unselectedIcon)
                 },
                 label = destination.label,
-                onClick = {
-                    navController.bottomNavigateTo(
-                        isCurrentDestOnBackStack,
-                        destination.direction
-                    )
-                },
                 selected = isCurrentDestOnBackStack
-            )
+            ) {
+                navController.bottomNavigateTo(
+                    isCurrentDestOnBackStack,
+                    destination.direction
+                )
+            }
         }
     }
 }

@@ -1,6 +1,7 @@
 package com.translator.uzbek.english.dictionary.android.design.localization
 
 fun stringResourcesEnglish() = StringResources(
+    appName = "Uzbek-English dictionary",
     learn = "Learn",
     dictionary = "Dictionary",
     statistics = "Statistics",
@@ -23,7 +24,9 @@ fun stringResourcesEnglish() = StringResources(
     everyDay = "Every day",
     soundEffects = "Sound effects",
     autoPronounce = "Automatically pronounce English words",
-    countNewWords = "new words",
+    countNewWords = {
+        "$it new words"
+    },
     progress = "Progress",
     createBackup = "Create backup",
     restoreData = "Restore data",
@@ -39,5 +42,11 @@ fun stringResourcesEnglish() = StringResources(
     telegramBot = "Telegram Bot",
     sendUs = "Send us an email",
     feedbackDescription = "Many questions are already answered in the \"FAQ\".\n\nPlease write your email in English.\n\nIf possible, please include photos of the bug or screenshots.",
-    helpUsImprove = "Help us improve!"
+    helpUsImprove = "Help us improve!",
+    dailyGoalDescription = "How many new words do you want to learn per day?",
+    youWillLearn = {
+        "You will learn $it new words monthly"
+    },
+    save = "Save",
+    notSet = "Not set"
 )

@@ -55,12 +55,9 @@ fun FirstLanguageScreen(
         title = "",
         onNavigateUp = navigator::navigateUp
     ) {
-        FirstLanguageScreenContent(
-            firstLanguage = firstLanguage,
-            onClick = {
-                resultNavigator.navigateBack(FirstLanguageResult(it, type))
-            }
-        )
+        FirstLanguageScreenContent(firstLanguage) {
+            resultNavigator.navigateBack(FirstLanguageResult(it, type))
+        }
     }
 }
 

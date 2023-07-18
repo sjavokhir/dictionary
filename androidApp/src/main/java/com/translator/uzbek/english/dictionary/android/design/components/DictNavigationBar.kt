@@ -74,8 +74,8 @@ fun RowScope.DictNavigationBarItem(
     modifier: Modifier = Modifier,
     icon: Painter,
     label: String,
+    selected: Boolean,
     onClick: () -> Unit,
-    selected: Boolean
 ) {
     Column(
         modifier = modifier

@@ -34,6 +34,7 @@ class SettingsViewModel : KMMViewModel(), KoinComponent {
 
     fun onEvent(event: SettingsEvent) {
         when (event) {
+            is SettingsEvent.SetDailyGoal -> setDailyGoal(event.goal)
             is SettingsEvent.SetNewWordFirstLanguage -> setNewWordFirstLanguage(event.firstLanguage)
             is SettingsEvent.SetRepeatedFirstLanguage -> setRepeatedFirstLanguage(event.firstLanguage)
             is SettingsEvent.ShowTranscription -> showTranscription(event.show)
@@ -48,6 +49,7 @@ class SettingsViewModel : KMMViewModel(), KoinComponent {
         viewModelScope.coroutineScope.launch(ioDispatcher) {
             stateData.update {
                 it.copy(
+                    dailyGoal = dictionaryStore.getDailyGoal(),
                     newWordFirstLanguage = dictionaryStore.getNewWordFirstLanguage(),
                     repeatedFirstLanguage = dictionaryStore.getRepeatedFirstLanguage(),
                     showTranscription = dictionaryStore.showTranscription(),
@@ -58,6 +60,12 @@ class SettingsViewModel : KMMViewModel(), KoinComponent {
                 )
             }
         }
+    }
+
+    private fun setDailyGoal(goal: Int) {
+        dictionaryStore.setDailyGoal(goal)
+
+        stateData.update { it.copy(dailyGoal = goal) }
     }
 
     private fun setNewWordFirstLanguage(firstLanguage: FirstLanguageMode) {

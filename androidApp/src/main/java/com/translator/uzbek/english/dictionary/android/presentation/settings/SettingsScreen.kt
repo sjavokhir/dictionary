@@ -48,6 +48,7 @@ import com.translator.uzbek.english.dictionary.android.design.localization.Local
 import com.translator.uzbek.english.dictionary.android.design.localization.StringResources
 import com.translator.uzbek.english.dictionary.android.design.localization.localized
 import com.translator.uzbek.english.dictionary.android.presentation.destinations.AppLanguageScreenDestination
+import com.translator.uzbek.english.dictionary.android.presentation.destinations.DailyGoalScreenDestination
 import com.translator.uzbek.english.dictionary.android.presentation.destinations.FaqScreenDestination
 import com.translator.uzbek.english.dictionary.android.presentation.destinations.FeedbackScreenDestination
 import com.translator.uzbek.english.dictionary.android.presentation.destinations.FirstLanguageScreenDestination
@@ -67,6 +68,7 @@ import com.translator.uzbek.english.dictionary.shared.developerUrl
 fun SettingsScreen(
     viewModel: SettingsViewModel = viewModel(),
     navigator: DestinationsNavigator,
+    resultDailyGoal: ResultRecipient<DailyGoalScreenDestination, Int>,
     resultFirstLanguage: ResultRecipient<FirstLanguageScreenDestination, FirstLanguageResult>,
     resultAppLanguage: ResultRecipient<AppLanguageScreenDestination, LanguageMode>,
     resultThemeMode: ResultRecipient<ThemeModeScreenDestination, ThemeMode>,
@@ -76,6 +78,11 @@ fun SettingsScreen(
 
     val state by viewModel.state.collectAsStateWithLifecycle()
 
+    resultDailyGoal.onNavResult { result ->
+        if (result is NavResult.Value) {
+            viewModel.onEvent(SettingsEvent.SetDailyGoal(result.value))
+        }
+    }
     resultFirstLanguage.onNavResult { result ->
         if (result is NavResult.Value) {
             when (result.value.type) {
@@ -156,8 +163,13 @@ private fun LearningContent(
     HeaderContent(strings.learning) {
         NavigateContent(
             title = strings.dailyGoal,
-            value = "${state.dailyGoal} ${strings.countNewWords}"
+            value = if (state.dailyGoal == 0) {
+                strings.notSet
+            } else {
+                strings.countNewWords(state.dailyGoal)
+            }
         ) {
+            onNavigate(DailyGoalScreenDestination(state.dailyGoal))
         }
 
         DividerContent()
@@ -192,11 +204,10 @@ private fun LearningContent(
 
         SwitchContent(
             title = strings.showTranscription,
-            checked = state.showTranscription,
-            onCheckedChange = {
-                onEvent(SettingsEvent.ShowTranscription(it))
-            }
-        )
+            checked = state.showTranscription
+        ) {
+            onEvent(SettingsEvent.ShowTranscription(it))
+        }
     }
 }
 
@@ -238,21 +249,19 @@ private fun PreferencesContent(
 
         SwitchContent(
             title = strings.soundEffects,
-            checked = state.isSoundEffects,
-            onCheckedChange = {
-                onEvent(SettingsEvent.CheckSoundEffects(it))
-            }
-        )
+            checked = state.isSoundEffects
+        ) {
+            onEvent(SettingsEvent.CheckSoundEffects(it))
+        }
 
         DividerContent()
 
         SwitchContent(
             title = strings.autoPronounce,
-            checked = state.isAutoPronounce,
-            onCheckedChange = {
-                onEvent(SettingsEvent.CheckAutoPronounce(it))
-            }
-        )
+            checked = state.isAutoPronounce
+        ) {
+            onEvent(SettingsEvent.CheckAutoPronounce(it))
+        }
     }
 }
 

@@ -62,15 +62,14 @@ fun HyperlinkText(
     ClickableText(
         modifier = modifier,
         text = annotatedString,
-        style = style,
-        onClick = {
-            annotatedString
-                .getStringAnnotations("URL", it, it)
-                .firstOrNull()?.let { stringAnnotation ->
-                    tryCatch {
-                        uriHandler.openUri(stringAnnotation.item)
-                    }
+        style = style
+    ) {
+        annotatedString
+            .getStringAnnotations("URL", it, it)
+            .firstOrNull()?.let { stringAnnotation ->
+                tryCatch {
+                    uriHandler.openUri(stringAnnotation.item)
                 }
-        }
-    )
+            }
+    }
 }

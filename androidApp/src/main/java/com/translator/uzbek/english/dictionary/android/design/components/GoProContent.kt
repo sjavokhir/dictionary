@@ -18,14 +18,11 @@ import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.unit.dp
 import com.translator.uzbek.english.dictionary.android.R
 import com.translator.uzbek.english.dictionary.android.core.extensions.clickableSingle
-import com.translator.uzbek.english.dictionary.android.design.localization.LocalStrings
 
 @Composable
 fun GoProContent(
     onClick: () -> Unit
 ) {
-    val strings = LocalStrings.current
-
     Row(
         modifier = Modifier
             .fillMaxWidth()

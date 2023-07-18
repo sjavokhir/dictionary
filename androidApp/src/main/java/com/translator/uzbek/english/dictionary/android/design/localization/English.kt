@@ -1,5 +1,7 @@
 package com.translator.uzbek.english.dictionary.android.design.localization
 
+import com.translator.uzbek.english.dictionary.shared.appUrl
+
 fun stringResourcesEnglish() = StringResources(
     appName = "Uzbek-English dictionary",
     learn = "Learn",
@@ -35,13 +37,16 @@ fun stringResourcesEnglish() = StringResources(
     otherApps = "Other languages and apps",
     feedback = "Feedback",
     share = "Share",
-    shareDescription = "Share description",
+    shareDescription = """
+        Introducing the Uzbek-English Dictionary app, the perfect tool to enhance your English language skills while exploring the richness of the Uzbek language. This comprehensive app offers a wide range of features to facilitate learning, allowing you to master vocabulary, improve pronunciation, and track your progress effortlessly.
+        
+        $appUrl
+    """.trimIndent(),
     rateUs = "Rate us",
-    faq = "FAQ",
     appVersion = "App version",
     telegramBot = "Telegram Bot",
     sendUs = "Send us an email",
-    feedbackDescription = "Many questions are already answered in the \"FAQ\".\n\nPlease write your email in English.\n\nIf possible, please include photos of the bug or screenshots.",
+    feedbackDescription = "Please write your email in English.\n\nIf possible, please include photos of the bug or screenshots.",
     helpUsImprove = "Help us improve!",
     dailyGoalDescription = "How many new words do you want to learn per day?",
     youWillLearn = {

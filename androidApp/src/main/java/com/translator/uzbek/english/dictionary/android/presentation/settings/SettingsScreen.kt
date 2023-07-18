@@ -51,7 +51,6 @@ import com.translator.uzbek.english.dictionary.android.design.localization.local
 import com.translator.uzbek.english.dictionary.android.design.localization.weekdays
 import com.translator.uzbek.english.dictionary.android.presentation.destinations.AppLanguageScreenDestination
 import com.translator.uzbek.english.dictionary.android.presentation.destinations.DailyGoalScreenDestination
-import com.translator.uzbek.english.dictionary.android.presentation.destinations.FaqScreenDestination
 import com.translator.uzbek.english.dictionary.android.presentation.destinations.FeedbackScreenDestination
 import com.translator.uzbek.english.dictionary.android.presentation.destinations.FirstLanguageScreenDestination
 import com.translator.uzbek.english.dictionary.android.presentation.destinations.ReminderScreenDestination
@@ -374,12 +373,6 @@ private fun GeneralContent(
 
         NavigateContent(strings.rateUs) {
             context.openUrl(appUrl)
-        }
-
-        DividerContent()
-
-        NavigateContent(strings.faq) {
-            onNavigate(FaqScreenDestination)
         }
     }
 }

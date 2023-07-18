@@ -41,7 +41,6 @@ data class StringResources(
     val share: String,
     val shareDescription: String,
     val rateUs: String,
-    val faq: String,
     val appVersion: String,
     val telegramBot: String,
     val sendUs: String,

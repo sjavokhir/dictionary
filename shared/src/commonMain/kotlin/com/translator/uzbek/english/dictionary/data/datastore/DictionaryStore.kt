@@ -2,6 +2,7 @@ package com.translator.uzbek.english.dictionary.data.datastore
 
 import com.russhwolf.settings.ObservableSettings
 import com.russhwolf.settings.set
+import com.translator.uzbek.english.dictionary.core.datetime.TimeModel
 import com.translator.uzbek.english.dictionary.core.helpers.Constants
 import com.translator.uzbek.english.dictionary.data.model.mode.FirstLanguageMode
 import com.translator.uzbek.english.dictionary.data.util.Keys
@@ -54,6 +55,26 @@ class DictionaryStore(private val settings: ObservableSettings) {
 
     fun setShowTranscription(show: Boolean) {
         settings[Keys.SHOW_TRANSCRIPTION] = show
+    }
+
+    fun isReminderEnabled(): Boolean {
+        return settings.getBoolean(Keys.REMINDER, true)
+    }
+
+    fun setReminderEnabled(isEnabled: Boolean) {
+        settings[Keys.REMINDER] = isEnabled
+    }
+
+    fun getReminderTime(): TimeModel {
+        val hour = settings.getInt(Keys.REMINDER_HOUR, Constants.defaultReminderHour)
+        val minute = settings.getInt(Keys.REMINDER_MINUTE, Constants.defaultReminderMinute)
+
+        return TimeModel(hour, minute)
+    }
+
+    fun setReminderTime(time: TimeModel) {
+        settings[Keys.REMINDER_HOUR] = time.hour
+        settings[Keys.REMINDER_MINUTE] = time.minute
     }
 
     fun isSoundEffectsEnabled(): Boolean {

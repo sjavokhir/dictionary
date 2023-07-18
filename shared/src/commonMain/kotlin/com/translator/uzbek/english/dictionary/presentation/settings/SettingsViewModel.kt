@@ -40,6 +40,7 @@ class SettingsViewModel : KMMViewModel(), KoinComponent {
             is SettingsEvent.ShowTranscription -> showTranscription(event.show)
             is SettingsEvent.SetAppLanguage -> setAppLanguage(event.language)
             is SettingsEvent.SetThemeMode -> setThemeMode(event.themeMode)
+            is SettingsEvent.CheckReminder -> onCheckedReminder(event.checked)
             is SettingsEvent.CheckSoundEffects -> onCheckedSoundEffects(event.checked)
             is SettingsEvent.CheckAutoPronounce -> onCheckedAutoPronounce(event.checked)
         }
@@ -55,8 +56,10 @@ class SettingsViewModel : KMMViewModel(), KoinComponent {
                     showTranscription = dictionaryStore.showTranscription(),
                     appLanguage = appStore.getAppLanguage(),
                     themeMode = appStore.getThemeMode(),
-                    isSoundEffects = dictionaryStore.isSoundEffectsEnabled(),
-                    isAutoPronounce = dictionaryStore.isAutoPronounceEnabled()
+                    isReminderEnabled = dictionaryStore.isReminderEnabled(),
+                    reminderTime = dictionaryStore.getReminderTime(),
+                    isSoundEffectsEnabled = dictionaryStore.isSoundEffectsEnabled(),
+                    isAutoPronounceEnabled = dictionaryStore.isAutoPronounceEnabled()
                 )
             }
         }
@@ -86,18 +89,6 @@ class SettingsViewModel : KMMViewModel(), KoinComponent {
         stateData.update { it.copy(showTranscription = show) }
     }
 
-    private fun onCheckedSoundEffects(checked: Boolean) {
-        dictionaryStore.setSoundEffectsEnabled(checked)
-
-        stateData.update { it.copy(isSoundEffects = checked) }
-    }
-
-    private fun onCheckedAutoPronounce(checked: Boolean) {
-        dictionaryStore.setAutoPronounceEnabled(checked)
-
-        stateData.update { it.copy(isAutoPronounce = checked) }
-    }
-
     private fun setAppLanguage(language: LanguageMode) {
         appStore.setAppLanguage(language)
 
@@ -112,5 +103,23 @@ class SettingsViewModel : KMMViewModel(), KoinComponent {
         stateData.update { it.copy(themeMode = themeMode) }
 
         EventChannel.sendEvent(Event.ThemeModeChanged(themeMode))
+    }
+
+    private fun onCheckedReminder(checked: Boolean) {
+        dictionaryStore.setReminderEnabled(checked)
+
+        stateData.update { it.copy(isReminderEnabled = checked) }
+    }
+
+    private fun onCheckedSoundEffects(checked: Boolean) {
+        dictionaryStore.setSoundEffectsEnabled(checked)
+
+        stateData.update { it.copy(isSoundEffectsEnabled = checked) }
+    }
+
+    private fun onCheckedAutoPronounce(checked: Boolean) {
+        dictionaryStore.setAutoPronounceEnabled(checked)
+
+        stateData.update { it.copy(isAutoPronounceEnabled = checked) }
     }
 }

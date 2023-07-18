@@ -237,19 +237,54 @@ private fun PreferencesContent(
 
         DividerContent()
 
-//        SwitchContent(
-//            title = strings.openWebPages,
-//            checked = state.isOpenWebPagesChecked,
-//            onCheckedChange = {
-//                onEvent(SettingsEvent.CheckOpenWebPages(it))
-//            }
-//        )
-//
-//        DividerContent()
+        Row(
+            modifier = Modifier
+                .fillMaxWidth()
+                .clickableSingle(
+                    enabled = state.isReminderEnabled,
+                    onClick = {
+
+                    }
+                )
+                .padding(16.dp),
+            verticalAlignment = Alignment.CenterVertically,
+            horizontalArrangement = Arrangement.spacedBy(16.dp)
+        ) {
+            Column(
+                modifier = Modifier.weight(1f),
+                verticalArrangement = Arrangement.spacedBy(4.dp)
+            ) {
+                Text(
+                    text = strings.reminder,
+                    style = MaterialTheme.typography.bodyLarge,
+                )
+
+                if (state.isReminderEnabled) {
+                    Text(
+                        text = "${state.reminderDays}, ${state.reminderTime}",
+                        style = MaterialTheme.typography.bodyMedium,
+                        color = MaterialTheme.colorScheme.outline
+                    )
+                }
+            }
+
+            Switch(
+                checked = state.isReminderEnabled,
+                onCheckedChange = {
+                    onEvent(SettingsEvent.CheckReminder(it))
+                },
+                modifier = Modifier
+                    .width(39.dp)
+                    .height(24.dp)
+                    .scale(.85f)
+            )
+        }
+
+        DividerContent()
 
         SwitchContent(
             title = strings.soundEffects,
-            checked = state.isSoundEffects
+            checked = state.isSoundEffectsEnabled
         ) {
             onEvent(SettingsEvent.CheckSoundEffects(it))
         }
@@ -258,7 +293,7 @@ private fun PreferencesContent(
 
         SwitchContent(
             title = strings.autoPronounce,
-            checked = state.isAutoPronounce
+            checked = state.isAutoPronounceEnabled
         ) {
             onEvent(SettingsEvent.CheckAutoPronounce(it))
         }

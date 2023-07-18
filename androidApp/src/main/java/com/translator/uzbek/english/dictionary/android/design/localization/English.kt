@@ -21,7 +21,7 @@ fun stringResourcesEnglish() = StringResources(
     dark = "Dark",
     system = "System",
     reminder = "Reminder",
-    everyDay = "Every day",
+    everyday = "Everyday",
     soundEffects = "Sound effects",
     autoPronounce = "Automatically pronounce English words",
     countNewWords = {
@@ -48,5 +48,7 @@ fun stringResourcesEnglish() = StringResources(
         "You will learn $it new words monthly"
     },
     save = "Save",
-    notSet = "Not set"
+    notSet = "Not set",
+    repeat = "Repeat",
+    selectAll = "Select all"
 )

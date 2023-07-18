@@ -27,7 +27,7 @@ data class StringResources(
     val dark: String,
     val system: String,
     val reminder: String,
-    val everyDay: String,
+    val everyday: String,
     val soundEffects: String,
     val autoPronounce: String,
     val countNewWords: (Int) -> String,
@@ -51,4 +51,6 @@ data class StringResources(
     val youWillLearn: (Int) -> String,
     val save: String,
     val notSet: String,
+    val repeat: String,
+    val selectAll: String,
 )

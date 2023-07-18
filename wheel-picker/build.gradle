@@ -1,0 +1,49 @@
+plugins {
+    id "com.android.library"
+    id "org.jetbrains.kotlin.android"
+}
+
+android {
+    namespace "uz.javokhir.wheelpicker"
+
+    compileSdk 33
+
+    defaultConfig {
+        minSdk 26
+        targetSdk 33
+    }
+
+    buildTypes {
+        release {
+            minifyEnabled true
+        }
+    }
+    
+    compileOptions {
+        sourceCompatibility JavaVersion.VERSION_17
+        targetCompatibility JavaVersion.VERSION_17
+    }
+    
+    kotlinOptions {
+        jvmTarget = JavaVersion.VERSION_17.toString()
+        
+        freeCompilerArgs += [
+                "-Xopt-in=dev.chrisbanes.snapper.ExperimentalSnapperApi",
+                "-Xjvm-default=compatibility"
+        ]
+    }
+    
+    buildFeatures {
+        compose true
+    }
+    
+    composeOptions {
+        kotlinCompilerExtensionVersion libs.versions.compose.compiler.get()
+    }
+}
+
+dependencies {
+    implementation libs.compose.ui
+    implementation libs.compose.material3
+    implementation libs.snapper
+}

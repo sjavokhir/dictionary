@@ -4,6 +4,7 @@ import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.MainCoroutineDispatcher
 
 expect val appUrl: String
+expect val developerUrl: String
 expect val appVersion: String
 expect val deviceVersion: String
 

@@ -17,7 +17,6 @@ import androidx.compose.ui.unit.dp
 import androidx.core.view.WindowCompat
 import com.translator.uzbek.english.dictionary.android.design.localization.LocalStrings
 import com.translator.uzbek.english.dictionary.android.design.localization.stringResourcesEnglish
-import com.translator.uzbek.english.dictionary.android.design.localization.stringResourcesUzbek
 import com.translator.uzbek.english.dictionary.data.model.mode.LanguageMode
 import com.translator.uzbek.english.dictionary.data.model.mode.ThemeMode
 
@@ -100,7 +99,7 @@ fun DictTheme(
     content: @Composable () -> Unit
 ) {
     val stringResources = when (language) {
-        LanguageMode.Uzbek -> stringResourcesUzbek()
+        LanguageMode.Uzbek -> stringResourcesEnglish()
         else -> stringResourcesEnglish()
     }
 

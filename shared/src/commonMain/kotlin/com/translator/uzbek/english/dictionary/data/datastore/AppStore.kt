@@ -8,10 +8,10 @@ import com.translator.uzbek.english.dictionary.data.util.Keys
 
 class AppStore(private val settings: ObservableSettings) {
 
-    fun getSelectedThemeMode(): ThemeMode {
+    fun getThemeMode(): ThemeMode {
         return try {
             val themeMode = settings.getString(
-                Keys.SELECTED_THEME_MODE,
+                Keys.THEME_MODE,
                 ThemeMode.System.name
             )
             ThemeMode.valueOf(themeMode)
@@ -20,14 +20,14 @@ class AppStore(private val settings: ObservableSettings) {
         }
     }
 
-    fun setSelectedThemeMode(themeMode: ThemeMode) {
-        settings[Keys.SELECTED_THEME_MODE] = themeMode.name
+    fun setThemeMode(themeMode: ThemeMode) {
+        settings[Keys.THEME_MODE] = themeMode.name
     }
 
-    fun getSelectedLanguage(): LanguageMode {
+    fun getAppLanguage(): LanguageMode {
         return try {
             val language = settings.getString(
-                Keys.SELECTED_LANGUAGE,
+                Keys.APP_LANGUAGE,
                 LanguageMode.Uzbek.name
             )
             LanguageMode.valueOf(language)
@@ -36,7 +36,7 @@ class AppStore(private val settings: ObservableSettings) {
         }
     }
 
-    fun setSelectedLanguage(language: LanguageMode) {
-        settings[Keys.SELECTED_LANGUAGE] = language.name
+    fun setAppLanguage(language: LanguageMode) {
+        settings[Keys.APP_LANGUAGE] = language.name
     }
 }

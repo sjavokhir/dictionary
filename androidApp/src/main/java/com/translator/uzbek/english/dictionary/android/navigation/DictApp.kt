@@ -9,12 +9,17 @@ import com.ramcosta.composedestinations.DestinationsNavHost
 import com.ramcosta.composedestinations.rememberNavHostEngine
 import com.translator.uzbek.english.dictionary.android.design.theme.DictTheme
 import com.translator.uzbek.english.dictionary.android.presentation.NavGraphs
+import com.translator.uzbek.english.dictionary.android.presentation.destinations.AppLanguageScreenDestination
 import com.translator.uzbek.english.dictionary.android.presentation.destinations.Destination
 import com.translator.uzbek.english.dictionary.android.presentation.destinations.DictionaryScreenDestination
+import com.translator.uzbek.english.dictionary.android.presentation.destinations.FaqScreenDestination
+import com.translator.uzbek.english.dictionary.android.presentation.destinations.FeedbackScreenDestination
+import com.translator.uzbek.english.dictionary.android.presentation.destinations.FirstLanguageScreenDestination
 import com.translator.uzbek.english.dictionary.android.presentation.destinations.LearnScreenDestination
 import com.translator.uzbek.english.dictionary.android.presentation.destinations.PremiumScreenDestination
 import com.translator.uzbek.english.dictionary.android.presentation.destinations.SettingsScreenDestination
 import com.translator.uzbek.english.dictionary.android.presentation.destinations.StatisticsScreenDestination
+import com.translator.uzbek.english.dictionary.android.presentation.destinations.ThemeModeScreenDestination
 import com.translator.uzbek.english.dictionary.data.model.mode.LanguageMode
 import com.translator.uzbek.english.dictionary.data.model.mode.ThemeMode
 
@@ -60,12 +65,16 @@ fun DictApp(
 
 private val Destination.shouldShowBottomBar
     get() = when (this) {
-        LearnScreenDestination,
-        DictionaryScreenDestination,
-        StatisticsScreenDestination,
+        LearnScreenDestination -> true
+        DictionaryScreenDestination -> true
+        StatisticsScreenDestination -> true
         SettingsScreenDestination -> true
-
-        else -> false
+        FaqScreenDestination -> true
+        FeedbackScreenDestination -> true
+        AppLanguageScreenDestination -> true
+        ThemeModeScreenDestination -> true
+        FirstLanguageScreenDestination -> true
+        PremiumScreenDestination -> false
     }
 
 private val Destination.shouldShowAds

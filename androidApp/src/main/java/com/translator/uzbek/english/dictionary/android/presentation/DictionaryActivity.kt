@@ -66,8 +66,8 @@ class DictionaryActivity : ComponentActivity() {
         setContent {
 //            val hasAcknowledged = viewModel.hasAcknowledged.collectAsStateWithLifecycle().value
 
-            var language by remember { mutableStateOf(appStore.getSelectedLanguage()) }
-            var themeMode by remember { mutableStateOf(appStore.getSelectedThemeMode()) }
+            var language by remember { mutableStateOf(appStore.getAppLanguage()) }
+            var themeMode by remember { mutableStateOf(appStore.getThemeMode()) }
 
             when (
                 val event = EventChannel.receiveEvent().collectAsStateWithLifecycle(

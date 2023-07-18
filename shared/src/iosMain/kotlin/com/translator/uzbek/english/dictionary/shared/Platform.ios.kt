@@ -8,6 +8,9 @@ import platform.Foundation.CFBridgingRelease
 actual val appUrl: String
     get() = ""
 
+actual val developerUrl: String
+    get() = ""
+
 actual val appVersion: String
     get() = "1.0.1"
 

@@ -17,9 +17,9 @@ android {
 
     defaultConfig {
         applicationId = "com.translator.uzbek.english.dictionary.android"
-        minSdk = 21
+        minSdk = 26
         targetSdk = 33
-        versionCode = 1
+        versionCode = 2
         versionName = "1.0"
     }
 
@@ -86,6 +86,7 @@ android {
 
 dependencies {
     implementation(project(":shared"))
+    implementation(project(":wheel-picker"))
 
     implementation(libs.kotlin.coroutines)
 

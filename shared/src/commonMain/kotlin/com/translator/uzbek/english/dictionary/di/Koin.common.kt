@@ -1,6 +1,7 @@
 package com.translator.uzbek.english.dictionary.di
 
 import com.translator.uzbek.english.dictionary.data.datastore.AppStore
+import com.translator.uzbek.english.dictionary.data.datastore.DictionaryStore
 import org.koin.core.context.startKoin
 import org.koin.core.module.Module
 import org.koin.core.module.dsl.singleOf
@@ -21,6 +22,7 @@ fun initKoin(appDeclaration: KoinAppDeclaration = {}) =
 
 fun storeModule() = module {
     singleOf(::AppStore)
+    singleOf(::DictionaryStore)
 }
 
 fun databaseModule() = module {

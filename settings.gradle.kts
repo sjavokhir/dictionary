@@ -16,3 +16,4 @@ dependencyResolutionManagement {
 rootProject.name = "uzbek-english-dictionary"
 include(":androidApp")
 include(":shared")
+include(":wheel-picker")

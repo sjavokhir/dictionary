@@ -27,7 +27,7 @@ class SettingsViewModel : KMMViewModel(), KoinComponent {
     val state = stateData.asStateFlow()
 
     init {
-        fetchStoreData()
+        fetchSettingsStore()
     }
 
     fun onEvent(event: SettingsEvent) {
@@ -45,7 +45,7 @@ class SettingsViewModel : KMMViewModel(), KoinComponent {
         }
     }
 
-    private fun fetchStoreData() {
+    private fun fetchSettingsStore() {
         stateData.update {
             it.copy(
                 dailyGoal = dictionaryStore.getDailyGoal(),

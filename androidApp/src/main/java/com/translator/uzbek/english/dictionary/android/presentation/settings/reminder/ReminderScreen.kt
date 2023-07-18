@@ -33,7 +33,7 @@ import com.translator.uzbek.english.dictionary.android.design.localization.weekS
 import com.translator.uzbek.english.dictionary.presentation.reminder.ReminderEvent
 import com.translator.uzbek.english.dictionary.presentation.reminder.ReminderState
 import com.translator.uzbek.english.dictionary.presentation.reminder.ReminderViewModel
-import uz.javokhir.wheelpicker.WheelTimePicker
+import uz.javokhir.picker.WheelTimePicker
 import java.io.Serializable
 import java.time.LocalTime
 

@@ -86,7 +86,7 @@ android {
 
 dependencies {
     implementation(project(":shared"))
-    implementation(project(":wheel-picker"))
+    implementation(project(":ui-picker"))
 
     implementation(libs.kotlin.coroutines)
 

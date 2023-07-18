@@ -4,7 +4,7 @@ plugins {
 }
 
 android {
-    namespace "uz.javokhir.wheelpicker"
+    namespace "uz.javokhir.picker"
 
     compileSdk 33
 

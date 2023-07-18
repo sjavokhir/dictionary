@@ -419,7 +419,10 @@ private fun NavigateContent(
         modifier = Modifier
             .fillMaxWidth()
             .clickableSingle(onClick = onClick)
-            .padding(16.dp),
+            .padding(
+                horizontal = 16.dp,
+                vertical = 14.dp
+            ),
         verticalAlignment = Alignment.CenterVertically,
         horizontalArrangement = Arrangement.spacedBy(12.dp)
     ) {
@@ -459,7 +462,10 @@ private fun SwitchContent(
     Row(
         modifier = Modifier
             .fillMaxWidth()
-            .padding(16.dp),
+            .padding(
+                horizontal = 16.dp,
+                vertical = 14.dp
+            ),
         verticalAlignment = Alignment.CenterVertically,
         horizontalArrangement = Arrangement.spacedBy(16.dp)
     ) {
@@ -481,7 +487,7 @@ private fun SwitchContent(
 }
 
 @Composable
-private fun DividerContent() {
+fun DividerContent() {
     Divider(
         modifier = Modifier
             .fillMaxWidth()

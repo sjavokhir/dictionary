@@ -50,5 +50,12 @@ fun stringResourcesEnglish() = StringResources(
     save = "Save",
     notSet = "Not set",
     repeat = "Repeat",
-    selectAll = "Select all"
+    selectAll = "Select all",
+    mondayShort = "Mon",
+    tuesdayShort = "Tue",
+    wednesdayShort = "Wed",
+    thursdayShort = "Thu",
+    fridayShort = "Fri",
+    saturdayShort = "Sat",
+    sundayShort = "Sun"
 )

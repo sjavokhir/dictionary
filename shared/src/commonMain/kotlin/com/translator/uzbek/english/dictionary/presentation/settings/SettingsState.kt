@@ -14,7 +14,7 @@ data class SettingsState(
     val appLanguage: LanguageMode = LanguageMode.Uzbek,
     val themeMode: ThemeMode = ThemeMode.System,
     val isReminderEnabled: Boolean = true,
-    val reminderDays: String = "",
+    val reminderDays: List<Boolean> = listOf(true, true, true, true, true, true, true),
     val reminderTime: TimeModel = TimeModel(
         hour = Constants.defaultReminderHour,
         minute = Constants.defaultReminderMinute

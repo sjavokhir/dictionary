@@ -11,7 +11,7 @@ actual val developerUrl: String
     get() = "https://play.google.com/store/apps/dev?id=5105296000562157932"
 
 actual val appVersion: String
-    get() = "1.0.1"
+    get() = "1.0.2"
 
 actual val deviceVersion: String
     get() = "Android, ${Build.MANUFACTURER} ${Build.MODEL}, ${Build.VERSION.SDK_INT}"

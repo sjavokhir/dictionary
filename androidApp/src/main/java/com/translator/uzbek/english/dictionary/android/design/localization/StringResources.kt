@@ -53,4 +53,11 @@ data class StringResources(
     val notSet: String,
     val repeat: String,
     val selectAll: String,
+    val mondayShort: String,
+    val tuesdayShort: String,
+    val wednesdayShort: String,
+    val thursdayShort: String,
+    val fridayShort: String,
+    val saturdayShort: String,
+    val sundayShort: String,
 )

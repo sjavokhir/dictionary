@@ -77,6 +77,24 @@ class DictionaryStore(private val settings: ObservableSettings) {
         settings[Keys.REMINDER_MINUTE] = time.minute
     }
 
+    private fun getReminderWeekdays(): String {
+        return settings.getString(Keys.REMINDER_WEEKDAYS, "true,true,true,true,true,true,true")
+    }
+
+    fun getReminderDays(): List<Boolean> {
+        return try {
+            getReminderWeekdays()
+                .split(",")
+                .map { it.toBooleanStrictOrNull() ?: true }
+        } catch (_: Throwable) {
+            listOf(true, true, true, true, true, true, true)
+        }
+    }
+
+    fun setReminderWeekdays(weekdays: String) {
+        settings[Keys.REMINDER_WEEKDAYS] = weekdays
+    }
+
     fun isSoundEffectsEnabled(): Boolean {
         return settings.getBoolean(Keys.SOUND_EFFECTS, true)
     }

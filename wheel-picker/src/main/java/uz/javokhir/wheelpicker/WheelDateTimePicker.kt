@@ -30,17 +30,17 @@ fun WheelDateTimePicker(
     onSnappedDateTime: (snappedDateTime: LocalDateTime) -> Unit = {}
 ) {
     DefaultWheelDateTimePicker(
-        modifier,
-        startDateTime,
-        minDateTime,
-        maxDateTime,
-        yearsRange,
-        timeFormat,
-        size,
-        rowCount,
-        textStyle,
-        textColor,
-        selectorProperties,
+        modifier = modifier,
+        startDateTime = startDateTime,
+        minDateTime = minDateTime,
+        maxDateTime = maxDateTime,
+        yearsRange = yearsRange,
+        timeFormat = timeFormat,
+        size = size,
+        rowCount = rowCount,
+        textStyle = textStyle,
+        textColor = textColor,
+        selectorProperties = selectorProperties,
         onSnappedDateTime = { snappedDateTime ->
             onSnappedDateTime(snappedDateTime.snappedLocalDateTime)
             snappedDateTime.snappedIndex

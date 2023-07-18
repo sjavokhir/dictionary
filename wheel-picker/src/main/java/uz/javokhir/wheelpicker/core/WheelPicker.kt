@@ -28,11 +28,13 @@ import androidx.compose.ui.graphics.Shape
 import androidx.compose.ui.graphics.graphicsLayer
 import androidx.compose.ui.unit.DpSize
 import androidx.compose.ui.unit.dp
+import dev.chrisbanes.snapper.ExperimentalSnapperApi
 import dev.chrisbanes.snapper.SnapperLayoutInfo
 import dev.chrisbanes.snapper.rememberLazyListSnapperLayoutInfo
 import dev.chrisbanes.snapper.rememberSnapperFlingBehavior
 import kotlin.math.absoluteValue
 
+@OptIn(ExperimentalSnapperApi::class)
 @Composable
 internal fun WheelPicker(
     modifier: Modifier = Modifier,
@@ -110,6 +112,7 @@ internal fun WheelPicker(
     }
 }
 
+@OptIn(ExperimentalSnapperApi::class)
 private fun calculateSnappedItemIndex(snapperLayoutInfo: SnapperLayoutInfo): Int? {
     var currentItemIndex = snapperLayoutInfo.currentItem?.index
 
@@ -121,6 +124,7 @@ private fun calculateSnappedItemIndex(snapperLayoutInfo: SnapperLayoutInfo): Int
     return currentItemIndex
 }
 
+@OptIn(ExperimentalSnapperApi::class)
 @Composable
 private fun calculateAnimatedAlpha(
     lazyListState: LazyListState,
@@ -140,6 +144,7 @@ private fun calculateAnimatedAlpha(
     }
 }
 
+@OptIn(ExperimentalSnapperApi::class)
 @Composable
 private fun calculateAnimatedRotationX(
     lazyListState: LazyListState,
@@ -164,8 +169,8 @@ object WheelPickerDefaults {
     @Composable
     fun selectorProperties(
         enabled: Boolean = true,
-        shape: Shape = RoundedCornerShape(16.dp),
-        color: Color = MaterialTheme.colorScheme.primary.copy(alpha = 0.2f),
+        shape: Shape = MaterialTheme.shapes.medium,
+        color: Color = MaterialTheme.colorScheme.primary.copy(alpha = 0.1f),
         border: BorderStroke? = BorderStroke(1.dp, MaterialTheme.colorScheme.primary),
     ): SelectorProperties = DefaultSelectorProperties(
         enabled = enabled,

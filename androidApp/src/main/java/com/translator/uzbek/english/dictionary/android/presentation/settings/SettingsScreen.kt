@@ -20,6 +20,7 @@ import androidx.compose.material3.Switch
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
@@ -47,13 +48,16 @@ import com.translator.uzbek.english.dictionary.android.design.components.DictIco
 import com.translator.uzbek.english.dictionary.android.design.localization.LocalStrings
 import com.translator.uzbek.english.dictionary.android.design.localization.StringResources
 import com.translator.uzbek.english.dictionary.android.design.localization.localized
+import com.translator.uzbek.english.dictionary.android.design.localization.weekdays
 import com.translator.uzbek.english.dictionary.android.presentation.destinations.AppLanguageScreenDestination
 import com.translator.uzbek.english.dictionary.android.presentation.destinations.DailyGoalScreenDestination
 import com.translator.uzbek.english.dictionary.android.presentation.destinations.FaqScreenDestination
 import com.translator.uzbek.english.dictionary.android.presentation.destinations.FeedbackScreenDestination
 import com.translator.uzbek.english.dictionary.android.presentation.destinations.FirstLanguageScreenDestination
+import com.translator.uzbek.english.dictionary.android.presentation.destinations.ReminderScreenDestination
 import com.translator.uzbek.english.dictionary.android.presentation.destinations.ThemeModeScreenDestination
 import com.translator.uzbek.english.dictionary.android.presentation.settings.firstLanguage.FirstLanguageResult
+import com.translator.uzbek.english.dictionary.android.presentation.settings.reminder.ReminderResult
 import com.translator.uzbek.english.dictionary.data.model.mode.LanguageMode
 import com.translator.uzbek.english.dictionary.data.model.mode.ThemeMode
 import com.translator.uzbek.english.dictionary.presentation.settings.SettingsEvent
@@ -72,11 +76,16 @@ fun SettingsScreen(
     resultFirstLanguage: ResultRecipient<FirstLanguageScreenDestination, FirstLanguageResult>,
     resultAppLanguage: ResultRecipient<AppLanguageScreenDestination, LanguageMode>,
     resultThemeMode: ResultRecipient<ThemeModeScreenDestination, ThemeMode>,
+    resultReminder: ResultRecipient<ReminderScreenDestination, ReminderResult>,
 ) {
     val context = LocalContext.current
     val strings = LocalStrings.current
 
     val state by viewModel.state.collectAsStateWithLifecycle()
+
+    val reminderWeekdays = remember(state.reminderDays) {
+        state.reminderDays.weekdays(strings)
+    }
 
     resultDailyGoal.onNavResult { result ->
         if (result is NavResult.Value) {
@@ -110,6 +119,17 @@ fun SettingsScreen(
             viewModel.onEvent(SettingsEvent.SetThemeMode(result.value))
         }
     }
+    resultReminder.onNavResult { result ->
+        if (result is NavResult.Value) {
+            viewModel.onEvent(
+                SettingsEvent.SetReminder(
+                    hour = result.value.hour,
+                    minute = result.value.minute,
+                    weekdays = result.value.weekdays
+                )
+            )
+        }
+    }
 
     DictContainer(strings.settings) {
         SettingsScreenContent(
@@ -117,6 +137,7 @@ fun SettingsScreen(
             strings = strings,
             state = state,
             onEvent = viewModel::onEvent,
+            reminderWeekdays = reminderWeekdays,
             onNavigate = navigator::navigate
         )
     }
@@ -128,6 +149,7 @@ private fun SettingsScreenContent(
     strings: StringResources,
     state: SettingsState,
     onEvent: (SettingsEvent) -> Unit,
+    reminderWeekdays: String,
     onNavigate: (Direction) -> Unit
 ) {
     LazyColumn(
@@ -138,7 +160,7 @@ private fun SettingsScreenContent(
         verticalArrangement = Arrangement.spacedBy(24.dp)
     ) {
         item { LearningContent(strings, state, onEvent, onNavigate) }
-        item { PreferencesContent(strings, state, onEvent, onNavigate) }
+        item { PreferencesContent(strings, state, onEvent, reminderWeekdays, onNavigate) }
         item { ProgressContent(strings) }
         item { GeneralContent(context, strings, onNavigate) }
         item {
@@ -216,6 +238,7 @@ private fun PreferencesContent(
     strings: StringResources,
     state: SettingsState,
     onEvent: (SettingsEvent) -> Unit,
+    reminderWeekdays: String,
     onNavigate: (Direction) -> Unit
 ) {
     HeaderContent(strings.preferences) {
@@ -243,7 +266,7 @@ private fun PreferencesContent(
                 .clickableSingle(
                     enabled = state.isReminderEnabled,
                     onClick = {
-
+                        onNavigate(ReminderScreenDestination)
                     }
                 )
                 .padding(16.dp),
@@ -261,7 +284,7 @@ private fun PreferencesContent(
 
                 if (state.isReminderEnabled) {
                     Text(
-                        text = "${state.reminderDays}, ${state.reminderTime}",
+                        text = "${reminderWeekdays}, ${state.reminderTime}",
                         style = MaterialTheme.typography.bodyMedium,
                         color = MaterialTheme.colorScheme.outline
                     )

@@ -28,16 +28,16 @@ fun WheelDatePicker(
     onSnappedDate: (snappedDate: LocalDate) -> Unit = {}
 ) {
     DefaultWheelDatePicker(
-        modifier,
-        startDate,
-        minDate,
-        maxDate,
-        yearsRange,
-        size,
-        rowCount,
-        textStyle,
-        textColor,
-        selectorProperties,
+        modifier = modifier,
+        startDate = startDate,
+        minDate = minDate,
+        maxDate = maxDate,
+        yearsRange = yearsRange,
+        size = size,
+        rowCount = rowCount,
+        textStyle = textStyle,
+        textColor = textColor,
+        selectorProperties = selectorProperties,
         onSnappedDate = { snappedDate ->
             onSnappedDate(snappedDate.snappedLocalDate)
             snappedDate.snappedIndex

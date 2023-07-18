@@ -17,6 +17,7 @@ internal object Keys {
     const val REMINDER = "KEY_REMINDER"
     const val REMINDER_HOUR = "KEY_REMINDER_HOUR"
     const val REMINDER_MINUTE = "KEY_REMINDER_MINUTE"
+    const val REMINDER_WEEKDAYS = "KEY_REMINDER_WEEKDAYS"
     const val SOUND_EFFECTS = "KEY_SOUND_EFFECTS"
     const val AUTO_PRONOUNCE = "KEY_AUTO_PRONOUNCE"
 }

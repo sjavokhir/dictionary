@@ -120,4 +120,5 @@ dependencies {
     implementation(libs.koin.android)
 
     implementation(libs.kmm.viewmodel)
+    implementation(libs.chart)
 }

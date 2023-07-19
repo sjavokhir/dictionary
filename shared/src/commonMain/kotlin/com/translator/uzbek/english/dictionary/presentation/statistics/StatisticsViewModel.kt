@@ -26,7 +26,11 @@ class StatisticsViewModel : KMMViewModel(), KoinComponent {
             it.copy(
                 today = 3,
                 currentStreak = 12,
-                allLearning = 2234,
+                learned = 8,
+                learning = 35,
+                new = 85,
+                skipped = 24,
+                allLearning = 789,
                 allLearned = 123,
                 allBestStreak = 132,
                 startOfLearning = "Sep, 2021"

@@ -86,7 +86,7 @@ android {
 
 dependencies {
     implementation(project(":shared"))
-    implementation(project(":wheel-picker"))
+    implementation(project(":ui-picker"))
 
     implementation(libs.kotlin.coroutines)
 
@@ -120,4 +120,5 @@ dependencies {
     implementation(libs.koin.android)
 
     implementation(libs.kmm.viewmodel)
+    implementation(libs.chart)
 }

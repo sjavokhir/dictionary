@@ -1,4 +1,4 @@
-package uz.javokhir.wheelpicker.core
+package uz.javokhir.picker.core
 
 import java.time.LocalDate
 import java.time.LocalDateTime

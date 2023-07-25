@@ -1,4 +1,4 @@
-package uz.javokhir.wheelpicker.core
+package uz.javokhir.picker.core
 
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Row

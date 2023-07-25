@@ -25,7 +25,7 @@ class ReminderViewModel : KMMViewModel(), KoinComponent {
 
     fun onEvent(event: ReminderEvent) {
         when (event) {
-            is ReminderEvent.ChangeHourMinute -> onChangedHourMinute(event.hour, event.minute)
+            is ReminderEvent.ChangeHourMinute -> changeHourMinute(event.hour, event.minute)
             ReminderEvent.SelectAll -> selectAll()
             is ReminderEvent.SelectWeekday -> selectWeekday(event.position, event.selected)
         }
@@ -46,7 +46,7 @@ class ReminderViewModel : KMMViewModel(), KoinComponent {
         }
     }
 
-    private fun onChangedHourMinute(hour: Int, minute: Int) {
+    private fun changeHourMinute(hour: Int, minute: Int) {
         stateData.update {
             it.copy(
                 hour = hour,

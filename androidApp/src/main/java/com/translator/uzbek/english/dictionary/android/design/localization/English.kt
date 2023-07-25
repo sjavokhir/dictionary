@@ -62,5 +62,43 @@ fun stringResourcesEnglish() = StringResources(
     thursdayShort = "Thu",
     fridayShort = "Fri",
     saturdayShort = "Sat",
-    sundayShort = "Sun"
+    sundayShort = "Sun",
+    newWords = "New words",
+    todayWords = { today, all ->
+        "Today: $today/$all"
+    },
+    currentStreak = "Current streak",
+    countDays = {
+        "$it days"
+    },
+    week = "Week",
+    month = "Month",
+    quarter = "Quarter",
+    year = "Year",
+    completeLearned = "Complete learned",
+    bestStreak = "Best streak",
+    startOfLearning = "Start of learning",
+    countWords = {
+        "$it words"
+    },
+    countLearned = {
+        "Learned: $it"
+    },
+    countNew = {
+        "New: $it"
+    },
+    countLearning = {
+        "Learning: $it"
+    },
+    countSkipped = {
+        "Skipped: $it"
+    },
+    addDictionary = "Add dictionary",
+    searchForWords = "Search for words...",
+    enterAtLeastOneLetter = "Enter at least 1 letter",
+    search = "Search",
+    dictionaryTitle = "Dictionary title",
+    add = "Add",
+    newDictionary = "New dictionary",
+    editDictionary = "Edit dictionary"
 )

@@ -27,7 +27,7 @@ class SettingsViewModel : KMMViewModel(), KoinComponent {
     val state = stateData.asStateFlow()
 
     init {
-        fetchStoreData()
+        fetchSettingsStore()
     }
 
     fun onEvent(event: SettingsEvent) {
@@ -38,14 +38,14 @@ class SettingsViewModel : KMMViewModel(), KoinComponent {
             is SettingsEvent.ShowTranscription -> showTranscription(event.show)
             is SettingsEvent.SetAppLanguage -> setAppLanguage(event.language)
             is SettingsEvent.SetThemeMode -> setThemeMode(event.themeMode)
-            is SettingsEvent.CheckReminder -> onCheckedReminder(event.checked)
+            is SettingsEvent.CheckReminder -> checkReminder(event.checked)
             is SettingsEvent.SetReminder -> setReminder(event)
-            is SettingsEvent.CheckSoundEffects -> onCheckedSoundEffects(event.checked)
-            is SettingsEvent.CheckAutoPronounce -> onCheckedAutoPronounce(event.checked)
+            is SettingsEvent.CheckSoundEffects -> checkSoundEffects(event.checked)
+            is SettingsEvent.CheckAutoPronounce -> checkAutoPronounce(event.checked)
         }
     }
 
-    private fun fetchStoreData() {
+    private fun fetchSettingsStore() {
         stateData.update {
             it.copy(
                 dailyGoal = dictionaryStore.getDailyGoal(),
@@ -103,7 +103,7 @@ class SettingsViewModel : KMMViewModel(), KoinComponent {
         EventChannel.sendEvent(Event.ThemeModeChanged(themeMode))
     }
 
-    private fun onCheckedReminder(checked: Boolean) {
+    private fun checkReminder(checked: Boolean) {
         dictionaryStore.setReminderEnabled(checked)
 
         stateData.update { it.copy(isReminderEnabled = checked) }
@@ -123,13 +123,13 @@ class SettingsViewModel : KMMViewModel(), KoinComponent {
         }
     }
 
-    private fun onCheckedSoundEffects(checked: Boolean) {
+    private fun checkSoundEffects(checked: Boolean) {
         dictionaryStore.setSoundEffectsEnabled(checked)
 
         stateData.update { it.copy(isSoundEffectsEnabled = checked) }
     }
 
-    private fun onCheckedAutoPronounce(checked: Boolean) {
+    private fun checkAutoPronounce(checked: Boolean) {
         dictionaryStore.setAutoPronounceEnabled(checked)
 
         stateData.update { it.copy(isAutoPronounceEnabled = checked) }

@@ -20,6 +20,7 @@ import androidx.compose.ui.graphics.painter.Painter
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import com.translator.uzbek.english.dictionary.android.core.extensions.clickableSingle
+import com.translator.uzbek.english.dictionary.android.design.theme.DividerColor
 
 @Composable
 fun DictNavigationBar(
@@ -39,7 +40,7 @@ fun DictNavigationBar(
                 modifier = Modifier
                     .fillMaxWidth()
                     .height(1.dp),
-                color = MaterialTheme.colorScheme.outline.copy(alpha = 0.2f)
+                color = DividerColor
             )
 
             if (!hasSubscription && showAds) {

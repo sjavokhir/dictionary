@@ -1,4 +1,4 @@
-package uz.javokhir.wheelpicker
+package uz.javokhir.picker
 
 import androidx.compose.material3.LocalContentColor
 import androidx.compose.material3.MaterialTheme
@@ -8,9 +8,9 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.unit.DpSize
 import androidx.compose.ui.unit.dp
-import uz.javokhir.wheelpicker.core.DefaultWheelDatePicker
-import uz.javokhir.wheelpicker.core.SelectorProperties
-import uz.javokhir.wheelpicker.core.WheelPickerDefaults
+import uz.javokhir.picker.core.DefaultWheelDatePicker
+import uz.javokhir.picker.core.SelectorProperties
+import uz.javokhir.picker.core.WheelPickerDefaults
 import java.time.LocalDate
 
 @Composable

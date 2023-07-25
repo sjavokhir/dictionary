@@ -8,7 +8,7 @@ import androidx.compose.ui.Modifier
 
 @Composable
 fun DictContainer(
-    title: String,
+    title: String = "",
     onNavigateUp: (() -> Unit)? = null,
     content: @Composable ColumnScope.() -> Unit
 ) {

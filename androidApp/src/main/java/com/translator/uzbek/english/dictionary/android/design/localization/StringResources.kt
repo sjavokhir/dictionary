@@ -77,6 +77,8 @@ data class StringResources(
     val countSkipped: (Int) -> String,
     val addDictionary: String,
     val searchForWords: String,
+    val enterAtLeastOneLetter: String,
+    val search: String,
     val dictionaryTitle: String,
     val add: String,
     val newDictionary: String,

@@ -22,6 +22,7 @@ import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.translator.uzbek.english.dictionary.android.R
+import com.translator.uzbek.english.dictionary.android.design.theme.DividerColor
 
 @Composable
 fun DictTopAppBar(
@@ -83,7 +84,7 @@ private fun DictTopAppBarContent(
             modifier = Modifier
                 .fillMaxWidth()
                 .height(1.dp),
-            color = MaterialTheme.colorScheme.outline.copy(alpha = 0.2f)
+            color = DividerColor
         )
     }
 }

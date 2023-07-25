@@ -1,5 +1,6 @@
-package com.translator.uzbek.english.dictionary.android.presentation.dictionary
+package com.translator.uzbek.english.dictionary.android.presentation.searchForWords
 
+import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
 import androidx.compose.foundation.layout.Arrangement
@@ -12,12 +13,12 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.lazy.LazyColumn
-import androidx.compose.foundation.shape.CircleShape
+import androidx.compose.foundation.lazy.items
 import androidx.compose.material3.CircularProgressIndicator
+import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -25,90 +26,82 @@ import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.StrokeCap
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.text.input.ImeAction
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.lifecycle.viewmodel.compose.viewModel
 import com.ramcosta.composedestinations.annotation.Destination
 import com.ramcosta.composedestinations.navigation.DestinationsNavigator
-import com.ramcosta.composedestinations.spec.Direction
 import com.translator.uzbek.english.dictionary.android.R
 import com.translator.uzbek.english.dictionary.android.core.extensions.clickableSingle
 import com.translator.uzbek.english.dictionary.android.core.extensions.defaultPadding
 import com.translator.uzbek.english.dictionary.android.design.components.DictContainer
 import com.translator.uzbek.english.dictionary.android.design.components.DictIcon
 import com.translator.uzbek.english.dictionary.android.design.components.DictTextField
-import com.translator.uzbek.english.dictionary.android.design.components.DividerContent
 import com.translator.uzbek.english.dictionary.android.design.localization.LocalStrings
 import com.translator.uzbek.english.dictionary.android.design.localization.StringResources
 import com.translator.uzbek.english.dictionary.android.design.theme.DividerColor
 import com.translator.uzbek.english.dictionary.android.design.theme.WindowBackground
-import com.translator.uzbek.english.dictionary.android.presentation.destinations.AddDictionaryScreenDestination
-import com.translator.uzbek.english.dictionary.android.presentation.destinations.SearchForWordsScreenDestination
-import com.translator.uzbek.english.dictionary.data.model.common.DictionaryModel
-import com.translator.uzbek.english.dictionary.presentation.dictionary.DictionaryEvent
-import com.translator.uzbek.english.dictionary.presentation.dictionary.DictionaryState
-import com.translator.uzbek.english.dictionary.presentation.dictionary.DictionaryViewModel
-import com.translator.uzbek.english.dictionary.shared.randomUUID
+import com.translator.uzbek.english.dictionary.data.model.common.SearchForWordModel
+import com.translator.uzbek.english.dictionary.presentation.searchForWords.SearchForWordsEvent
+import com.translator.uzbek.english.dictionary.presentation.searchForWords.SearchForWordsState
+import com.translator.uzbek.english.dictionary.presentation.searchForWords.SearchForWordsViewModel
 
 @Destination
 @Composable
-fun DictionaryScreen(
-    viewModel: DictionaryViewModel = viewModel(),
+fun SearchForWordsScreen(
+    viewModel: SearchForWordsViewModel = viewModel(),
     navigator: DestinationsNavigator
 ) {
     val strings = LocalStrings.current
 
     val state by viewModel.state.collectAsStateWithLifecycle()
 
-    LaunchedEffect(Unit) {
-        viewModel.onEvent(DictionaryEvent.FetchDictionaries)
-    }
-
-    DictContainer(strings.dictionary) {
-        DictionaryScreenContent(
+    DictContainer(
+        title = strings.search,
+        onNavigateUp = navigator::navigateUp
+    ) {
+        SearchForWordsScreenContent(
             strings = strings,
             state = state,
-            onNavigate = navigator::navigate
+            onEvent = viewModel::onEvent
         )
     }
 }
 
 @Composable
-private fun DictionaryScreenContent(
+private fun SearchForWordsScreenContent(
     strings: StringResources,
-    state: DictionaryState,
-    onNavigate: (Direction) -> Unit
+    state: SearchForWordsState,
+    onEvent: (SearchForWordsEvent) -> Unit
 ) {
     LazyColumn(
         modifier = Modifier
             .fillMaxSize()
             .background(WindowBackground),
         contentPadding = PaddingValues(20.dp),
-        verticalArrangement = Arrangement.spacedBy(20.dp)
+        verticalArrangement = Arrangement.spacedBy(12.dp)
     ) {
         item {
             DictTextField(
-                baseModifier = Modifier.clickableSingle {
-                    onNavigate(SearchForWordsScreenDestination)
+                baseModifier = Modifier.padding(bottom = 8.dp),
+                value = state.query,
+                onValueChange = {
+                    onEvent(SearchForWordsEvent.ChangeQuery(it))
                 },
-                placeholder = strings.searchForWords,
+                placeholder = strings.enterAtLeastOneLetter,
                 leadingIcon = {
                     DictIcon(
                         painter = painterResource(id = R.drawable.ic_search),
                         color = MaterialTheme.colorScheme.outline
                     )
-                }
-            ) {
-                onNavigate(SearchForWordsScreenDestination)
-            }
+                },
+                imeAction = ImeAction.Done
+            )
         }
-        item {
-            AddDictionaryItemContent(strings) {
-                onNavigate(AddDictionaryScreenDestination(id = randomUUID()))
-            }
-        }
-        item {
-            if (state.isLoading) {
+
+        if (state.isLoading) {
+            item {
                 Box(
                     modifier = Modifier.fillMaxWidth(),
                     contentAlignment = Alignment.Center
@@ -121,38 +114,27 @@ private fun DictionaryScreenContent(
                         strokeWidth = 3.dp
                     )
                 }
-            } else {
-                Column(
-                    modifier = Modifier
-                        .fillMaxWidth()
-                        .clip(MaterialTheme.shapes.medium)
-                        .border(
-                            width = 1.dp,
-                            color = DividerColor,
-                            shape = MaterialTheme.shapes.medium
-                        )
-                        .background(MaterialTheme.colorScheme.background),
-                ) {
-                    state.dictionaries.forEachIndexed { index, model ->
-                        DictionaryItemContent(strings, model) {
-                        }
-
-                        if (index != state.dictionaries.lastIndex) {
-                            DividerContent(
-                                modifier = Modifier.padding(horizontal = 16.dp)
-                            )
-                        }
+            }
+        } else {
+            items(state.words) { model ->
+                SearchForWordItemContent(
+                    model = model,
+                    onClick = {
+                    },
+                    onPlayClick = {
                     }
-                }
+                )
             }
         }
     }
 }
 
+@OptIn(ExperimentalFoundationApi::class)
 @Composable
-private fun AddDictionaryItemContent(
-    strings: StringResources,
-    onClick: () -> Unit
+private fun SearchForWordItemContent(
+    model: SearchForWordModel,
+    onClick: () -> Unit,
+    onPlayClick: () -> Unit
 ) {
     Row(
         modifier = Modifier
@@ -169,58 +151,31 @@ private fun AddDictionaryItemContent(
         verticalAlignment = Alignment.CenterVertically,
         horizontalArrangement = Arrangement.spacedBy(16.dp),
     ) {
-        DictIcon(
-            painter = painterResource(id = R.drawable.ic_add),
-            modifier = Modifier
-                .size(32.dp)
-                .clip(CircleShape)
-                .background(MaterialTheme.colorScheme.outline.copy(0.15f)),
-            color = MaterialTheme.colorScheme.outline.copy(0.75f)
-        )
-
-        Text(
-            text = strings.addDictionary,
-            style = MaterialTheme.typography.bodyLarge,
-            fontWeight = FontWeight.Medium
-        )
-    }
-}
-
-@Composable
-private fun DictionaryItemContent(
-    strings: StringResources,
-    model: DictionaryModel,
-    onClick: () -> Unit
-) {
-    Row(
-        modifier = Modifier
-            .fillMaxWidth()
-            .clickableSingle(onClick = onClick)
-            .defaultPadding(),
-        verticalAlignment = Alignment.CenterVertically,
-        horizontalArrangement = Arrangement.spacedBy(16.dp),
-    ) {
         Column(
             modifier = Modifier.weight(1f),
             verticalArrangement = Arrangement.spacedBy(4.dp),
         ) {
             Text(
-                text = model.name,
+                text = "${model.word} - ${model.translation}",
                 style = MaterialTheme.typography.bodyLarge,
                 fontWeight = FontWeight.Medium
             )
 
             Text(
-                text = strings.countWords(model.countWords),
+                text = model.dictionary.name,
                 style = MaterialTheme.typography.bodyMedium,
                 color = MaterialTheme.colorScheme.outline
             )
         }
 
-        Text(
-            text = "${model.percentage}%",
-            style = MaterialTheme.typography.bodyLarge,
-            color = MaterialTheme.colorScheme.outline
-        )
+        IconButton(
+            onClick = onPlayClick,
+            modifier = Modifier.size(36.dp)
+        ) {
+            DictIcon(
+                painter = painterResource(id = R.drawable.ic_play_filled),
+                color = MaterialTheme.colorScheme.primary
+            )
+        }
     }
 }

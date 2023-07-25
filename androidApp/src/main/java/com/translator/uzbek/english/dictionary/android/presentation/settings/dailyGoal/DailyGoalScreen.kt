@@ -1,7 +1,9 @@
 package com.translator.uzbek.english.dictionary.android.presentation.settings.dailyGoal
 
+import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.PaddingValues
+import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
@@ -10,6 +12,7 @@ import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
+import androidx.compose.ui.Modifier
 import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.unit.dp
 import com.ramcosta.composedestinations.annotation.Destination
@@ -20,6 +23,7 @@ import com.translator.uzbek.english.dictionary.android.design.components.DictFil
 import com.translator.uzbek.english.dictionary.android.design.components.DictTextField
 import com.translator.uzbek.english.dictionary.android.design.localization.LocalStrings
 import com.translator.uzbek.english.dictionary.android.design.localization.StringResources
+import com.translator.uzbek.english.dictionary.android.design.theme.WindowBackground
 
 @Destination
 @Composable
@@ -62,6 +66,9 @@ private fun DailyGoalScreenContent(
     }
 
     LazyColumn(
+        modifier = Modifier
+            .fillMaxSize()
+            .background(WindowBackground),
         verticalArrangement = Arrangement.spacedBy(20.dp),
         contentPadding = PaddingValues(20.dp)
     ) {

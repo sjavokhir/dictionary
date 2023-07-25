@@ -41,6 +41,7 @@ import com.ramcosta.composedestinations.result.ResultRecipient
 import com.ramcosta.composedestinations.spec.Direction
 import com.translator.uzbek.english.dictionary.android.R
 import com.translator.uzbek.english.dictionary.android.core.extensions.clickableSingle
+import com.translator.uzbek.english.dictionary.android.core.extensions.defaultPadding
 import com.translator.uzbek.english.dictionary.android.core.extensions.openUrl
 import com.translator.uzbek.english.dictionary.android.core.extensions.shareText
 import com.translator.uzbek.english.dictionary.android.design.components.DictContainer
@@ -49,6 +50,8 @@ import com.translator.uzbek.english.dictionary.android.design.localization.Local
 import com.translator.uzbek.english.dictionary.android.design.localization.StringResources
 import com.translator.uzbek.english.dictionary.android.design.localization.localized
 import com.translator.uzbek.english.dictionary.android.design.localization.weekdays
+import com.translator.uzbek.english.dictionary.android.design.theme.DividerColor
+import com.translator.uzbek.english.dictionary.android.design.theme.WindowBackground
 import com.translator.uzbek.english.dictionary.android.presentation.destinations.AppLanguageScreenDestination
 import com.translator.uzbek.english.dictionary.android.presentation.destinations.DailyGoalScreenDestination
 import com.translator.uzbek.english.dictionary.android.presentation.destinations.FeedbackScreenDestination
@@ -154,7 +157,7 @@ private fun SettingsScreenContent(
     LazyColumn(
         modifier = Modifier
             .fillMaxSize()
-            .background(MaterialTheme.colorScheme.outline.copy(alpha = 0.05f)),
+            .background(WindowBackground),
         contentPadding = PaddingValues(20.dp),
         verticalArrangement = Arrangement.spacedBy(24.dp)
     ) {
@@ -397,7 +400,7 @@ private fun HeaderContent(
                 .clip(MaterialTheme.shapes.medium)
                 .border(
                     width = 1.dp,
-                    color = MaterialTheme.colorScheme.outline.copy(alpha = 0.2f),
+                    color = DividerColor,
                     shape = MaterialTheme.shapes.medium
                 )
                 .background(MaterialTheme.colorScheme.background)
@@ -419,10 +422,7 @@ private fun NavigateContent(
         modifier = Modifier
             .fillMaxWidth()
             .clickableSingle(onClick = onClick)
-            .padding(
-                horizontal = 16.dp,
-                vertical = 14.dp
-            ),
+            .defaultPadding(),
         verticalAlignment = Alignment.CenterVertically,
         horizontalArrangement = Arrangement.spacedBy(12.dp)
     ) {
@@ -462,10 +462,7 @@ private fun SwitchContent(
     Row(
         modifier = Modifier
             .fillMaxWidth()
-            .padding(
-                horizontal = 16.dp,
-                vertical = 14.dp
-            ),
+            .defaultPadding(),
         verticalAlignment = Alignment.CenterVertically,
         horizontalArrangement = Arrangement.spacedBy(16.dp)
     ) {
@@ -493,6 +490,6 @@ fun DividerContent() {
             .fillMaxWidth()
             .height(1.dp)
             .padding(horizontal = 16.dp),
-        color = MaterialTheme.colorScheme.outline.copy(alpha = 0.2f)
+        color = DividerColor
     )
 }

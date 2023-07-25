@@ -8,5 +8,5 @@ data class DictionaryState(
     val isLoading: Boolean = false,
     val isEnabled: Boolean = false,
     val isSuccess: Boolean = false,
-    val list: List<DictionaryModel> = emptyList(),
+    val dictionaries: List<DictionaryModel> = emptyList(),
 )

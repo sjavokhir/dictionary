@@ -1,11 +1,14 @@
 package com.translator.uzbek.english.dictionary.android.presentation.addDictionary
 
+import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.PaddingValues
+import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
+import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.lifecycle.viewmodel.compose.viewModel
@@ -16,6 +19,7 @@ import com.translator.uzbek.english.dictionary.android.design.components.DictFil
 import com.translator.uzbek.english.dictionary.android.design.components.DictTextField
 import com.translator.uzbek.english.dictionary.android.design.localization.LocalStrings
 import com.translator.uzbek.english.dictionary.android.design.localization.StringResources
+import com.translator.uzbek.english.dictionary.android.design.theme.WindowBackground
 import com.translator.uzbek.english.dictionary.presentation.dictionary.DictionaryEvent
 import com.translator.uzbek.english.dictionary.presentation.dictionary.DictionaryState
 import com.translator.uzbek.english.dictionary.presentation.dictionary.DictionaryViewModel
@@ -35,6 +39,7 @@ fun AddDictionaryScreen(
     LaunchedEffect(title, id) {
         viewModel.onEvent(DictionaryEvent.SetArgs(title, id))
     }
+
     LaunchedEffect(state.isSuccess) {
         if (state.isSuccess) {
             resultNavigator.navigateBack(result = true)
@@ -64,6 +69,9 @@ private fun AddDictionaryScreenContent(
     onEvent: (DictionaryEvent) -> Unit
 ) {
     LazyColumn(
+        modifier = Modifier
+            .fillMaxSize()
+            .background(WindowBackground),
         contentPadding = PaddingValues(20.dp),
         verticalArrangement = Arrangement.spacedBy(20.dp)
     ) {

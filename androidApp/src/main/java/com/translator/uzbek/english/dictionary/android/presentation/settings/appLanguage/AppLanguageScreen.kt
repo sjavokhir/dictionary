@@ -27,10 +27,13 @@ import com.ramcosta.composedestinations.navigation.DestinationsNavigator
 import com.ramcosta.composedestinations.result.ResultBackNavigator
 import com.translator.uzbek.english.dictionary.android.R
 import com.translator.uzbek.english.dictionary.android.core.extensions.clickableSingle
+import com.translator.uzbek.english.dictionary.android.core.extensions.defaultPadding
 import com.translator.uzbek.english.dictionary.android.design.components.DictContainer
 import com.translator.uzbek.english.dictionary.android.design.components.DictIcon
 import com.translator.uzbek.english.dictionary.android.design.components.DividerContent
 import com.translator.uzbek.english.dictionary.android.design.localization.LocalStrings
+import com.translator.uzbek.english.dictionary.android.design.theme.DividerColor
+import com.translator.uzbek.english.dictionary.android.design.theme.WindowBackground
 import com.translator.uzbek.english.dictionary.data.model.mode.LanguageMode
 
 @Destination
@@ -61,7 +64,7 @@ private fun AppLanguageScreenContent(
     Box(
         modifier = Modifier
             .fillMaxSize()
-            .background(MaterialTheme.colorScheme.outline.copy(alpha = 0.05f)),
+            .background(WindowBackground),
     ) {
         LazyColumn(
             modifier = Modifier
@@ -69,7 +72,7 @@ private fun AppLanguageScreenContent(
                 .clip(MaterialTheme.shapes.medium)
                 .border(
                     width = 1.dp,
-                    color = MaterialTheme.colorScheme.outline.copy(alpha = 0.2f),
+                    color = DividerColor,
                     shape = MaterialTheme.shapes.medium
                 )
                 .background(MaterialTheme.colorScheme.background)
@@ -98,7 +101,7 @@ private fun LanguageItem(
                 .clickableSingle {
                     onClick(language)
                 }
-                .padding(16.dp),
+                .defaultPadding(),
             verticalAlignment = Alignment.CenterVertically,
             horizontalArrangement = Arrangement.spacedBy(16.dp)
         ) {

@@ -95,6 +95,8 @@ fun stringResourcesEnglish() = StringResources(
     },
     addDictionary = "Add dictionary",
     searchForWords = "Search for words...",
+    enterAtLeastOneLetter = "Enter at least 1 letter",
+    search = "Search",
     dictionaryTitle = "Dictionary title",
     add = "Add",
     newDictionary = "New dictionary",

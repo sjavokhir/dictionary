@@ -20,16 +20,18 @@ class DictionaryViewModel : KMMViewModel(), KoinComponent {
     fun onEvent(event: DictionaryEvent) {
         when (event) {
             DictionaryEvent.FetchDictionaries -> fetchDictionaries()
-            DictionaryEvent.Insert -> insertDictionary()
-            DictionaryEvent.Delete -> deleteDictionary()
+            DictionaryEvent.Insert -> insert()
+            DictionaryEvent.Delete -> delete()
             is DictionaryEvent.SetArgs -> setArgs(event.title, event.id)
-            is DictionaryEvent.ChangeTitle -> onChangeTitle(event.title)
+            is DictionaryEvent.ChangeTitle -> changeTitle(event.title)
         }
     }
 
     private fun fetchDictionaries() {
+        setLoading()
+
         viewModelScope.coroutineScope.launch {
-            val list = buildList {
+            val dictionaries = buildList {
                 add(DictionaryModel("1", "Oxford 3000 - A1", 965, 1))
                 add(DictionaryModel("2", "Oxford 3000 - A2", 893, 10))
                 add(DictionaryModel("3", "Oxford 3000 - B1", 849, 99))
@@ -38,16 +40,21 @@ class DictionaryViewModel : KMMViewModel(), KoinComponent {
                 add(DictionaryModel("6", "Oxford 5000 - C1", 1401, 0))
             }
 
-            stateData.update { it.copy(list = list) }
+            stateData.update {
+                it.copy(
+                    isLoading = false,
+                    dictionaries = dictionaries
+                )
+            }
         }
     }
 
-    private fun insertDictionary() {
+    private fun insert() {
         setLoading()
         setSuccess()
     }
 
-    private fun deleteDictionary() {
+    private fun delete() {
         setLoading()
         setSuccess()
     }
@@ -62,7 +69,7 @@ class DictionaryViewModel : KMMViewModel(), KoinComponent {
         }
     }
 
-    private fun onChangeTitle(title: String) {
+    private fun changeTitle(title: String) {
         stateData.update {
             it.copy(
                 title = title,

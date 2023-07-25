@@ -14,10 +14,10 @@ import com.patrykandpatrick.vico.core.chart.column.ColumnChart
 import com.patrykandpatrick.vico.core.component.shape.LineComponent
 import com.patrykandpatrick.vico.core.component.shape.Shapes
 import com.patrykandpatrick.vico.core.entry.ChartEntryModelProducer
-import com.translator.uzbek.english.dictionary.android.design.theme.chartColor1
-import com.translator.uzbek.english.dictionary.android.design.theme.chartColor2
-import com.translator.uzbek.english.dictionary.android.design.theme.chartColor3
-import com.translator.uzbek.english.dictionary.android.design.theme.chartColor4
+import com.translator.uzbek.english.dictionary.android.design.theme.ChartColor1
+import com.translator.uzbek.english.dictionary.android.design.theme.ChartColor2
+import com.translator.uzbek.english.dictionary.android.design.theme.ChartColor3
+import com.translator.uzbek.english.dictionary.android.design.theme.ChartColor4
 
 @Composable
 fun StackedBarChart(
@@ -65,4 +65,4 @@ fun StackedBarChart(
 private const val START_AXIS_LABEL_COUNT = 4
 private const val AXIS_LABEL_ROTATION_DEGREES = 0f
 
-private val chartColors = listOf(chartColor1, chartColor2, chartColor3, chartColor4)
+private val chartColors = listOf(ChartColor1, ChartColor2, ChartColor3, ChartColor4)

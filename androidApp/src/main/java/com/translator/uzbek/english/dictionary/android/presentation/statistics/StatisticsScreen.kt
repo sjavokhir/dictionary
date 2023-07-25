@@ -48,7 +48,7 @@ import com.translator.uzbek.english.dictionary.android.design.theme.chartColor2
 import com.translator.uzbek.english.dictionary.android.design.theme.chartColor3
 import com.translator.uzbek.english.dictionary.android.design.theme.chartColor4
 import com.translator.uzbek.english.dictionary.android.presentation.settings.DividerContent
-import com.translator.uzbek.english.dictionary.android.presentation.statistics.chart.StackedBarChart
+import com.translator.uzbek.english.dictionary.android.design.components.chart.StackedBarChart
 import com.translator.uzbek.english.dictionary.presentation.statistics.StatisticsEvent
 import com.translator.uzbek.english.dictionary.presentation.statistics.StatisticsState
 import com.translator.uzbek.english.dictionary.presentation.statistics.StatisticsViewModel

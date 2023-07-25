@@ -93,4 +93,10 @@ fun stringResourcesEnglish() = StringResources(
     countSkipped = {
         "Skipped: $it"
     },
+    addDictionary = "Add dictionary",
+    searchForWords = "Search for words...",
+    dictionaryTitle = "Dictionary title",
+    add = "Add",
+    newDictionary = "New dictionary",
+    editDictionary = "Edit dictionary"
 )

@@ -1,4 +1,4 @@
-package com.translator.uzbek.english.dictionary.android.presentation.statistics.chart
+package com.translator.uzbek.english.dictionary.android.design.components.chart
 
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.remember

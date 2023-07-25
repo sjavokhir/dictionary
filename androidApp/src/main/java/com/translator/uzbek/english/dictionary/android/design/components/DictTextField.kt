@@ -35,8 +35,8 @@ import androidx.compose.ui.unit.sp
 fun DictTextField(
     baseModifier: Modifier = Modifier,
     modifier: Modifier = Modifier,
-    value: String,
-    onValueChange: (String) -> Unit,
+    value: String = "",
+    onValueChange: (String) -> Unit = {},
     placeholder: String = "",
     hint: String? = null,
     leadingIcon: @Composable (() -> Unit)? = null,

@@ -75,4 +75,10 @@ data class StringResources(
     val countNew: (Int) -> String,
     val countLearning: (Int) -> String,
     val countSkipped: (Int) -> String,
+    val addDictionary: String,
+    val searchForWords: String,
+    val dictionaryTitle: String,
+    val add: String,
+    val newDictionary: String,
+    val editDictionary: String,
 )

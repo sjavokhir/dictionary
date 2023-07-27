@@ -56,7 +56,7 @@ class BillingClientWrapper(
                     offerToken = it.subscriptionOfferDetails
                         ?.firstOrNull()
                         ?.offerToken ?: "",
-                    productDetails = it
+                    productDetails = it,
                 )
             }
         }
@@ -151,7 +151,7 @@ class BillingClientWrapper(
         private val LIST_OF_PRODUCTS = listOf(
             Subscriptions.Anually.productId,
             Subscriptions.Monthly.productId,
-            Subscriptions.Weekly.productId
+            Subscriptions.Weekly.productId,
         )
     }
 }

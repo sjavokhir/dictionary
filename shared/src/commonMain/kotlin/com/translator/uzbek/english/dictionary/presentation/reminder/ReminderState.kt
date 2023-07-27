@@ -5,5 +5,5 @@ import com.translator.uzbek.english.dictionary.core.helpers.Constants
 data class ReminderState(
     val hour: Int = Constants.defaultReminderHour,
     val minute: Int = Constants.defaultReminderMinute,
-    val weekdays: List<Boolean> = listOf(true, true, true, true, true, true, true)
+    val weekdays: List<Boolean> = listOf(true, true, true, true, true, true, true),
 )

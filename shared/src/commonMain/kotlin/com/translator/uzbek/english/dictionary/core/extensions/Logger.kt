@@ -17,7 +17,7 @@ fun tryCatch(onTryAction: () -> Unit) {
 inline fun shouldRequest(
     timestamp: Long,
     delay: Long,
-    onChangeAction: (Long) -> Unit
+    onChangeAction: (Long) -> Unit,
 ): Boolean {
     val currentTimestamp = currentTimestamp()
     if (currentTimestamp - timestamp < delay) return false

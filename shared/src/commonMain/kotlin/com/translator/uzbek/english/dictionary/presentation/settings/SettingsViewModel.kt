@@ -58,7 +58,7 @@ class SettingsViewModel : KMMViewModel(), KoinComponent {
                 reminderDays = dictionaryStore.getReminderDays(),
                 reminderTime = dictionaryStore.getReminderTime(),
                 isSoundEffectsEnabled = dictionaryStore.isSoundEffectsEnabled(),
-                isAutoPronounceEnabled = dictionaryStore.isAutoPronounceEnabled()
+                isAutoPronounceEnabled = dictionaryStore.isAutoPronounceEnabled(),
             )
         }
     }
@@ -118,7 +118,7 @@ class SettingsViewModel : KMMViewModel(), KoinComponent {
         stateData.update {
             it.copy(
                 reminderDays = dictionaryStore.getReminderDays(),
-                reminderTime = time
+                reminderTime = time,
             )
         }
     }

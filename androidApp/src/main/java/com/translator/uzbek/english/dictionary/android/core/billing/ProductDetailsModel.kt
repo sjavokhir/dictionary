@@ -8,5 +8,5 @@ data class ProductDetailsModel(
     val description: String,
     val formattedPrice: String,
     val offerToken: String,
-    val productDetails: ProductDetails
+    val productDetails: ProductDetails,
 )

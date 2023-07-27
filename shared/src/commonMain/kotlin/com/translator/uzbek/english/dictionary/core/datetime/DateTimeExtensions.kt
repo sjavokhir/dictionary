@@ -31,6 +31,6 @@ private fun LocalDateTime.toDateTimeModel(): DateTimeModel {
         year = year,
         hour = hour,
         minute = minute,
-        second = second
+        second = second,
     )
 }

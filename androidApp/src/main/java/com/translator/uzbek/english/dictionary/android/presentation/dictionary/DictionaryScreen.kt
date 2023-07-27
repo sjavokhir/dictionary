@@ -17,7 +17,6 @@ import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -43,9 +42,9 @@ import com.translator.uzbek.english.dictionary.android.design.localization.Strin
 import com.translator.uzbek.english.dictionary.android.design.theme.DividerColor
 import com.translator.uzbek.english.dictionary.android.design.theme.WindowBackground
 import com.translator.uzbek.english.dictionary.android.presentation.destinations.AddDictionaryScreenDestination
+import com.translator.uzbek.english.dictionary.android.presentation.destinations.DictionaryWordsScreenDestination
 import com.translator.uzbek.english.dictionary.android.presentation.destinations.SearchForWordsScreenDestination
-import com.translator.uzbek.english.dictionary.data.model.common.DictionaryModel
-import com.translator.uzbek.english.dictionary.presentation.dictionary.DictionaryEvent
+import com.translator.uzbek.english.dictionary.data.database.model.DictionaryModel
 import com.translator.uzbek.english.dictionary.presentation.dictionary.DictionaryState
 import com.translator.uzbek.english.dictionary.presentation.dictionary.DictionaryViewModel
 import com.translator.uzbek.english.dictionary.shared.randomUUID
@@ -59,10 +58,6 @@ fun DictionaryScreen(
     val strings = LocalStrings.current
 
     val state by viewModel.state.collectAsStateWithLifecycle()
-
-    LaunchedEffect(Unit) {
-        viewModel.onEvent(DictionaryEvent.FetchDictionaries)
-    }
 
     DictContainer(strings.dictionary) {
         DictionaryScreenContent(
@@ -104,7 +99,7 @@ private fun DictionaryScreenContent(
         }
         item {
             AddDictionaryItemContent(strings) {
-                onNavigate(AddDictionaryScreenDestination(id = randomUUID()))
+                onNavigate(AddDictionaryScreenDestination(randomUUID()))
             }
         }
         item {
@@ -135,6 +130,12 @@ private fun DictionaryScreenContent(
                 ) {
                     state.dictionaries.forEachIndexed { index, model ->
                         DictionaryItemContent(strings, model) {
+                            onNavigate(
+                                DictionaryWordsScreenDestination(
+                                    dictionaryId = model.id,
+                                    dictionaryTitle = model.title
+                                )
+                            )
                         }
 
                         if (index != state.dictionaries.lastIndex) {
@@ -205,13 +206,13 @@ private fun DictionaryItemContent(
             verticalArrangement = Arrangement.spacedBy(4.dp),
         ) {
             Text(
-                text = model.name,
+                text = model.title,
                 style = MaterialTheme.typography.bodyLarge,
                 fontWeight = FontWeight.Medium
             )
 
             Text(
-                text = strings.countWords(model.countWords),
+                text = strings.countWords(model.wordsCount),
                 style = MaterialTheme.typography.bodyMedium,
                 color = MaterialTheme.colorScheme.outline
             )

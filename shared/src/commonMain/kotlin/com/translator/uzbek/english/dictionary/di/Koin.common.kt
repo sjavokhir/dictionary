@@ -1,5 +1,7 @@
 package com.translator.uzbek.english.dictionary.di
 
+import com.translator.uzbek.english.dictionary.data.database.dao.DictionaryDao
+import com.translator.uzbek.english.dictionary.data.database.dao.WordDao
 import com.translator.uzbek.english.dictionary.data.datastore.AppStore
 import com.translator.uzbek.english.dictionary.data.datastore.DictionaryStore
 import org.koin.core.context.startKoin
@@ -26,5 +28,6 @@ fun storeModule() = module {
 }
 
 fun databaseModule() = module {
-//    singleOf(::HistoryDao)
+    singleOf(::DictionaryDao)
+    singleOf(::WordDao)
 }

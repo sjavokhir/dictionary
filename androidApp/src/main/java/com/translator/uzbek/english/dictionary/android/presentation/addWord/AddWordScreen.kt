@@ -1,4 +1,4 @@
-package com.translator.uzbek.english.dictionary.android.presentation.addDictionary
+package com.translator.uzbek.english.dictionary.android.presentation.addWord
 
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
@@ -20,24 +20,24 @@ import com.translator.uzbek.english.dictionary.android.design.components.DictTex
 import com.translator.uzbek.english.dictionary.android.design.localization.LocalStrings
 import com.translator.uzbek.english.dictionary.android.design.localization.StringResources
 import com.translator.uzbek.english.dictionary.android.design.theme.WindowBackground
-import com.translator.uzbek.english.dictionary.presentation.addDictionary.AddDictionaryEvent
-import com.translator.uzbek.english.dictionary.presentation.addDictionary.AddDictionaryState
-import com.translator.uzbek.english.dictionary.presentation.addDictionary.AddDictionaryViewModel
+import com.translator.uzbek.english.dictionary.presentation.addWord.AddWordEvent
+import com.translator.uzbek.english.dictionary.presentation.addWord.AddWordState
+import com.translator.uzbek.english.dictionary.presentation.addWord.AddWordViewModel
 
 @Destination
 @Composable
-fun AddDictionaryScreen(
-    id: String,
-    title: String = "",
-    viewModel: AddDictionaryViewModel = viewModel(),
+fun AddWordScreen(
+    wordId: String,
+    dictionaryId: String,
+    viewModel: AddWordViewModel = viewModel(),
     resultNavigator: ResultBackNavigator<Boolean>
 ) {
     val strings = LocalStrings.current
 
     val state by viewModel.state.collectAsStateWithLifecycle()
 
-    LaunchedEffect(id, title) {
-        viewModel.onEvent(AddDictionaryEvent.SetDictionaryDetails(id, title))
+    LaunchedEffect(wordId) {
+        viewModel.onEvent(AddWordEvent.FetchWord(wordId, dictionaryId))
     }
 
     LaunchedEffect(state.isSuccess) {
@@ -47,7 +47,7 @@ fun AddDictionaryScreen(
     }
 
     DictContainer(
-        title = if (title.isEmpty()) strings.addDictionary else strings.editDictionary,
+        title = if (state.isNewWord) strings.addWord else strings.editWord,
         onNavigateUp = {
             resultNavigator.navigateBack(result = false)
         }
@@ -55,7 +55,6 @@ fun AddDictionaryScreen(
         AddDictionaryScreenContent(
             strings = strings,
             state = state,
-            isNewDictionary = title.isEmpty(),
             onEvent = viewModel::onEvent
         )
     }
@@ -64,9 +63,8 @@ fun AddDictionaryScreen(
 @Composable
 private fun AddDictionaryScreenContent(
     strings: StringResources,
-    state: AddDictionaryState,
-    isNewDictionary: Boolean,
-    onEvent: (AddDictionaryEvent) -> Unit
+    state: AddWordState,
+    onEvent: (AddWordEvent) -> Unit
 ) {
     LazyColumn(
         modifier = Modifier
@@ -77,20 +75,40 @@ private fun AddDictionaryScreenContent(
     ) {
         item {
             DictTextField(
-                value = state.title,
+                value = state.word,
                 onValueChange = {
-                    onEvent(AddDictionaryEvent.ChangeTitle(it))
+                    onEvent(AddWordEvent.ChangeWord(it))
                 },
-                hint = strings.dictionaryTitle,
-                placeholder = strings.enterDictionaryTitle
+                hint = strings.word,
+                placeholder = strings.enterWord
+            )
+        }
+        item {
+            DictTextField(
+                value = state.translation,
+                onValueChange = {
+                    onEvent(AddWordEvent.ChangeTranslation(it))
+                },
+                hint = strings.translation,
+                placeholder = strings.enterTranslation
+            )
+        }
+        item {
+            DictTextField(
+                value = state.transcription,
+                onValueChange = {
+                    onEvent(AddWordEvent.ChangeTranscription(it))
+                },
+                hint = strings.transcription,
+                placeholder = strings.enterTranscription
             )
         }
         item {
             DictFilledButton(
-                text = if (isNewDictionary) strings.add else strings.save,
+                text = if (state.isNewWord) strings.add else strings.save,
                 enabled = state.isEnabled && !state.isLoading
             ) {
-                onEvent(AddDictionaryEvent.Insert)
+                onEvent(AddWordEvent.Insert)
             }
         }
     }

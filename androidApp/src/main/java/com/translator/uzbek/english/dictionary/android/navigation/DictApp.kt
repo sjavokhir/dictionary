@@ -10,10 +10,12 @@ import com.ramcosta.composedestinations.rememberNavHostEngine
 import com.translator.uzbek.english.dictionary.android.design.theme.DictTheme
 import com.translator.uzbek.english.dictionary.android.presentation.NavGraphs
 import com.translator.uzbek.english.dictionary.android.presentation.destinations.AddDictionaryScreenDestination
+import com.translator.uzbek.english.dictionary.android.presentation.destinations.AddWordScreenDestination
 import com.translator.uzbek.english.dictionary.android.presentation.destinations.AppLanguageScreenDestination
 import com.translator.uzbek.english.dictionary.android.presentation.destinations.DailyGoalScreenDestination
 import com.translator.uzbek.english.dictionary.android.presentation.destinations.Destination
 import com.translator.uzbek.english.dictionary.android.presentation.destinations.DictionaryScreenDestination
+import com.translator.uzbek.english.dictionary.android.presentation.destinations.DictionaryWordsScreenDestination
 import com.translator.uzbek.english.dictionary.android.presentation.destinations.FeedbackScreenDestination
 import com.translator.uzbek.english.dictionary.android.presentation.destinations.FirstLanguageScreenDestination
 import com.translator.uzbek.english.dictionary.android.presentation.destinations.LearnScreenDestination
@@ -80,6 +82,8 @@ private val Destination.shouldShowBottomBar
         ReminderScreenDestination -> true
         AddDictionaryScreenDestination,
         SearchForWordsScreenDestination,
+        DictionaryWordsScreenDestination,
+        AddWordScreenDestination,
         PremiumScreenDestination -> false
     }
 

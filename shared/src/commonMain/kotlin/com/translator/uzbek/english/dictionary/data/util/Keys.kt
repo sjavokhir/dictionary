@@ -1,7 +1,7 @@
 package com.translator.uzbek.english.dictionary.data.util
 
 internal object Keys {
-    const val APP_DATABASE = "app_database.db"
+    const val APP_DATABASE = "app.db"
 
     const val SHARED_PREFS_NAME = "app.preferences"
 
@@ -9,7 +9,7 @@ internal object Keys {
     const val THEME_MODE = "KEY_THEME_MODE"
     const val APP_LANGUAGE = "KEY_APP_LANGUAGE"
 
-    // App prefs
+    // Dictionary prefs
     const val DAILY_GOAL = "KEY_DAILY_GOAL"
     const val NEW_WORD_LANGUAGE = "KEY_NEW_WORD_LANGUAGE"
     const val REPEATED_LANGUAGE = "KEY_REPEATED_LANGUAGE"

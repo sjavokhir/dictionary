@@ -100,5 +100,14 @@ fun stringResourcesEnglish() = StringResources(
     dictionaryTitle = "Dictionary title",
     add = "Add",
     newDictionary = "New dictionary",
-    editDictionary = "Edit dictionary"
+    editDictionary = "Edit dictionary",
+    enterDictionaryTitle = "Enter dictionary title",
+    addWord = "Add word",
+    editWord = "Edit word",
+    word = "Word",
+    translation = "Translation",
+    transcription = "Transcription",
+    enterWord = "Enter word",
+    enterTranslation = "Enter translation",
+    enterTranscription = "Enter transcription",
 )

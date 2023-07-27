@@ -1,11 +1,11 @@
-package com.translator.uzbek.english.dictionary.presentation.dictionary
+package com.translator.uzbek.english.dictionary.presentation.dictionaryWords
 
 import com.rickclephas.kmm.viewmodel.KMMViewModel
 import com.rickclephas.kmm.viewmodel.MutableStateFlow
 import com.rickclephas.kmm.viewmodel.coroutineScope
 import com.rickclephas.kmp.nativecoroutines.NativeCoroutinesState
-import com.translator.uzbek.english.dictionary.data.database.dao.DictionaryDao
-import com.translator.uzbek.english.dictionary.data.database.model.DictionaryModel
+import com.translator.uzbek.english.dictionary.data.database.dao.WordDao
+import com.translator.uzbek.english.dictionary.data.database.model.WordModel
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.flow.update
@@ -13,25 +13,27 @@ import kotlinx.coroutines.launch
 import org.koin.core.component.KoinComponent
 import org.koin.core.component.inject
 
-class DictionaryViewModel : KMMViewModel(), KoinComponent {
+class DictionaryWordsViewModel : KMMViewModel(), KoinComponent {
 
-    private val dictionaryDao by inject<DictionaryDao>()
+    private val wordDao by inject<WordDao>()
 
-    private val stateData = MutableStateFlow(viewModelScope, DictionaryState())
+    private val stateData = MutableStateFlow(viewModelScope, DictionaryWordsState())
 
     @NativeCoroutinesState
     val state = stateData.asStateFlow()
 
-    init {
-        fetchDictionaries()
+    fun onEvent(event: DictionaryWordsEvent) {
+        when(event) {
+            is DictionaryWordsEvent.FetchWords -> fetchWords(event.dictionaryId)
+        }
     }
 
-    private fun fetchDictionaries() {
+    private fun fetchWords(dictionaryId: String) {
         setLoading()
 
         viewModelScope.coroutineScope.launch {
-            dictionaryDao.fetchDictionaries().collectLatest { dictionaries ->
-                setSuccess(dictionaries)
+            wordDao.fetchWords(dictionaryId).collectLatest { words ->
+                setSuccess(words)
             }
         }
     }
@@ -40,11 +42,11 @@ class DictionaryViewModel : KMMViewModel(), KoinComponent {
         stateData.update { it.copy(isLoading = true) }
     }
 
-    private fun setSuccess(dictionaries: List<DictionaryModel>) {
+    private fun setSuccess(words: List<WordModel>) {
         stateData.update {
             it.copy(
                 isLoading = false,
-                dictionaries = dictionaries,
+                words = words,
             )
         }
     }

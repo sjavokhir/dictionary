@@ -29,7 +29,7 @@ import com.translator.uzbek.english.dictionary.android.core.extensions.defaultPa
 import com.translator.uzbek.english.dictionary.android.design.components.DictContainer
 import com.translator.uzbek.english.dictionary.android.design.components.DictIcon
 import com.translator.uzbek.english.dictionary.android.design.components.DividerContent
-import com.translator.uzbek.english.dictionary.android.design.localization.localized
+import com.translator.uzbek.english.dictionary.android.design.mapper.localized
 import com.translator.uzbek.english.dictionary.android.design.theme.DividerColor
 import com.translator.uzbek.english.dictionary.android.design.theme.WindowBackground
 import com.translator.uzbek.english.dictionary.data.model.mode.FirstLanguageMode

@@ -3,7 +3,7 @@ package com.translator.uzbek.english.dictionary.android.core.billing
 enum class Subscriptions(val productId: String) {
     Weekly("subscription_weekly"),
     Monthly("subscription_monthly"),
-    Anually("subscription_anually")
+    Anually("subscription_anually"),
 }
 
 fun String.caption(): String {

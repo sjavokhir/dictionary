@@ -13,7 +13,7 @@ data class StatisticsState(
     val allLearning: Int = 0,
     val allLearned: Int = 0,
     val allBestStreak: Int = 0,
-    val startOfLearning: String = ""
+    val startOfLearning: String = "",
 ) {
     enum class Time {
         Week,

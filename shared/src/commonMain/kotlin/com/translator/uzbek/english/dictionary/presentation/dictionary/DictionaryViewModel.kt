@@ -4,26 +4,35 @@ import com.rickclephas.kmm.viewmodel.KMMViewModel
 import com.rickclephas.kmm.viewmodel.MutableStateFlow
 import com.rickclephas.kmm.viewmodel.coroutineScope
 import com.rickclephas.kmp.nativecoroutines.NativeCoroutinesState
-import com.translator.uzbek.english.dictionary.data.model.common.DictionaryModel
+import com.translator.uzbek.english.dictionary.data.database.dao.DictionaryDao
+import com.translator.uzbek.english.dictionary.data.database.dao.WordDao
+import com.translator.uzbek.english.dictionary.data.database.model.DictionaryModel
 import kotlinx.coroutines.flow.asStateFlow
+import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 import org.koin.core.component.KoinComponent
+import org.koin.core.component.inject
 
 class DictionaryViewModel : KMMViewModel(), KoinComponent {
+
+    private val dictionaryDao by inject<DictionaryDao>()
+    private val wordDao by inject<WordDao>()
 
     private val stateData = MutableStateFlow(viewModelScope, DictionaryState())
 
     @NativeCoroutinesState
     val state = stateData.asStateFlow()
 
+    init {
+        fetchDictionaries()
+    }
+
     fun onEvent(event: DictionaryEvent) {
         when (event) {
-            DictionaryEvent.FetchDictionaries -> fetchDictionaries()
-            DictionaryEvent.Insert -> insert()
-            DictionaryEvent.Delete -> delete()
-            is DictionaryEvent.SetArgs -> setArgs(event.title, event.id)
-            is DictionaryEvent.ChangeTitle -> changeTitle(event.title)
+            is DictionaryEvent.ResetProgress -> resetProgress(event.model)
+            is DictionaryEvent.RemoveDictionary -> removeDictionary(event.model)
+            is DictionaryEvent.ClearDictionary -> clearDictionary(event.model)
         }
     }
 
@@ -31,58 +40,34 @@ class DictionaryViewModel : KMMViewModel(), KoinComponent {
         setLoading()
 
         viewModelScope.coroutineScope.launch {
-            val dictionaries = buildList {
-                add(DictionaryModel("1", "Oxford 3000 - A1", 965, 1))
-                add(DictionaryModel("2", "Oxford 3000 - A2", 893, 10))
-                add(DictionaryModel("3", "Oxford 3000 - B1", 849, 99))
-                add(DictionaryModel("4", "Oxford 3000 - B2", 796, 0))
-                add(DictionaryModel("5", "Oxford 5000 - B2", 734, 0))
-                add(DictionaryModel("6", "Oxford 5000 - C1", 1401, 0))
-            }
-
-            stateData.update {
-                it.copy(
-                    isLoading = false,
-                    dictionaries = dictionaries
-                )
+            dictionaryDao.fetchDictionaries().collectLatest { dictionaries ->
+                setSuccess(dictionaries)
             }
         }
     }
 
-    private fun insert() {
-        setLoading()
-        setSuccess()
+    private fun resetProgress(model: DictionaryModel) {
+        wordDao.resetProgress(model.id)
     }
 
-    private fun delete() {
-        setLoading()
-        setSuccess()
+    private fun removeDictionary(model: DictionaryModel) {
+        dictionaryDao.delete(model.id)
     }
 
-    private fun setArgs(title: String, id: String) {
-        stateData.update {
-            it.copy(
-                title = title,
-                dictionaryId = id,
-                isEnabled = title.trim().isNotEmpty()
-            )
-        }
-    }
-
-    private fun changeTitle(title: String) {
-        stateData.update {
-            it.copy(
-                title = title,
-                isEnabled = title.trim().isNotEmpty()
-            )
-        }
+    private fun clearDictionary(model: DictionaryModel) {
+        wordDao.clearAll(model.id)
     }
 
     private fun setLoading() {
         stateData.update { it.copy(isLoading = true) }
     }
 
-    private fun setSuccess() {
-        stateData.update { it.copy(isSuccess = true) }
+    private fun setSuccess(dictionaries: List<DictionaryModel>) {
+        stateData.update {
+            it.copy(
+                isLoading = false,
+                dictionaries = dictionaries,
+            )
+        }
     }
 }

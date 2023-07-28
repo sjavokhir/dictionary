@@ -20,24 +20,24 @@ import com.translator.uzbek.english.dictionary.android.design.components.DictTex
 import com.translator.uzbek.english.dictionary.android.design.localization.LocalStrings
 import com.translator.uzbek.english.dictionary.android.design.localization.StringResources
 import com.translator.uzbek.english.dictionary.android.design.theme.WindowBackground
-import com.translator.uzbek.english.dictionary.presentation.dictionary.DictionaryEvent
-import com.translator.uzbek.english.dictionary.presentation.dictionary.DictionaryState
-import com.translator.uzbek.english.dictionary.presentation.dictionary.DictionaryViewModel
+import com.translator.uzbek.english.dictionary.presentation.addDictionary.AddDictionaryEvent
+import com.translator.uzbek.english.dictionary.presentation.addDictionary.AddDictionaryState
+import com.translator.uzbek.english.dictionary.presentation.addDictionary.AddDictionaryViewModel
 
 @Destination
 @Composable
 fun AddDictionaryScreen(
-    title: String = "",
     id: String,
-    viewModel: DictionaryViewModel = viewModel(),
+    title: String = "",
+    viewModel: AddDictionaryViewModel = viewModel(),
     resultNavigator: ResultBackNavigator<Boolean>
 ) {
     val strings = LocalStrings.current
 
     val state by viewModel.state.collectAsStateWithLifecycle()
 
-    LaunchedEffect(title, id) {
-        viewModel.onEvent(DictionaryEvent.SetArgs(title, id))
+    LaunchedEffect(id, title) {
+        viewModel.onEvent(AddDictionaryEvent.SetDictionaryDetails(id, title))
     }
 
     LaunchedEffect(state.isSuccess) {
@@ -64,9 +64,9 @@ fun AddDictionaryScreen(
 @Composable
 private fun AddDictionaryScreenContent(
     strings: StringResources,
-    state: DictionaryState,
+    state: AddDictionaryState,
     isNewDictionary: Boolean,
-    onEvent: (DictionaryEvent) -> Unit
+    onEvent: (AddDictionaryEvent) -> Unit
 ) {
     LazyColumn(
         modifier = Modifier
@@ -79,9 +79,10 @@ private fun AddDictionaryScreenContent(
             DictTextField(
                 value = state.title,
                 onValueChange = {
-                    onEvent(DictionaryEvent.ChangeTitle(it))
+                    onEvent(AddDictionaryEvent.ChangeTitle(it))
                 },
-                hint = strings.dictionaryTitle
+                hint = strings.dictionaryTitle,
+                placeholder = strings.enterDictionaryTitle
             )
         }
         item {
@@ -89,7 +90,7 @@ private fun AddDictionaryScreenContent(
                 text = if (isNewDictionary) strings.add else strings.save,
                 enabled = state.isEnabled && !state.isLoading
             ) {
-                onEvent(DictionaryEvent.Insert)
+                onEvent(AddDictionaryEvent.Insert)
             }
         }
     }

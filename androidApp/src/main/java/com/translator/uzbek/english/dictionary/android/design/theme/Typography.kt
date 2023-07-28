@@ -43,7 +43,7 @@ internal val Typography = Typography(
     titleLarge = TextStyle(
         fontWeight = FontWeight.Medium,
         fontFamily = fontFamily,
-        fontSize = 22.sp
+        fontSize = 21.sp
     ),
     titleMedium = TextStyle(
         fontWeight = FontWeight.Medium,

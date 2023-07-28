@@ -1,0 +1,92 @@
+CREATE TABLE Dictionary(
+    id TEXT NOT NULL PRIMARY KEY,
+    createdAt INTEGER NOT NULL,
+    title TEXT NOT NULL,
+    isDefault INTEGER NOT NULL
+);
+
+fetchDictionaries:
+SELECT
+    d.id,
+    d.createdAt,
+    d.title,
+    d.isDefault,
+    COUNT(w.id) AS wordsCount,
+    SUM(CASE WHEN w.status = 0 THEN 1 END) AS learnedWordsCount
+FROM Dictionary d
+LEFT JOIN Word w ON d.id = w.dictionaryId
+GROUP BY d.id;
+
+insertDictionary:
+INSERT OR REPLACE
+INTO Dictionary(id, createdAt, title, isDefault)
+VALUES (?,?,?,?);
+
+deleteDictionary:
+DELETE FROM Dictionary
+WHERE id = ?;
+
+
+
+CREATE TABLE Word(
+    id TEXT NOT NULL PRIMARY KEY,
+    createdAt INTEGER NOT NULL,
+    dictionaryId TEXT NOT NULL,
+    word TEXT NOT NULL,
+    translation TEXT NOT NULL,
+    transcription TEXT,
+    status INTEGER NOT NULL
+);
+
+fetchWords:
+SELECT *
+FROM Word
+WHERE dictionaryId = ?;
+
+fetchWordById:
+SELECT *
+FROM Word
+WHERE id = ?;
+
+searchWords:
+SELECT
+    w.id,
+    w.createdAt,
+    w.dictionaryId,
+    d.title AS dictionaryTitle,
+    w.word,
+    w.translation,
+    w.transcription,
+    w.status
+FROM Word w
+JOIN Dictionary d ON w.dictionaryId = d.id
+WHERE w.word LIKE '%' || :searchKeyword || '%'
+   OR w.translation LIKE '%' || :searchKeyword || '%'
+   OR w.transcription LIKE '%' || :searchKeyword || '%';
+
+insertWord:
+INSERT OR REPLACE
+INTO Word(id, createdAt, dictionaryId, word, translation, transcription, status)
+VALUES (?,?,?,?,?,?,?);
+
+deleteWord:
+DELETE FROM Word
+WHERE id = ?;
+
+clearWords:
+DELETE FROM Word
+WHERE dictionaryId = ?;
+
+updateWordStatus:
+UPDATE Word
+SET status = :status
+WHERE id = :wordId;
+
+resetProgress:
+UPDATE Word
+SET status = 1
+WHERE dictionaryId = :dictionaryId;
+
+resetAllProgress:
+UPDATE Word
+SET status = 1;

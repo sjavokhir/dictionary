@@ -1,10 +1,9 @@
 package com.translator.uzbek.english.dictionary.presentation.dictionary
 
-sealed class DictionaryEvent {
-    object FetchDictionaries : DictionaryEvent()
-    object Insert : DictionaryEvent()
-    object Delete : DictionaryEvent()
+import com.translator.uzbek.english.dictionary.data.database.model.DictionaryModel
 
-    data class SetArgs(val title: String, val id: String) : DictionaryEvent()
-    data class ChangeTitle(val title: String) : DictionaryEvent()
+sealed class DictionaryEvent {
+    data class ResetProgress(val model: DictionaryModel) : DictionaryEvent()
+    data class RemoveDictionary(val model: DictionaryModel) : DictionaryEvent()
+    data class ClearDictionary(val model: DictionaryModel) : DictionaryEvent()
 }

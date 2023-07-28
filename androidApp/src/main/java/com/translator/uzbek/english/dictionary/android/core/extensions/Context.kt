@@ -13,18 +13,6 @@ import com.translator.uzbek.english.dictionary.core.extensions.tryCatch
 import com.translator.uzbek.english.dictionary.core.helpers.StringRes
 import kotlin.system.exitProcess
 
-fun Context.drawableId(name: String): Int? {
-    return try {
-        resources.getIdentifier(
-            name,
-            "drawable",
-            packageName
-        )
-    } catch (t: Throwable) {
-        null
-    }
-}
-
 fun Context.findActivity(): Activity? {
     var currentContext = this
     while (currentContext is ContextWrapper) {

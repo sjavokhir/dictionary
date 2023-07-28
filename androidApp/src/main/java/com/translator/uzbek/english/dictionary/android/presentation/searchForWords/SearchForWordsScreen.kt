@@ -1,6 +1,5 @@
 package com.translator.uzbek.english.dictionary.android.presentation.searchForWords
 
-import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
 import androidx.compose.foundation.layout.Arrangement
@@ -42,7 +41,7 @@ import com.translator.uzbek.english.dictionary.android.design.localization.Local
 import com.translator.uzbek.english.dictionary.android.design.localization.StringResources
 import com.translator.uzbek.english.dictionary.android.design.theme.DividerColor
 import com.translator.uzbek.english.dictionary.android.design.theme.WindowBackground
-import com.translator.uzbek.english.dictionary.data.model.common.SearchForWordModel
+import com.translator.uzbek.english.dictionary.data.database.model.WordModel
 import com.translator.uzbek.english.dictionary.presentation.searchForWords.SearchForWordsEvent
 import com.translator.uzbek.english.dictionary.presentation.searchForWords.SearchForWordsState
 import com.translator.uzbek.english.dictionary.presentation.searchForWords.SearchForWordsViewModel
@@ -129,10 +128,9 @@ private fun SearchForWordsScreenContent(
     }
 }
 
-@OptIn(ExperimentalFoundationApi::class)
 @Composable
 private fun SearchForWordItemContent(
-    model: SearchForWordModel,
+    model: WordModel,
     onClick: () -> Unit,
     onPlayClick: () -> Unit
 ) {
@@ -162,7 +160,7 @@ private fun SearchForWordItemContent(
             )
 
             Text(
-                text = model.dictionary.name,
+                text = model.dictionaryTitle.orEmpty(),
                 style = MaterialTheme.typography.bodyMedium,
                 color = MaterialTheme.colorScheme.outline
             )

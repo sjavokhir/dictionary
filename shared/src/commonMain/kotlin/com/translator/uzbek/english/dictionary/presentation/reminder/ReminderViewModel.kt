@@ -40,7 +40,7 @@ class ReminderViewModel : KMMViewModel(), KoinComponent {
                 it.copy(
                     hour = time.hour,
                     minute = time.minute,
-                    weekdays = weekdays
+                    weekdays = weekdays,
                 )
             }
         }
@@ -50,7 +50,7 @@ class ReminderViewModel : KMMViewModel(), KoinComponent {
         stateData.update {
             it.copy(
                 hour = hour,
-                minute = minute
+                minute = minute,
             )
         }
     }

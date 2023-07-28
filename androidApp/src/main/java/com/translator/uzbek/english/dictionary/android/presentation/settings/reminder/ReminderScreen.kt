@@ -29,7 +29,7 @@ import com.translator.uzbek.english.dictionary.android.design.components.DictFil
 import com.translator.uzbek.english.dictionary.android.design.components.DictIcon
 import com.translator.uzbek.english.dictionary.android.design.localization.LocalStrings
 import com.translator.uzbek.english.dictionary.android.design.localization.StringResources
-import com.translator.uzbek.english.dictionary.android.design.localization.weekShortName
+import com.translator.uzbek.english.dictionary.android.design.mapper.weekShortName
 import com.translator.uzbek.english.dictionary.presentation.reminder.ReminderEvent
 import com.translator.uzbek.english.dictionary.presentation.reminder.ReminderState
 import com.translator.uzbek.english.dictionary.presentation.reminder.ReminderViewModel

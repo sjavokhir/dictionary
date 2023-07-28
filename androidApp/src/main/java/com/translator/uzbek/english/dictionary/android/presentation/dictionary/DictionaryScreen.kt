@@ -1,7 +1,9 @@
 package com.translator.uzbek.english.dictionary.android.presentation.dictionary
 
+import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
+import androidx.compose.foundation.combinedClickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -18,6 +20,9 @@ import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
@@ -45,6 +50,7 @@ import com.translator.uzbek.english.dictionary.android.presentation.destinations
 import com.translator.uzbek.english.dictionary.android.presentation.destinations.DictionaryWordsScreenDestination
 import com.translator.uzbek.english.dictionary.android.presentation.destinations.SearchForWordsScreenDestination
 import com.translator.uzbek.english.dictionary.data.database.model.DictionaryModel
+import com.translator.uzbek.english.dictionary.presentation.dictionary.DictionaryEvent
 import com.translator.uzbek.english.dictionary.presentation.dictionary.DictionaryState
 import com.translator.uzbek.english.dictionary.presentation.dictionary.DictionaryViewModel
 import com.translator.uzbek.english.dictionary.shared.randomUUID
@@ -59,11 +65,50 @@ fun DictionaryScreen(
 
     val state by viewModel.state.collectAsStateWithLifecycle()
 
+    var selectedDictionary by remember { mutableStateOf<DictionaryModel?>(null) }
+
+    DictionaryActionsSheet(
+        strings = strings,
+        show = selectedDictionary != null,
+        isDefault = selectedDictionary?.isDefault ?: true,
+        onDismiss = {
+            selectedDictionary = null
+        },
+        onReset = {
+            selectedDictionary?.let {
+                viewModel.onEvent(DictionaryEvent.ResetProgress(it))
+            }
+        },
+        onEdit = {
+            selectedDictionary?.let {
+                navigator.navigate(
+                    AddDictionaryScreenDestination(
+                        id = it.id,
+                        title = it.title
+                    )
+                )
+            }
+        },
+        onRemove = {
+            selectedDictionary?.let {
+                viewModel.onEvent(DictionaryEvent.RemoveDictionary(it))
+            }
+        },
+        onClear = {
+            selectedDictionary?.let {
+                viewModel.onEvent(DictionaryEvent.ClearDictionary(it))
+            }
+        },
+    )
+
     DictContainer(strings.dictionary) {
         DictionaryScreenContent(
             strings = strings,
             state = state,
-            onNavigate = navigator::navigate
+            onNavigate = navigator::navigate,
+            onBottomSheetActions = {
+                selectedDictionary = it
+            }
         )
     }
 }
@@ -72,7 +117,8 @@ fun DictionaryScreen(
 private fun DictionaryScreenContent(
     strings: StringResources,
     state: DictionaryState,
-    onNavigate: (Direction) -> Unit
+    onNavigate: (Direction) -> Unit,
+    onBottomSheetActions: (DictionaryModel) -> Unit,
 ) {
     LazyColumn(
         modifier = Modifier
@@ -129,14 +175,21 @@ private fun DictionaryScreenContent(
                         .background(MaterialTheme.colorScheme.background),
                 ) {
                     state.dictionaries.forEachIndexed { index, model ->
-                        DictionaryItemContent(strings, model) {
-                            onNavigate(
-                                DictionaryWordsScreenDestination(
-                                    dictionaryId = model.id,
-                                    dictionaryTitle = model.title
+                        DictionaryItemContent(strings = strings,
+                            model = model,
+                            onClick = {
+                                onNavigate(
+                                    DictionaryWordsScreenDestination(
+                                        dictionaryId = model.id,
+                                        dictionaryTitle = model.title,
+                                        isDefault = model.isDefault
+                                    )
                                 )
-                            )
-                        }
+                            },
+                            onLongClick = {
+                                onBottomSheetActions(model)
+                            }
+                        )
 
                         if (index != state.dictionaries.lastIndex) {
                             DividerContent(
@@ -187,16 +240,21 @@ private fun AddDictionaryItemContent(
     }
 }
 
+@OptIn(ExperimentalFoundationApi::class)
 @Composable
 private fun DictionaryItemContent(
     strings: StringResources,
     model: DictionaryModel,
-    onClick: () -> Unit
+    onClick: () -> Unit,
+    onLongClick: () -> Unit,
 ) {
     Row(
         modifier = Modifier
             .fillMaxWidth()
-            .clickableSingle(onClick = onClick)
+            .combinedClickable(
+                onClick = onClick,
+                onLongClick = onLongClick,
+            )
             .defaultPadding(),
         verticalAlignment = Alignment.CenterVertically,
         horizontalArrangement = Arrangement.spacedBy(16.dp),
@@ -211,11 +269,13 @@ private fun DictionaryItemContent(
                 fontWeight = FontWeight.Medium
             )
 
-            Text(
-                text = strings.countWords(model.wordsCount),
-                style = MaterialTheme.typography.bodyMedium,
-                color = MaterialTheme.colorScheme.outline
-            )
+            if (model.wordsCount > 0) {
+                Text(
+                    text = strings.countWords(model.wordsCount),
+                    style = MaterialTheme.typography.bodyMedium,
+                    color = MaterialTheme.colorScheme.outline
+                )
+            }
         }
 
         Text(

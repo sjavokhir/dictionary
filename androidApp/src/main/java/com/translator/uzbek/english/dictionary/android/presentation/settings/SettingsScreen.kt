@@ -48,8 +48,8 @@ import com.translator.uzbek.english.dictionary.android.design.components.DictCon
 import com.translator.uzbek.english.dictionary.android.design.components.DictIcon
 import com.translator.uzbek.english.dictionary.android.design.localization.LocalStrings
 import com.translator.uzbek.english.dictionary.android.design.localization.StringResources
-import com.translator.uzbek.english.dictionary.android.design.localization.localized
-import com.translator.uzbek.english.dictionary.android.design.localization.weekdays
+import com.translator.uzbek.english.dictionary.android.design.mapper.localized
+import com.translator.uzbek.english.dictionary.android.design.mapper.weekdays
 import com.translator.uzbek.english.dictionary.android.design.theme.DividerColor
 import com.translator.uzbek.english.dictionary.android.design.theme.WindowBackground
 import com.translator.uzbek.english.dictionary.android.presentation.destinations.AppLanguageScreenDestination

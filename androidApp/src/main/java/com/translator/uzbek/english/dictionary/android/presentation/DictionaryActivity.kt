@@ -60,8 +60,8 @@ class DictionaryActivity : ComponentActivity() {
         super.onCreate(savedInstanceState)
         WindowCompat.setDecorFitsSystemWindows(window, false)
         MobileAds.initialize(this)
-        loadInterstitialAd()
         loadRewardedAd()
+        loadInterstitialAd()
 
         setContent {
 //            val hasAcknowledged = viewModel.hasAcknowledged.collectAsStateWithLifecycle().value
@@ -81,7 +81,7 @@ class DictionaryActivity : ComponentActivity() {
             }
 
             DictApp(
-                hasSubscription = true,
+                hasSubscription = false,
                 language = language,
                 themeMode = themeMode,
             )
@@ -182,6 +182,8 @@ class DictionaryActivity : ComponentActivity() {
 
                 override fun onAdLoaded(rewardedAd: RewardedAd) {
                     mRewardedAd = rewardedAd
+
+                    showRewardedAd()
                 }
             })
     }
@@ -217,7 +219,7 @@ class DictionaryActivity : ComponentActivity() {
                 override fun onAdDismissedFullScreenContent() {
                     mRewardedAd = null
 
-                    loadInterstitialAd()
+//                    loadRewardedAd()
                 }
 
                 override fun onAdShowedFullScreenContent() {

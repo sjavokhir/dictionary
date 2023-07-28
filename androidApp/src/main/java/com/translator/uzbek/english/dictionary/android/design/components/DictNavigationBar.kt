@@ -9,7 +9,6 @@ import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.windowInsetsPadding
 import androidx.compose.foundation.selection.selectableGroup
 import androidx.compose.material3.BottomAppBarDefaults.windowInsets
-import androidx.compose.material3.Divider
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
@@ -20,7 +19,6 @@ import androidx.compose.ui.graphics.painter.Painter
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import com.translator.uzbek.english.dictionary.android.core.extensions.clickableSingle
-import com.translator.uzbek.english.dictionary.android.design.theme.DividerColor
 
 @Composable
 fun DictNavigationBar(
@@ -36,12 +34,7 @@ fun DictNavigationBar(
         modifier = modifier
     ) {
         Column {
-            Divider(
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .height(1.dp),
-                color = DividerColor
-            )
+            DividerContent()
 
             if (!hasSubscription && showAds) {
                 BannerAdView(

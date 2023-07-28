@@ -39,10 +39,7 @@ class DictionaryDao(database: AppDatabase) {
     }
 
     fun delete(id: String) {
+        queries.clearWords(id)
         queries.deleteDictionary(id)
-    }
-
-    fun clearAll() {
-        queries.clearDictionaries()
     }
 }

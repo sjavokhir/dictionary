@@ -26,9 +26,6 @@ deleteDictionary:
 DELETE FROM Dictionary
 WHERE id = ?;
 
-clearDictionaries:
-DELETE FROM Dictionary;
-
 
 
 CREATE TABLE Word(
@@ -80,6 +77,16 @@ clearWords:
 DELETE FROM Word
 WHERE dictionaryId = ?;
 
+updateWordStatus:
+UPDATE Word
+SET status = :status
+WHERE id = :wordId;
+
 resetProgress:
+UPDATE Word
+SET status = 1
+WHERE dictionaryId = :dictionaryId;
+
+resetAllProgress:
 UPDATE Word
 SET status = 1;

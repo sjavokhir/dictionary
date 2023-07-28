@@ -1,8 +1,26 @@
-package com.translator.uzbek.english.dictionary.android.design.localization
+package com.translator.uzbek.english.dictionary.android.design.mapper
 
 import androidx.compose.runtime.Composable
+import androidx.compose.ui.graphics.Color
+import com.translator.uzbek.english.dictionary.android.design.localization.LocalStrings
+import com.translator.uzbek.english.dictionary.android.design.localization.StringResources
+import com.translator.uzbek.english.dictionary.android.design.theme.ChartColor1
+import com.translator.uzbek.english.dictionary.android.design.theme.ChartColor2
+import com.translator.uzbek.english.dictionary.android.design.theme.ChartColor3
+import com.translator.uzbek.english.dictionary.android.design.theme.ChartColor4
+import com.translator.uzbek.english.dictionary.data.database.model.WordModel
 import com.translator.uzbek.english.dictionary.data.model.mode.FirstLanguageMode
 import com.translator.uzbek.english.dictionary.data.model.mode.ThemeMode
+
+@Composable
+fun WordModel.WordStatus.color(): Color {
+    return when (this) {
+        WordModel.WordStatus.Learned -> ChartColor4
+        WordModel.WordStatus.New -> ChartColor3
+        WordModel.WordStatus.Learning -> ChartColor2
+        WordModel.WordStatus.Skipped -> ChartColor1
+    }
+}
 
 @Composable
 fun FirstLanguageMode.localized(): String {

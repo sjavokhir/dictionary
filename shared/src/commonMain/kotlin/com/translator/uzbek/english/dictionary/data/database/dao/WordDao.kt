@@ -71,7 +71,18 @@ class WordDao(database: AppDatabase) {
         queries.clearWords(dictionaryId)
     }
 
-    fun resetProgress() {
-        queries.resetProgress()
+    fun updateWordStatus(wordId: String, status: WordModel.WordStatus) {
+        queries.updateWordStatus(
+            status = status.ordinal.toLong(),
+            wordId = wordId
+        )
+    }
+
+    fun resetProgress(dictionaryId: String) {
+        queries.resetProgress(dictionaryId)
+    }
+
+    fun resetAllProgress() {
+        queries.resetAllProgress()
     }
 }

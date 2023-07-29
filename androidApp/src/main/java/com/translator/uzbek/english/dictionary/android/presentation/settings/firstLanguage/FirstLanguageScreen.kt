@@ -32,19 +32,8 @@ import com.translator.uzbek.english.dictionary.android.design.components.Divider
 import com.translator.uzbek.english.dictionary.android.design.mapper.localized
 import com.translator.uzbek.english.dictionary.android.design.theme.DividerColor
 import com.translator.uzbek.english.dictionary.android.design.theme.WindowBackground
+import com.translator.uzbek.english.dictionary.android.navigation.FirstLanguageResult
 import com.translator.uzbek.english.dictionary.data.model.mode.FirstLanguageMode
-import java.io.Serializable
-
-data class FirstLanguageResult(
-    val firstLanguage: FirstLanguageMode,
-    val type: Type
-) : Serializable {
-
-    enum class Type {
-        NewWord,
-        Repeated
-    }
-}
 
 @Destination
 @Composable

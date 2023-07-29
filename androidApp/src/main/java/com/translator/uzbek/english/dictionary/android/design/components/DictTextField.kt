@@ -29,7 +29,6 @@ import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import com.translator.uzbek.english.dictionary.android.core.extensions.clickableSingle
 import com.translator.uzbek.english.dictionary.android.design.theme.DividerColor
 
 @SuppressLint("ModifierParameter")
@@ -130,66 +129,4 @@ fun DictTextField(
             }
         }
     )
-}
-
-@SuppressLint("ModifierParameter")
-@Composable
-fun DictTextField(
-    baseModifier: Modifier = Modifier,
-    modifier: Modifier = Modifier,
-    placeholder: String = "",
-    hint: String? = null,
-    leadingIcon: @Composable (() -> Unit)? = null,
-    trailingIcon: @Composable (() -> Unit)? = null,
-    onClick: () -> Unit
-) {
-    Column(
-        modifier = baseModifier,
-        verticalArrangement = Arrangement.spacedBy(8.dp)
-    ) {
-        if (!hint.isNullOrEmpty()) {
-            Text(
-                text = hint,
-                style = MaterialTheme.typography.bodyLarge,
-                fontSize = 15.sp,
-                fontWeight = FontWeight.Medium,
-                color = MaterialTheme.colorScheme.onBackground
-            )
-        }
-
-        Row(
-            modifier = modifier
-                .fillMaxWidth()
-                .clip(MaterialTheme.shapes.medium)
-                .border(
-                    width = 1.dp,
-                    color = DividerColor,
-                    shape = MaterialTheme.shapes.medium
-                )
-                .background(MaterialTheme.colorScheme.background)
-                .clickableSingle(onClick = onClick)
-                .padding(horizontal = 16.dp),
-            verticalAlignment = Alignment.CenterVertically,
-            horizontalArrangement = Arrangement.spacedBy(16.dp)
-        ) {
-            leadingIcon?.invoke()
-
-            Box(
-                modifier = Modifier
-                    .weight(1f)
-                    .align(Alignment.Top)
-                    .padding(vertical = 15.dp),
-                contentAlignment = Alignment.TopStart
-            ) {
-                Text(
-                    text = placeholder,
-                    style = MaterialTheme.typography.bodyLarge,
-                    color = MaterialTheme.colorScheme.outline,
-                    overflow = TextOverflow.Ellipsis
-                )
-            }
-
-            trailingIcon?.invoke()
-        }
-    }
 }

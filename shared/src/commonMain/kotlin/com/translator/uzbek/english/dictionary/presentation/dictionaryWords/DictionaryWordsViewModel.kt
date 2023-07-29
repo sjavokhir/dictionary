@@ -24,37 +24,41 @@ class DictionaryWordsViewModel : KMMViewModel(), KoinComponent {
     @NativeCoroutinesState
     val state = stateData.asStateFlow()
 
+    private val dictionaryId = kotlinx.coroutines.flow.MutableStateFlow("")
+
     fun onEvent(event: DictionaryWordsEvent) {
         when (event) {
             is DictionaryWordsEvent.FetchWords -> fetchWords(event.dictionaryId)
             DictionaryWordsEvent.ResetDictionary -> resetDictionary()
             DictionaryWordsEvent.RemoveDictionary -> removeDictionary()
             DictionaryWordsEvent.ClearDictionary -> clearDictionary()
-            is DictionaryWordsEvent.SetWordStatus -> setWordStatus(event.wordId, event.status)
+            is DictionaryWordsEvent.SetWordStatus -> setWordStatus(event.wordId, event.newStatus)
             is DictionaryWordsEvent.RemoveWord -> removeWord(event.wordId)
         }
     }
 
     private fun fetchWords(dictionaryId: String) {
+        this.dictionaryId.value = dictionaryId
+
         setLoading()
 
         viewModelScope.coroutineScope.launch {
             wordDao.fetchWords(dictionaryId).collectLatest { words ->
-                setSuccess(words, dictionaryId)
+                setSuccess(words)
             }
         }
     }
 
     private fun resetDictionary() {
-        wordDao.resetProgress(state.value.dictionaryId)
+        wordDao.resetProgress(dictionaryId.value)
     }
 
     private fun removeDictionary() {
-        dictionaryDao.delete(state.value.dictionaryId)
+        dictionaryDao.delete(dictionaryId.value)
     }
 
     private fun clearDictionary() {
-        wordDao.clearAll(state.value.dictionaryId)
+        wordDao.clearAll(dictionaryId.value)
     }
 
     private fun setWordStatus(wordId: String, status: WordModel.WordStatus) {
@@ -69,14 +73,10 @@ class DictionaryWordsViewModel : KMMViewModel(), KoinComponent {
         stateData.update { it.copy(isLoading = true) }
     }
 
-    private fun setSuccess(
-        words: List<WordModel>,
-        dictionaryId: String,
-    ) {
+    private fun setSuccess(words: List<WordModel>) {
         stateData.update {
             it.copy(
                 isLoading = false,
-                dictionaryId = dictionaryId,
                 words = words,
             )
         }

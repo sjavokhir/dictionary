@@ -30,18 +30,12 @@ import com.translator.uzbek.english.dictionary.android.design.components.DictIco
 import com.translator.uzbek.english.dictionary.android.design.localization.LocalStrings
 import com.translator.uzbek.english.dictionary.android.design.localization.StringResources
 import com.translator.uzbek.english.dictionary.android.design.mapper.weekShortName
+import com.translator.uzbek.english.dictionary.android.navigation.ReminderResult
 import com.translator.uzbek.english.dictionary.presentation.reminder.ReminderEvent
 import com.translator.uzbek.english.dictionary.presentation.reminder.ReminderState
 import com.translator.uzbek.english.dictionary.presentation.reminder.ReminderViewModel
 import uz.javokhir.picker.WheelTimePicker
-import java.io.Serializable
 import java.time.LocalTime
-
-data class ReminderResult(
-    val hour: Int,
-    val minute: Int,
-    val weekdays: String
-) : Serializable
 
 @Destination
 @Composable

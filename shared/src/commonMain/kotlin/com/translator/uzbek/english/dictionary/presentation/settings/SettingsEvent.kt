@@ -21,4 +21,6 @@ sealed class SettingsEvent {
 
     data class CheckSoundEffects(val checked: Boolean) : SettingsEvent()
     data class CheckAutoPronounce(val checked: Boolean) : SettingsEvent()
+
+    object ResetProgress: SettingsEvent()
 }

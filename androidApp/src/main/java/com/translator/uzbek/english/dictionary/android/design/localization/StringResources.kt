@@ -2,7 +2,6 @@ package com.translator.uzbek.english.dictionary.android.design.localization
 
 import androidx.compose.runtime.Immutable
 import androidx.compose.runtime.staticCompositionLocalOf
-import com.translator.uzbek.english.dictionary.presentation.addWord.AddWordEvent
 
 val LocalStrings = staticCompositionLocalOf { stringResourcesEnglish() }
 
@@ -39,6 +38,7 @@ data class StringResources(
     val general: String,
     val otherApps: String,
     val feedback: String,
+    val feedbackRegarding: (String) -> String,
     val share: String,
     val shareDescription: String,
     val rateUs: String,
@@ -79,7 +79,6 @@ data class StringResources(
     val addDictionary: String,
     val searchForWords: String,
     val enterAtLeastOneLetter: String,
-    val search: String,
     val dictionaryTitle: String,
     val add: String,
     val newDictionary: String,
@@ -100,6 +99,7 @@ data class StringResources(
     val ok: String,
     val confirmation: String,
     val confirmationResetProgress: String,
+    val confirmationResetAllProgress: String,
     val confirmationRemoveDictionary: String,
     val confirmationRemoveWord: String,
     val confirmationClearDictionary: String,
@@ -110,4 +110,8 @@ data class StringResources(
     val resetProgressForThisWord: String,
     val wordActions: String,
     val dictionaryActions: String,
+    val learned: String,
+    val new: String,
+    val learningRepeats: (Int) -> String,
+    val skipped: String,
 )

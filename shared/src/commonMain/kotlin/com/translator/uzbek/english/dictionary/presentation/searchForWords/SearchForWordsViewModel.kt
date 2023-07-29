@@ -6,6 +6,7 @@ import com.rickclephas.kmm.viewmodel.coroutineScope
 import com.rickclephas.kmp.nativecoroutines.NativeCoroutinesState
 import com.translator.uzbek.english.dictionary.data.database.dao.WordDao
 import com.translator.uzbek.english.dictionary.data.database.model.WordModel
+import com.translator.uzbek.english.dictionary.presentation.dictionaryWords.DictionaryWordsEvent
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.flow.update
@@ -25,6 +26,8 @@ class SearchForWordsViewModel : KMMViewModel(), KoinComponent {
     fun onEvent(event: SearchForWordsEvent) {
         when (event) {
             is SearchForWordsEvent.ChangeQuery -> changeQuery(event.query)
+            is SearchForWordsEvent.SetWordStatus -> setWordStatus(event.wordId, event.newStatus)
+            is SearchForWordsEvent.RemoveWord -> removeWord(event.wordId)
         }
     }
 
@@ -40,6 +43,14 @@ class SearchForWordsViewModel : KMMViewModel(), KoinComponent {
                 }
             }
         }
+    }
+
+    private fun setWordStatus(wordId: String, status: WordModel.WordStatus) {
+        wordDao.updateWordStatus(wordId, status)
+    }
+
+    private fun removeWord(wordId: String) {
+        wordDao.delete(wordId)
     }
 
     private fun setLoading(query: String) {

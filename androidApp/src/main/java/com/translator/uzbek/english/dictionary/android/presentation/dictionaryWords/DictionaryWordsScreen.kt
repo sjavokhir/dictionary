@@ -46,13 +46,16 @@ import com.ramcosta.composedestinations.spec.Direction
 import com.translator.uzbek.english.dictionary.android.R
 import com.translator.uzbek.english.dictionary.android.core.extensions.clickableSingle
 import com.translator.uzbek.english.dictionary.android.core.extensions.defaultPadding
+import com.translator.uzbek.english.dictionary.android.core.tts.rememberTtsHelper
 import com.translator.uzbek.english.dictionary.android.design.components.DictContainer
 import com.translator.uzbek.english.dictionary.android.design.components.DictIcon
 import com.translator.uzbek.english.dictionary.android.design.localization.LocalStrings
 import com.translator.uzbek.english.dictionary.android.design.localization.StringResources
 import com.translator.uzbek.english.dictionary.android.design.mapper.color
+import com.translator.uzbek.english.dictionary.android.design.mapper.localized
 import com.translator.uzbek.english.dictionary.android.design.theme.DividerColor
 import com.translator.uzbek.english.dictionary.android.design.theme.WindowBackground
+import com.translator.uzbek.english.dictionary.android.navigation.DictionaryArgs
 import com.translator.uzbek.english.dictionary.android.presentation.destinations.AddDictionaryScreenDestination
 import com.translator.uzbek.english.dictionary.android.presentation.destinations.AddWordScreenDestination
 import com.translator.uzbek.english.dictionary.android.presentation.dictionary.DictionaryActionsSheet
@@ -65,9 +68,7 @@ import com.translator.uzbek.english.dictionary.shared.randomUUID
 @Destination
 @Composable
 fun DictionaryWordsScreen(
-    dictionaryId: String,
-    dictionaryTitle: String,
-    isDefault: Boolean,
+    args: DictionaryArgs,
     viewModel: DictionaryWordsViewModel = viewModel(),
     navigator: DestinationsNavigator,
 ) {
@@ -75,13 +76,15 @@ fun DictionaryWordsScreen(
 
     val state by viewModel.state.collectAsStateWithLifecycle()
 
+    val ttsHelper = rememberTtsHelper()
+
     var showDictActionsSheet by remember { mutableStateOf(false) }
     var selectedWord by remember { mutableStateOf<WordModel?>(null) }
 
     DictionaryActionsSheet(
         strings = strings,
         show = showDictActionsSheet,
-        isDefault = isDefault,
+        isDefault = args.isDefault,
         onDismiss = {
             showDictActionsSheet = false
         },
@@ -89,12 +92,7 @@ fun DictionaryWordsScreen(
             viewModel.onEvent(DictionaryWordsEvent.ResetDictionary)
         },
         onEdit = {
-            navigator.navigate(
-                AddDictionaryScreenDestination(
-                    id = dictionaryId,
-                    title = dictionaryTitle
-                )
-            )
+            navigator.navigate(AddDictionaryScreenDestination(args.id))
         },
         onRemove = {
             viewModel.onEvent(DictionaryWordsEvent.RemoveDictionary)
@@ -111,10 +109,9 @@ fun DictionaryWordsScreen(
         onDismiss = {
             selectedWord = null
         },
-        onStatus = { wordId, status ->
-            viewModel.onEvent(DictionaryWordsEvent.SetWordStatus(wordId, status))
+        onStatus = { wordId, newStatus ->
+            viewModel.onEvent(DictionaryWordsEvent.SetWordStatus(wordId, newStatus))
         },
-        onCopy = {},
         onEdit = {
             navigator.navigate(
                 AddWordScreenDestination(
@@ -128,12 +125,12 @@ fun DictionaryWordsScreen(
         }
     )
 
-    LaunchedEffect(dictionaryId) {
-        viewModel.onEvent(DictionaryWordsEvent.FetchWords(dictionaryId))
+    LaunchedEffect(args.id) {
+        viewModel.onEvent(DictionaryWordsEvent.FetchWords(args.id))
     }
 
     DictContainer(
-        title = dictionaryTitle,
+        title = args.title,
         onNavigateUp = navigator::navigateUp,
         actions = {
             IconButton(onClick = { showDictActionsSheet = true }) {
@@ -143,22 +140,27 @@ fun DictionaryWordsScreen(
     ) {
         DictionaryWordsScreenContent(
             strings = strings,
-            dictionaryId = dictionaryId,
             state = state,
-            onNavigate = navigator::navigate
-        ) {
-            selectedWord = it
-        }
+            dictionaryId = args.id,
+            onNavigate = navigator::navigate,
+            onWordClick = {
+                selectedWord = it
+            },
+            onPlayClick = {
+                ttsHelper.speak(it.word)
+            },
+        )
     }
 }
 
 @Composable
 private fun DictionaryWordsScreenContent(
     strings: StringResources,
-    dictionaryId: String,
     state: DictionaryWordsState,
+    dictionaryId: String,
     onNavigate: (Direction) -> Unit,
     onWordClick: (WordModel) -> Unit,
+    onPlayClick: (WordModel) -> Unit,
 ) {
     val listState = rememberLazyListState()
     var previousIndex by remember(listState) {
@@ -207,7 +209,7 @@ private fun DictionaryWordsScreenContent(
                 }
             } else if (state.words.isEmpty()) {
                 item {
-                    Text(text = "Empty")
+
                 }
             } else {
                 items(state.words) { model ->
@@ -216,7 +218,9 @@ private fun DictionaryWordsScreenContent(
                         onClick = {
                             onWordClick(model)
                         },
-                        onPlayClick = {}
+                        onPlayClick = {
+                            onPlayClick(model)
+                        }
                     )
                 }
             }
@@ -287,7 +291,7 @@ private fun DictionaryWordItemContent(
                 )
 
                 Text(
-                    text = model.status.name,
+                    text = model.status.localized(repeats = model.repeats),
                     style = MaterialTheme.typography.bodyMedium,
                     color = MaterialTheme.colorScheme.outline,
                 )

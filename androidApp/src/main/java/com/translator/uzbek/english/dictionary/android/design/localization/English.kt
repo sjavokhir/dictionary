@@ -1,6 +1,9 @@
 package com.translator.uzbek.english.dictionary.android.design.localization
 
+import com.translator.uzbek.english.dictionary.core.helpers.Constants
 import com.translator.uzbek.english.dictionary.shared.appUrl
+import com.translator.uzbek.english.dictionary.shared.appVersion
+import com.translator.uzbek.english.dictionary.shared.deviceVersion
 
 fun stringResourcesEnglish() = StringResources(
     appName = "Uzbek-English dictionary",
@@ -36,6 +39,9 @@ fun stringResourcesEnglish() = StringResources(
     general = "General",
     otherApps = "Other languages and apps",
     feedback = "Feedback",
+    feedbackRegarding = {
+        "Feedback regarding $it [$appVersion - $deviceVersion]"
+    },
     share = "Share",
     shareDescription = """
         Introducing the Uzbek-English Dictionary app, the perfect tool to enhance your English language skills while exploring the richness of the Uzbek language. This comprehensive app offers a wide range of features to facilitate learning, allowing you to master vocabulary, improve pronunciation, and track your progress effortlessly.
@@ -94,9 +100,8 @@ fun stringResourcesEnglish() = StringResources(
         "Skipped: $it"
     },
     addDictionary = "Add dictionary",
-    searchForWords = "Search for words...",
+    searchForWords = "Search for words",
     enterAtLeastOneLetter = "Enter at least 1 letter",
-    search = "Search",
     dictionaryTitle = "Dictionary title",
     add = "Add",
     newDictionary = "New dictionary",
@@ -117,6 +122,7 @@ fun stringResourcesEnglish() = StringResources(
     ok = "OK",
     confirmation = "Confirmation",
     confirmationResetProgress = "Are you sure you want to reset progress for each word in this dictionary?",
+    confirmationResetAllProgress = "Are you sure you want to reset all progress?",
     confirmationRemoveDictionary = "Are you sure you want to remove dictionary with all of its words?",
     confirmationRemoveWord = "Are you sure you want to remove this word?",
     confirmationClearDictionary = "Are you sure you want to remove all the words from this dictionary?",
@@ -127,4 +133,10 @@ fun stringResourcesEnglish() = StringResources(
     resetProgressForThisWord = "Reset progress for this word",
     wordActions = "Word actions",
     dictionaryActions = "Dictionary actions",
+    learned = "Learned",
+    new = "New",
+    learningRepeats = {
+        "Learning ($it/${Constants.defaultRepeats} repeats)"
+    },
+    skipped = "Skipped"
 )

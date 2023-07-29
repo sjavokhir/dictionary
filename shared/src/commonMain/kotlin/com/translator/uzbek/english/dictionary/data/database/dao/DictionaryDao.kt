@@ -2,8 +2,10 @@ package com.translator.uzbek.english.dictionary.data.database.dao
 
 import app.cash.sqldelight.coroutines.asFlow
 import app.cash.sqldelight.coroutines.mapToList
+import app.cash.sqldelight.coroutines.mapToOneOrNull
 import com.translator.uzbek.english.dictionary.core.datetime.currentTimestamp
 import com.translator.uzbek.english.dictionary.data.database.model.DictionaryModel
+import com.translator.uzbek.english.dictionary.data.database.model.WordModel
 import com.translator.uzbek.english.dictionary.data.database.model.toModel
 import com.translator.uzbek.english.dictionary.db.AppDatabase
 import com.translator.uzbek.english.dictionary.shared.ioDispatcher
@@ -22,6 +24,14 @@ class DictionaryDao(database: AppDatabase) {
             .map { dict ->
                 dict.map { it.toModel() }.sortedByDescending { it.createdAt }
             }
+            .flowOn(ioDispatcher)
+    }
+
+    fun fetchDictionaryById(id: String): Flow<DictionaryModel?> {
+        return queries.fetchDictionaryById(id)
+            .asFlow()
+            .mapToOneOrNull(ioDispatcher)
+            .map { dict -> dict?.toModel() }
             .flowOn(ioDispatcher)
     }
 

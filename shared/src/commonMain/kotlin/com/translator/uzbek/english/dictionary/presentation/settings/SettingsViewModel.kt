@@ -4,6 +4,7 @@ import com.rickclephas.kmm.viewmodel.KMMViewModel
 import com.rickclephas.kmm.viewmodel.MutableStateFlow
 import com.rickclephas.kmp.nativecoroutines.NativeCoroutinesState
 import com.translator.uzbek.english.dictionary.core.datetime.TimeModel
+import com.translator.uzbek.english.dictionary.data.database.dao.WordDao
 import com.translator.uzbek.english.dictionary.data.datastore.AppStore
 import com.translator.uzbek.english.dictionary.data.datastore.DictionaryStore
 import com.translator.uzbek.english.dictionary.data.model.mode.FirstLanguageMode
@@ -20,6 +21,7 @@ class SettingsViewModel : KMMViewModel(), KoinComponent {
 
     private val appStore by inject<AppStore>()
     private val dictionaryStore by inject<DictionaryStore>()
+    private val wordDao by inject<WordDao>()
 
     private val stateData = MutableStateFlow(viewModelScope, SettingsState())
 
@@ -42,6 +44,7 @@ class SettingsViewModel : KMMViewModel(), KoinComponent {
             is SettingsEvent.SetReminder -> setReminder(event)
             is SettingsEvent.CheckSoundEffects -> checkSoundEffects(event.checked)
             is SettingsEvent.CheckAutoPronounce -> checkAutoPronounce(event.checked)
+            SettingsEvent.ResetProgress -> resetProgress()
         }
     }
 
@@ -133,5 +136,9 @@ class SettingsViewModel : KMMViewModel(), KoinComponent {
         dictionaryStore.setAutoPronounceEnabled(checked)
 
         stateData.update { it.copy(isAutoPronounceEnabled = checked) }
+    }
+
+    private fun resetProgress() {
+        wordDao.resetAllProgress()
     }
 }

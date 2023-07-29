@@ -20,7 +20,9 @@ import androidx.compose.material3.Switch
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
@@ -44,6 +46,7 @@ import com.translator.uzbek.english.dictionary.android.core.extensions.clickable
 import com.translator.uzbek.english.dictionary.android.core.extensions.defaultPadding
 import com.translator.uzbek.english.dictionary.android.core.extensions.openUrl
 import com.translator.uzbek.english.dictionary.android.core.extensions.shareText
+import com.translator.uzbek.english.dictionary.android.design.components.ConfirmationDialog
 import com.translator.uzbek.english.dictionary.android.design.components.DictContainer
 import com.translator.uzbek.english.dictionary.android.design.components.DictIcon
 import com.translator.uzbek.english.dictionary.android.design.localization.LocalStrings
@@ -52,14 +55,14 @@ import com.translator.uzbek.english.dictionary.android.design.mapper.localized
 import com.translator.uzbek.english.dictionary.android.design.mapper.weekdays
 import com.translator.uzbek.english.dictionary.android.design.theme.DividerColor
 import com.translator.uzbek.english.dictionary.android.design.theme.WindowBackground
+import com.translator.uzbek.english.dictionary.android.navigation.FirstLanguageResult
+import com.translator.uzbek.english.dictionary.android.navigation.ReminderResult
 import com.translator.uzbek.english.dictionary.android.presentation.destinations.AppLanguageScreenDestination
 import com.translator.uzbek.english.dictionary.android.presentation.destinations.DailyGoalScreenDestination
 import com.translator.uzbek.english.dictionary.android.presentation.destinations.FeedbackScreenDestination
 import com.translator.uzbek.english.dictionary.android.presentation.destinations.FirstLanguageScreenDestination
 import com.translator.uzbek.english.dictionary.android.presentation.destinations.ReminderScreenDestination
 import com.translator.uzbek.english.dictionary.android.presentation.destinations.ThemeModeScreenDestination
-import com.translator.uzbek.english.dictionary.android.presentation.settings.firstLanguage.FirstLanguageResult
-import com.translator.uzbek.english.dictionary.android.presentation.settings.reminder.ReminderResult
 import com.translator.uzbek.english.dictionary.data.model.mode.LanguageMode
 import com.translator.uzbek.english.dictionary.data.model.mode.ThemeMode
 import com.translator.uzbek.english.dictionary.presentation.settings.SettingsEvent
@@ -85,6 +88,7 @@ fun SettingsScreen(
 
     val state by viewModel.state.collectAsStateWithLifecycle()
 
+    var showResetDialog by remember { mutableStateOf(false) }
     val reminderWeekdays = remember(state.reminderDays) {
         state.reminderDays.weekdays(strings)
     }
@@ -133,14 +137,30 @@ fun SettingsScreen(
         }
     }
 
+    if (showResetDialog) {
+        ConfirmationDialog(
+            message = strings.confirmationResetAllProgress,
+            onConfirm = {
+                viewModel.onEvent(SettingsEvent.ResetProgress)
+                showResetDialog = false
+            },
+            onDismiss = {
+                showResetDialog = false
+            }
+        )
+    }
+
     DictContainer(strings.settings) {
         SettingsScreenContent(
             context = context,
             strings = strings,
             state = state,
-            onEvent = viewModel::onEvent,
             reminderWeekdays = reminderWeekdays,
-            onNavigate = navigator::navigate
+            onEvent = viewModel::onEvent,
+            onNavigate = navigator::navigate,
+            onReset = {
+                showResetDialog = true
+            }
         )
     }
 }
@@ -150,9 +170,10 @@ private fun SettingsScreenContent(
     context: Context,
     strings: StringResources,
     state: SettingsState,
-    onEvent: (SettingsEvent) -> Unit,
     reminderWeekdays: String,
-    onNavigate: (Direction) -> Unit
+    onEvent: (SettingsEvent) -> Unit,
+    onNavigate: (Direction) -> Unit,
+    onReset: () -> Unit,
 ) {
     LazyColumn(
         modifier = Modifier
@@ -163,7 +184,7 @@ private fun SettingsScreenContent(
     ) {
         item { LearningContent(strings, state, onEvent, onNavigate) }
         item { PreferencesContent(strings, state, onEvent, reminderWeekdays, onNavigate) }
-        item { ProgressContent(strings) }
+        item { ProgressContent(strings, onReset) }
         item { GeneralContent(context, strings, onNavigate) }
         item {
             Text(
@@ -327,7 +348,8 @@ private fun PreferencesContent(
 
 @Composable
 private fun ProgressContent(
-    strings: StringResources
+    strings: StringResources,
+    onReset: () -> Unit
 ) {
     HeaderContent(strings.progress) {
         NavigateContent(strings.createBackup) {
@@ -344,8 +366,8 @@ private fun ProgressContent(
             title = strings.resetProgress,
             textColor = MaterialTheme.colorScheme.error,
             iconColor = MaterialTheme.colorScheme.error,
-        ) {
-        }
+            onClick = onReset
+        )
     }
 }
 

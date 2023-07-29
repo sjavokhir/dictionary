@@ -20,8 +20,8 @@ class WordDao(database: AppDatabase) {
         return queries.fetchWords(dictionaryId)
             .asFlow()
             .mapToList(ioDispatcher)
-            .map { dict ->
-                dict.map { it.toModel() }.sortedByDescending { it.createdAt }
+            .map { word ->
+                word.map { it.toModel() }.sortedByDescending { it.createdAt }
             }
             .flowOn(ioDispatcher)
     }
@@ -30,8 +30,8 @@ class WordDao(database: AppDatabase) {
         return queries.searchWords(query)
             .asFlow()
             .mapToList(ioDispatcher)
-            .map { dict ->
-                dict.map { it.toModel() }.sortedByDescending { it.createdAt }
+            .map { word ->
+                word.map { it.toModel() }
             }
             .flowOn(ioDispatcher)
     }
@@ -40,7 +40,7 @@ class WordDao(database: AppDatabase) {
         return queries.fetchWordById(wordId)
             .asFlow()
             .mapToOneOrNull(ioDispatcher)
-            .map { dict -> dict?.toModel() }
+            .map { word -> word?.toModel() }
             .flowOn(ioDispatcher)
     }
 
@@ -50,6 +50,7 @@ class WordDao(database: AppDatabase) {
         word: String,
         translation: String,
         transcription: String? = null,
+        repeats: Int,
         status: WordModel.WordStatus,
     ) {
         queries.insertWord(
@@ -59,6 +60,7 @@ class WordDao(database: AppDatabase) {
             word = word.trim(),
             translation = translation.trim(),
             transcription = transcription?.trim(),
+            repeats = repeats.toLong(),
             status = status.ordinal.toLong()
         )
     }
@@ -74,7 +76,7 @@ class WordDao(database: AppDatabase) {
     fun updateWordStatus(wordId: String, status: WordModel.WordStatus) {
         queries.updateWordStatus(
             status = status.ordinal.toLong(),
-            wordId = wordId
+            id = wordId
         )
     }
 

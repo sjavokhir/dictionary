@@ -22,6 +22,9 @@ class AddWordViewModel : KMMViewModel(), KoinComponent {
     @NativeCoroutinesState
     val state = stateData.asStateFlow()
 
+    private val wordId = kotlinx.coroutines.flow.MutableStateFlow("")
+    private val dictionaryId = kotlinx.coroutines.flow.MutableStateFlow("")
+
     fun onEvent(event: AddWordEvent) {
         when (event) {
             is AddWordEvent.FetchWord -> fetchWord(event.wordId, event.dictionaryId)
@@ -34,26 +37,24 @@ class AddWordViewModel : KMMViewModel(), KoinComponent {
     }
 
     private fun fetchWord(wordId: String, dictionaryId: String) {
+        this.wordId.value = wordId
+        this.dictionaryId.value = dictionaryId
+
         viewModelScope.coroutineScope.launch {
             wordDao.fetchWordById(wordId).collectLatest { model ->
                 if (model != null) {
                     stateData.update {
                         it.copy(
-                            wordId = wordId,
-                            dictionaryId = dictionaryId,
                             word = model.word,
                             translation = model.translation,
                             transcription = model.transcription.orEmpty(),
+                            repeats = model.repeats,
                             isNewWord = false
                         )
                     }
                 } else {
                     stateData.update {
-                        it.copy(
-                            wordId = wordId,
-                            dictionaryId = dictionaryId,
-                            isNewWord = true
-                        )
+                        it.copy(isNewWord = true)
                     }
                 }
             }
@@ -86,11 +87,12 @@ class AddWordViewModel : KMMViewModel(), KoinComponent {
         setLoading()
 
         wordDao.insert(
-            id = state.value.wordId,
-            dictionaryId = state.value.dictionaryId,
+            id = wordId.value,
+            dictionaryId = dictionaryId.value,
             word = state.value.word,
             translation = state.value.translation,
             transcription = state.value.transcription,
+            repeats = state.value.repeats,
             status = WordModel.WordStatus.New
         )
 

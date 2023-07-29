@@ -23,6 +23,16 @@ fun WordModel.WordStatus.color(): Color {
 }
 
 @Composable
+fun WordModel.WordStatus.localized(repeats: Int): String {
+    return when (this) {
+        WordModel.WordStatus.Learned -> LocalStrings.current.learned
+        WordModel.WordStatus.New -> LocalStrings.current.new
+        WordModel.WordStatus.Learning -> LocalStrings.current.learningRepeats(repeats)
+        WordModel.WordStatus.Skipped -> LocalStrings.current.skipped
+    }
+}
+
+@Composable
 fun FirstLanguageMode.localized(): String {
     return when (this) {
         FirstLanguageMode.Uzbek -> LocalStrings.current.uzbek

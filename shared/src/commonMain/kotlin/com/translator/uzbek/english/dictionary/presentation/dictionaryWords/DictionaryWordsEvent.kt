@@ -11,7 +11,7 @@ sealed class DictionaryWordsEvent {
 
     data class SetWordStatus(
         val wordId: String,
-        val status: WordModel.WordStatus,
+        val newStatus: WordModel.WordStatus,
     ) : DictionaryWordsEvent()
 
     data class RemoveWord(val wordId: String) : DictionaryWordsEvent()

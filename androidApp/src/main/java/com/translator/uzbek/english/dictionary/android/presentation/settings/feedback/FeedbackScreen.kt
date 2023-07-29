@@ -46,7 +46,7 @@ fun FeedbackScreen(
             onSendEmail = {
                 context.sendMail(
                     email = Constants.email,
-                    subject = "Feedback regarding ${strings.appName} [$appVersion - $deviceVersion]"
+                    subject = strings.feedbackRegarding(strings.appName)
                 )
             },
             onOpenUrl = {

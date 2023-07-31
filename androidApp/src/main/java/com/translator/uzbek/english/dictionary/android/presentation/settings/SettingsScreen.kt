@@ -55,12 +55,10 @@ import com.translator.uzbek.english.dictionary.android.design.mapper.localized
 import com.translator.uzbek.english.dictionary.android.design.mapper.weekdays
 import com.translator.uzbek.english.dictionary.android.design.theme.DividerColor
 import com.translator.uzbek.english.dictionary.android.design.theme.WindowBackground
-import com.translator.uzbek.english.dictionary.android.navigation.FirstLanguageResult
 import com.translator.uzbek.english.dictionary.android.navigation.ReminderResult
 import com.translator.uzbek.english.dictionary.android.presentation.destinations.AppLanguageScreenDestination
 import com.translator.uzbek.english.dictionary.android.presentation.destinations.DailyGoalScreenDestination
 import com.translator.uzbek.english.dictionary.android.presentation.destinations.FeedbackScreenDestination
-import com.translator.uzbek.english.dictionary.android.presentation.destinations.FirstLanguageScreenDestination
 import com.translator.uzbek.english.dictionary.android.presentation.destinations.ReminderScreenDestination
 import com.translator.uzbek.english.dictionary.android.presentation.destinations.ThemeModeScreenDestination
 import com.translator.uzbek.english.dictionary.data.model.mode.LanguageMode
@@ -78,7 +76,6 @@ fun SettingsScreen(
     viewModel: SettingsViewModel = viewModel(),
     navigator: DestinationsNavigator,
     resultDailyGoal: ResultRecipient<DailyGoalScreenDestination, Int>,
-    resultFirstLanguage: ResultRecipient<FirstLanguageScreenDestination, FirstLanguageResult>,
     resultAppLanguage: ResultRecipient<AppLanguageScreenDestination, LanguageMode>,
     resultThemeMode: ResultRecipient<ThemeModeScreenDestination, ThemeMode>,
     resultReminder: ResultRecipient<ReminderScreenDestination, ReminderResult>,
@@ -96,23 +93,6 @@ fun SettingsScreen(
     resultDailyGoal.onNavResult { result ->
         if (result is NavResult.Value) {
             viewModel.onEvent(SettingsEvent.SetDailyGoal(result.value))
-        }
-    }
-    resultFirstLanguage.onNavResult { result ->
-        if (result is NavResult.Value) {
-            when (result.value.type) {
-                FirstLanguageResult.Type.NewWord -> {
-                    viewModel.onEvent(
-                        SettingsEvent.SetNewWordFirstLanguage(result.value.firstLanguage)
-                    )
-                }
-
-                FirstLanguageResult.Type.Repeated -> {
-                    viewModel.onEvent(
-                        SettingsEvent.SetRepeatedFirstLanguage(result.value.firstLanguage)
-                    )
-                }
-            }
         }
     }
     resultAppLanguage.onNavResult { result ->
@@ -215,34 +195,6 @@ private fun LearningContent(
             }
         ) {
             onNavigate(DailyGoalScreenDestination(state.dailyGoal))
-        }
-
-        DividerContent()
-
-        NavigateContent(
-            title = strings.displayNewWordsFirst,
-            value = state.newWordFirstLanguage.localized()
-        ) {
-            onNavigate(
-                FirstLanguageScreenDestination(
-                    firstLanguage = state.newWordFirstLanguage,
-                    type = FirstLanguageResult.Type.NewWord
-                )
-            )
-        }
-
-        DividerContent()
-
-        NavigateContent(
-            title = strings.displayWordsBeingRepeated,
-            value = state.repeatedFirstLanguage.localized()
-        ) {
-            onNavigate(
-                FirstLanguageScreenDestination(
-                    firstLanguage = state.repeatedFirstLanguage,
-                    type = FirstLanguageResult.Type.Repeated
-                )
-            )
         }
 
         DividerContent()

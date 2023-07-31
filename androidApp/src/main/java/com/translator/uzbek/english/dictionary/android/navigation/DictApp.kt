@@ -17,7 +17,6 @@ import com.translator.uzbek.english.dictionary.android.presentation.destinations
 import com.translator.uzbek.english.dictionary.android.presentation.destinations.DictionaryScreenDestination
 import com.translator.uzbek.english.dictionary.android.presentation.destinations.DictionaryWordsScreenDestination
 import com.translator.uzbek.english.dictionary.android.presentation.destinations.FeedbackScreenDestination
-import com.translator.uzbek.english.dictionary.android.presentation.destinations.FirstLanguageScreenDestination
 import com.translator.uzbek.english.dictionary.android.presentation.destinations.LearnScreenDestination
 import com.translator.uzbek.english.dictionary.android.presentation.destinations.PremiumScreenDestination
 import com.translator.uzbek.english.dictionary.android.presentation.destinations.ReminderScreenDestination
@@ -77,9 +76,9 @@ private val Destination.shouldShowBottomBar
         FeedbackScreenDestination,
         AppLanguageScreenDestination,
         ThemeModeScreenDestination,
-        FirstLanguageScreenDestination,
         DailyGoalScreenDestination,
         ReminderScreenDestination -> true
+
         AddDictionaryScreenDestination,
         SearchForWordsScreenDestination,
         DictionaryWordsScreenDestination,

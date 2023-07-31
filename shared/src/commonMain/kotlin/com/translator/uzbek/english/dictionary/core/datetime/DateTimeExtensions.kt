@@ -14,6 +14,10 @@ fun currentTimestamp(): Long {
         .toEpochMilliseconds()
 }
 
+fun currentDateTime(): DateTimeModel {
+    return Clock.System.now().toLocalDateTime(TimeZone.currentSystemDefault()).toDateTimeModel()
+}
+
 fun Long.toDateTime(): DateTimeModel {
     return Instant.fromEpochMilliseconds(this).toDateTimeModel()
 }

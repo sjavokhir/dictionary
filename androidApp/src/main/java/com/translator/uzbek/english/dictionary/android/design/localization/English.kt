@@ -13,12 +13,9 @@ fun stringResourcesEnglish() = StringResources(
     settings = "Settings",
     learning = "Learning",
     dailyGoal = "Daily goal",
-    displayNewWordsFirst = "Display new words first in",
-    displayWordsBeingRepeated = "Display words being repeated first in",
     showTranscription = "Show transcription",
     uzbek = "Uzbek",
     english = "English",
-    random = "Random",
     preferences = "Preferences",
     appLanguage = "App language",
     theme = "Theme",
@@ -138,5 +135,17 @@ fun stringResourcesEnglish() = StringResources(
     learningRepeats = {
         "Learning ($it/${Constants.defaultRepeats} repeats)"
     },
-    skipped = "Skipped"
+    skipped = "Skipped",
+    goodMorning = "Good morning \uD83D\uDC4B",
+    goodAfternoon = "Good afternoon \uD83D\uDC4B",
+    goodEvening = "Good evening \uD83D\uDC4B",
+    goodNight = "Good night \uD83D\uDC4B",
+    goPremium = "Go Premium",
+    premiumFeatures = """
+        • Full access to all lessons
+        • Unlock review tests
+        • No Ads!
+    """.trimIndent(),
+    seePlans = "See plans",
+    continueLearning = "Continue learning",
 )

@@ -4,7 +4,6 @@ import com.russhwolf.settings.ObservableSettings
 import com.russhwolf.settings.set
 import com.translator.uzbek.english.dictionary.core.datetime.TimeModel
 import com.translator.uzbek.english.dictionary.core.helpers.Constants
-import com.translator.uzbek.english.dictionary.data.model.mode.FirstLanguageMode
 import com.translator.uzbek.english.dictionary.data.util.Keys
 
 class DictionaryStore(private val settings: ObservableSettings) {
@@ -15,38 +14,6 @@ class DictionaryStore(private val settings: ObservableSettings) {
 
     fun getDailyGoal(): Int {
         return settings.getInt(Keys.DAILY_GOAL, Constants.defaultDailyGoal)
-    }
-
-    fun getNewWordFirstLanguage(): FirstLanguageMode {
-        return try {
-            val language = settings.getString(
-                Keys.NEW_WORD_LANGUAGE,
-                FirstLanguageMode.Uzbek.name
-            )
-            FirstLanguageMode.valueOf(language)
-        } catch (_: Throwable) {
-            FirstLanguageMode.Uzbek
-        }
-    }
-
-    fun setNewWordFirstLanguage(firstLanguage: FirstLanguageMode) {
-        settings[Keys.NEW_WORD_LANGUAGE] = firstLanguage.name
-    }
-
-    fun getRepeatedFirstLanguage(): FirstLanguageMode {
-        return try {
-            val language = settings.getString(
-                Keys.REPEATED_LANGUAGE,
-                FirstLanguageMode.Uzbek.name
-            )
-            FirstLanguageMode.valueOf(language)
-        } catch (_: Throwable) {
-            FirstLanguageMode.Uzbek
-        }
-    }
-
-    fun setRepeatedFirstLanguage(firstLanguage: FirstLanguageMode) {
-        settings[Keys.REPEATED_LANGUAGE] = firstLanguage.name
     }
 
     fun showTranscription(): Boolean {

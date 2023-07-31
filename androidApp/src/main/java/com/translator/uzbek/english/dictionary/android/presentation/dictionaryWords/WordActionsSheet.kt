@@ -136,9 +136,9 @@ private fun WordActionsContent(
                 icon = R.drawable.ic_word_copy,
                 onClick = onCopy
             )
-        }
 
-        DividerContent()
+            DividerContent()
+        }
 
         ActionItemContent(
             text = strings.edit,

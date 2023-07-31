@@ -7,7 +7,6 @@ import com.translator.uzbek.english.dictionary.core.datetime.TimeModel
 import com.translator.uzbek.english.dictionary.data.database.dao.WordDao
 import com.translator.uzbek.english.dictionary.data.datastore.AppStore
 import com.translator.uzbek.english.dictionary.data.datastore.DictionaryStore
-import com.translator.uzbek.english.dictionary.data.model.mode.FirstLanguageMode
 import com.translator.uzbek.english.dictionary.data.model.mode.LanguageMode
 import com.translator.uzbek.english.dictionary.data.model.mode.ThemeMode
 import com.translator.uzbek.english.dictionary.shared.Event
@@ -35,8 +34,6 @@ class SettingsViewModel : KMMViewModel(), KoinComponent {
     fun onEvent(event: SettingsEvent) {
         when (event) {
             is SettingsEvent.SetDailyGoal -> setDailyGoal(event.goal)
-            is SettingsEvent.SetNewWordFirstLanguage -> setNewWordFirstLanguage(event.firstLanguage)
-            is SettingsEvent.SetRepeatedFirstLanguage -> setRepeatedFirstLanguage(event.firstLanguage)
             is SettingsEvent.ShowTranscription -> showTranscription(event.show)
             is SettingsEvent.SetAppLanguage -> setAppLanguage(event.language)
             is SettingsEvent.SetThemeMode -> setThemeMode(event.themeMode)
@@ -52,8 +49,6 @@ class SettingsViewModel : KMMViewModel(), KoinComponent {
         stateData.update {
             it.copy(
                 dailyGoal = dictionaryStore.getDailyGoal(),
-                newWordFirstLanguage = dictionaryStore.getNewWordFirstLanguage(),
-                repeatedFirstLanguage = dictionaryStore.getRepeatedFirstLanguage(),
                 showTranscription = dictionaryStore.showTranscription(),
                 appLanguage = appStore.getAppLanguage(),
                 themeMode = appStore.getThemeMode(),
@@ -70,18 +65,6 @@ class SettingsViewModel : KMMViewModel(), KoinComponent {
         dictionaryStore.setDailyGoal(goal)
 
         stateData.update { it.copy(dailyGoal = goal) }
-    }
-
-    private fun setNewWordFirstLanguage(firstLanguage: FirstLanguageMode) {
-        dictionaryStore.setNewWordFirstLanguage(firstLanguage)
-
-        stateData.update { it.copy(newWordFirstLanguage = firstLanguage) }
-    }
-
-    private fun setRepeatedFirstLanguage(firstLanguage: FirstLanguageMode) {
-        dictionaryStore.setRepeatedFirstLanguage(firstLanguage)
-
-        stateData.update { it.copy(repeatedFirstLanguage = firstLanguage) }
     }
 
     private fun showTranscription(show: Boolean) {

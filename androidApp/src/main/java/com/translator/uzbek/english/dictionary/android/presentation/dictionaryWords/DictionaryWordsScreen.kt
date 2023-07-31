@@ -207,10 +207,6 @@ private fun DictionaryWordsScreenContent(
                         )
                     }
                 }
-            } else if (state.words.isEmpty()) {
-                item {
-
-                }
             } else {
                 items(state.words) { model ->
                     DictionaryWordItemContent(

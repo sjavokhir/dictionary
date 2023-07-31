@@ -1,7 +1,5 @@
 package com.translator.uzbek.english.dictionary.core.datetime
 
-import com.translator.uzbek.english.dictionary.core.extensions.az
-
 data class DateTimeModel(
     val dayOfMonth: Int = 1,
     val month: Int = 1,
@@ -14,9 +12,5 @@ data class DateTimeModel(
 ) {
     private val monthShortName = if (monthName.length >= 3) monthName.take(3) else monthName
 
-    val defaultDateTime =
-        "${dayOfMonth.az()} $monthShortName $year, ${hour.az()}:${minute.az()}" // dd MMM yyyy, HH:mm
-
-    val defaultDate =
-        "${dayOfMonth.az()} $monthShortName $year" // dd MMM yyyy
+    val defaultDate = "$monthShortName, $year" // MMM, yyyy
 }

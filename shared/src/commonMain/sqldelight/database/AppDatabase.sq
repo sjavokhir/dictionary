@@ -95,3 +95,8 @@ WHERE dictionaryId = ?;
 resetAllProgress:
 UPDATE Word
 SET status = 1;
+
+countStatusWords:
+SELECT COUNT(*)
+FROM Word
+WHERE status = ?;

@@ -146,6 +146,20 @@ fun stringResourcesEnglish() = StringResources(
         • Unlock review tests
         • No Ads!
     """.trimIndent(),
-    seePlans = "See plans",
-    continueLearning = "Continue learning",
+    dictionariesChosen = {
+        "$it dictionaries chosen"
+    },
+    learnNewWords = "Learn new words",
+    memorizedToday = { today, dailyGoal ->
+        "Memorized today: $today of $dailyGoal"
+    },
+    repeatWords = "Repeat words",
+    youHaventRepeatedWords = "You haven't repeated any words yet",
+    wordsForRepeat = {
+        "Words for repeat will show up in $it"
+    },
+    chooseCategoriesToRepeat = "Choose categories to review words from",
+    wordsToRepeat = {
+        "Words to repeat: $it"
+    }
 )

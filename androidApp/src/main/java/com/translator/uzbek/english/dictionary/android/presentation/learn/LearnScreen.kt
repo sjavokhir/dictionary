@@ -7,6 +7,7 @@ import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
@@ -30,16 +31,22 @@ import com.ramcosta.composedestinations.navigation.DestinationsNavigator
 import com.ramcosta.composedestinations.spec.Direction
 import com.translator.uzbek.english.dictionary.android.R
 import com.translator.uzbek.english.dictionary.android.core.extensions.clickableSingle
+import com.translator.uzbek.english.dictionary.android.core.extensions.defaultPadding
 import com.translator.uzbek.english.dictionary.android.design.components.DictContainer
 import com.translator.uzbek.english.dictionary.android.design.components.DictIcon
 import com.translator.uzbek.english.dictionary.android.design.localization.LocalStrings
 import com.translator.uzbek.english.dictionary.android.design.localization.StringResources
 import com.translator.uzbek.english.dictionary.android.design.mapper.localized
 import com.translator.uzbek.english.dictionary.android.design.theme.ChartColor3
+import com.translator.uzbek.english.dictionary.android.design.theme.ChartColor4
 import com.translator.uzbek.english.dictionary.android.design.theme.DividerColor
 import com.translator.uzbek.english.dictionary.android.design.theme.LocalSubscription
 import com.translator.uzbek.english.dictionary.android.design.theme.WindowBackground
+import com.translator.uzbek.english.dictionary.android.presentation.destinations.DictionarySelectionScreenDestination
+import com.translator.uzbek.english.dictionary.android.presentation.destinations.LearnWordsScreenDestination
 import com.translator.uzbek.english.dictionary.android.presentation.destinations.PremiumScreenDestination
+import com.translator.uzbek.english.dictionary.android.presentation.destinations.RepeatWordsScreenDestination
+import com.translator.uzbek.english.dictionary.android.presentation.settings.DividerContent
 import com.translator.uzbek.english.dictionary.data.model.common.QuoteModel
 import com.translator.uzbek.english.dictionary.presentation.learn.LearnState
 import com.translator.uzbek.english.dictionary.presentation.learn.LearnViewModel
@@ -73,25 +80,147 @@ private fun LearnScreenContent(
     state: LearnState,
     onNavigate: (Direction) -> Unit,
 ) {
-    Column {
-        LazyColumn(
-            modifier = Modifier
-                .fillMaxWidth()
-                .weight(1f)
-                .background(WindowBackground),
-            contentPadding = PaddingValues(20.dp),
-            verticalArrangement = Arrangement.spacedBy(24.dp)
-        ) {
-            if (!hasSubscription) {
-                item { PremiumContent(strings, onNavigate) }
-            }
+    LazyColumn(
+        modifier = Modifier
+            .fillMaxSize()
+            .background(WindowBackground),
+        contentPadding = PaddingValues(20.dp),
+        verticalArrangement = Arrangement.spacedBy(24.dp)
+    ) {
+        item {
+            Column(
+                modifier = Modifier
+                    .clip(MaterialTheme.shapes.medium)
+                    .border(
+                        width = 1.dp,
+                        color = DividerColor,
+                        shape = MaterialTheme.shapes.medium
+                    )
+                    .background(MaterialTheme.colorScheme.background)
+            ) {
+                ChosenDictionariesContent(strings, state) {
+                    onNavigate(DictionarySelectionScreenDestination)
+                }
 
-            state.quote?.let {
-                item { QuoteContent(it) }
+                DividerContent()
+
+                LearnWordsContent(strings, state) {
+                    onNavigate(LearnWordsScreenDestination)
+                }
+
+                DividerContent()
+
+                RepeatWordsContent(strings, state) {
+                    onNavigate(RepeatWordsScreenDestination)
+                }
             }
         }
 
-        ContinueLearningContent(strings)
+        if (!hasSubscription) {
+            item { PremiumContent(strings, onNavigate) }
+        }
+
+        state.quote?.let {
+            item { QuoteContent(it) }
+        }
+    }
+}
+
+@Composable
+private fun ChosenDictionariesContent(
+    strings: StringResources,
+    state: LearnState,
+    onClick: () -> Unit,
+) {
+    Row(
+        modifier = Modifier
+            .fillMaxWidth()
+            .clickableSingle(onClick = onClick)
+            .defaultPadding(),
+        verticalAlignment = Alignment.CenterVertically,
+        horizontalArrangement = Arrangement.spacedBy(14.dp)
+    ) {
+        DictIcon(
+            painter = painterResource(id = R.drawable.ic_choose),
+            color = MaterialTheme.colorScheme.outline
+        )
+
+        Text(
+            text = strings.dictionariesChosen(state.chosenDictionaries.size),
+            style = MaterialTheme.typography.bodyLarge
+        )
+    }
+}
+
+@Composable
+fun LearnWordsContent(
+    strings: StringResources,
+    state: LearnState,
+    onClick: () -> Unit,
+) {
+    Row(
+        modifier = Modifier
+            .fillMaxWidth()
+            .clickableSingle(onClick = onClick)
+            .defaultPadding(),
+        verticalAlignment = Alignment.CenterVertically,
+        horizontalArrangement = Arrangement.spacedBy(14.dp)
+    ) {
+        DictIcon(
+            painter = painterResource(id = R.drawable.ic_add_circle),
+            color = ChartColor3
+        )
+
+        Column {
+            Text(
+                text = strings.learnNewWords,
+                style = MaterialTheme.typography.bodyLarge
+            )
+
+            Text(
+                text = strings.memorizedToday(state.memorizedToday, state.dailyGoal),
+                style = MaterialTheme.typography.bodyMedium,
+                color = MaterialTheme.colorScheme.outline
+            )
+        }
+    }
+}
+
+@Composable
+fun RepeatWordsContent(
+    strings: StringResources,
+    state: LearnState,
+    onClick: () -> Unit,
+) {
+    Row(
+        modifier = Modifier
+            .fillMaxWidth()
+            .clickableSingle(onClick = onClick)
+            .defaultPadding(),
+        verticalAlignment = Alignment.CenterVertically,
+        horizontalArrangement = Arrangement.spacedBy(14.dp)
+    ) {
+        DictIcon(
+            painter = painterResource(id = R.drawable.ic_repeat),
+            color = ChartColor4
+        )
+
+        Column {
+            Text(
+                text = strings.repeatWords,
+                style = MaterialTheme.typography.bodyLarge
+            )
+
+            Text(
+                text = when {
+                    state.repeatedWords == 0 -> strings.youHaventRepeatedWords
+                    state.chosenDictionaries.isEmpty() -> strings.chooseCategoriesToRepeat
+                    else -> strings.wordsToRepeat(state.repeatedWords)
+                },
+                style = MaterialTheme.typography.bodyMedium,
+                color = MaterialTheme.colorScheme.outline
+            )
+        }
     }
 }
 
@@ -181,35 +310,6 @@ private fun QuoteContent(
             painter = painterResource(id = R.drawable.ic_quote),
             color = MaterialTheme.colorScheme.outline,
             modifier = Modifier.align(Alignment.End)
-        )
-    }
-}
-
-@Composable
-private fun ContinueLearningContent(
-    strings: StringResources
-) {
-    Row(
-        modifier = Modifier
-            .fillMaxWidth()
-            .background(MaterialTheme.colorScheme.primary)
-            .padding(
-                horizontal = 20.dp,
-                vertical = 16.dp
-            ),
-        verticalAlignment = Alignment.CenterVertically,
-    ) {
-        Text(
-            text = strings.continueLearning,
-            style = MaterialTheme.typography.titleMedium,
-            fontWeight = FontWeight.SemiBold,
-            color = MaterialTheme.colorScheme.onPrimary,
-            modifier = Modifier.weight(1f),
-        )
-
-        DictIcon(
-            painter = painterResource(id = R.drawable.ic_chevron_right),
-            color = MaterialTheme.colorScheme.onPrimary,
         )
     }
 }

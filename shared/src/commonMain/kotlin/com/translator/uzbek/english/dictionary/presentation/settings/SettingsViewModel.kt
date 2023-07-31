@@ -4,6 +4,7 @@ import com.rickclephas.kmm.viewmodel.KMMViewModel
 import com.rickclephas.kmm.viewmodel.MutableStateFlow
 import com.rickclephas.kmp.nativecoroutines.NativeCoroutinesState
 import com.translator.uzbek.english.dictionary.core.datetime.TimeModel
+import com.translator.uzbek.english.dictionary.core.datetime.currentTimestamp
 import com.translator.uzbek.english.dictionary.data.database.dao.WordDao
 import com.translator.uzbek.english.dictionary.data.datastore.AppStore
 import com.translator.uzbek.english.dictionary.data.datastore.DictionaryStore
@@ -123,5 +124,6 @@ class SettingsViewModel : KMMViewModel(), KoinComponent {
 
     private fun resetProgress() {
         wordDao.resetAllProgress()
+        dictionaryStore.setStartOfLearning(currentTimestamp())
     }
 }

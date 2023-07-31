@@ -40,7 +40,15 @@ class WordDao(database: AppDatabase) {
         return queries.fetchWordById(wordId)
             .asFlow()
             .mapToOneOrNull(ioDispatcher)
-            .map { word -> word?.toModel() }
+            .map { it?.toModel() }
+            .flowOn(ioDispatcher)
+    }
+
+    fun countStatusWords(status: WordModel.WordStatus): Flow<Int> {
+        return queries.countStatusWords(status.ordinal.toLong())
+            .asFlow()
+            .mapToOneOrNull(ioDispatcher)
+            .map { (it ?: 0L).toInt() }
             .flowOn(ioDispatcher)
     }
 

@@ -3,10 +3,21 @@ package com.translator.uzbek.english.dictionary.data.datastore
 import com.russhwolf.settings.ObservableSettings
 import com.russhwolf.settings.set
 import com.translator.uzbek.english.dictionary.core.datetime.TimeModel
+import com.translator.uzbek.english.dictionary.core.datetime.currentTimestamp
+import com.translator.uzbek.english.dictionary.core.datetime.toDateTime
 import com.translator.uzbek.english.dictionary.core.helpers.Constants
 import com.translator.uzbek.english.dictionary.data.util.Keys
 
 class DictionaryStore(private val settings: ObservableSettings) {
+
+    fun setStartOfLearning(timestamp: Long) {
+        settings[Keys.START_OF_LEARNING] = timestamp
+    }
+
+    fun getStartOfLearning(): String {
+        return settings.getLong(Keys.START_OF_LEARNING, currentTimestamp())
+            .toDateTime().defaultDate
+    }
 
     fun setDailyGoal(goal: Int) {
         settings[Keys.DAILY_GOAL] = goal

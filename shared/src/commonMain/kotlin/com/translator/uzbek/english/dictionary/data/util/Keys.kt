@@ -10,9 +10,8 @@ internal object Keys {
     const val APP_LANGUAGE = "KEY_APP_LANGUAGE"
 
     // Dictionary prefs
+    const val START_OF_LEARNING = "KEY_START_OF_LEARNING"
     const val DAILY_GOAL = "KEY_DAILY_GOAL"
-    const val NEW_WORD_LANGUAGE = "KEY_NEW_WORD_LANGUAGE"
-    const val REPEATED_LANGUAGE = "KEY_REPEATED_LANGUAGE"
     const val SHOW_TRANSCRIPTION = "KEY_SHOW_TRANSCRIPTION"
     const val REMINDER = "KEY_REMINDER"
     const val REMINDER_HOUR = "KEY_REMINDER_HOUR"

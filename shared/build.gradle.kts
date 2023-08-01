@@ -5,7 +5,6 @@ plugins {
     alias(libs.plugins.kotlin.cocoapods)
     alias(libs.plugins.google.ksp)
     alias(libs.plugins.sqldelight)
-    alias(libs.plugins.kmm.coroutines)
 }
 
 kotlin {
@@ -23,6 +22,12 @@ kotlin {
     iosX64()
     iosArm64()
     iosSimulatorArm64()
+
+    targets.withType(org.jetbrains.kotlin.gradle.plugin.mpp.KotlinNativeTarget::class.java).all {
+        binaries.withType(org.jetbrains.kotlin.gradle.plugin.mpp.Framework::class.java).all {
+            export(libs.mvvm.core)
+        }
+    }
 
     cocoapods {
         summary = "Some description for the Shared Module"
@@ -51,14 +56,12 @@ kotlin {
                 implementation(libs.sqldelight.runtime)
                 implementation(libs.sqldelight.extensions)
 
-                implementation(libs.multiplatformsettings)
-                implementation(libs.kmm.viewmodel)
+                implementation(libs.settings)
             }
         }
 
         val androidMain by getting {
             dependencies {
-                implementation(libs.androidx.lifecycle.viewmodel)
                 implementation(libs.sqldelight.android)
             }
         }
@@ -113,4 +116,9 @@ sqldelight {
             packageName.set("com.translator.uzbek.english.dictionary.db")
         }
     }
+}
+
+dependencies {
+    commonMainApi(libs.mvvm.core)
+//    commonMainApi("dev.icerock.moko:mvvm-flow:0.16.1") // api mvvm-core, CFlow for native and binding extensions
 }

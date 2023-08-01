@@ -20,8 +20,8 @@ class WordDao(database: AppDatabase) {
         return queries.fetchWords(dictionaryId)
             .asFlow()
             .mapToList(ioDispatcher)
-            .map { dict ->
-                dict.map { it.toModel() }.sortedByDescending { it.createdAt }
+            .map { word ->
+                word.map { it.toModel() }.sortedByDescending { it.createdAt }
             }
             .flowOn(ioDispatcher)
     }
@@ -30,8 +30,8 @@ class WordDao(database: AppDatabase) {
         return queries.searchWords(query)
             .asFlow()
             .mapToList(ioDispatcher)
-            .map { dict ->
-                dict.map { it.toModel() }.sortedByDescending { it.createdAt }
+            .map { word ->
+                word.map { it.toModel() }
             }
             .flowOn(ioDispatcher)
     }
@@ -40,16 +40,25 @@ class WordDao(database: AppDatabase) {
         return queries.fetchWordById(wordId)
             .asFlow()
             .mapToOneOrNull(ioDispatcher)
-            .map { dict -> dict?.toModel() }
+            .map { it?.toModel() }
             .flowOn(ioDispatcher)
     }
 
-    fun insert(
+    fun getCountStatusWords(status: WordModel.WordStatus): Flow<Int> {
+        return queries.getCountStatusWords(status.ordinal.toLong())
+            .asFlow()
+            .mapToOneOrNull(ioDispatcher)
+            .map { (it ?: 0L).toInt() }
+            .flowOn(ioDispatcher)
+    }
+
+    fun insertWord(
         id: String,
         dictionaryId: String,
         word: String,
         translation: String,
         transcription: String? = null,
+        repeats: Int,
         status: WordModel.WordStatus,
     ) {
         queries.insertWord(
@@ -59,30 +68,31 @@ class WordDao(database: AppDatabase) {
             word = word.trim(),
             translation = translation.trim(),
             transcription = transcription?.trim(),
+            repeats = repeats.toLong(),
             status = status.ordinal.toLong()
         )
-    }
-
-    fun delete(id: String) {
-        queries.deleteWord(id)
-    }
-
-    fun clearAll(dictionaryId: String) {
-        queries.clearWords(dictionaryId)
     }
 
     fun updateWordStatus(wordId: String, status: WordModel.WordStatus) {
         queries.updateWordStatus(
             status = status.ordinal.toLong(),
-            wordId = wordId
+            id = wordId
         )
     }
 
-    fun resetProgress(dictionaryId: String) {
+    fun resetDictionaryProgress(dictionaryId: String) {
         queries.resetProgress(dictionaryId)
     }
 
     fun resetAllProgress() {
         queries.resetAllProgress()
+    }
+
+    fun deleteWordById(id: String) {
+        queries.deleteWord(id)
+    }
+
+    fun clearWordsByDictionaryId(dictionaryId: String) {
+        queries.clearWords(dictionaryId)
     }
 }

@@ -1,12 +1,10 @@
 package com.translator.uzbek.english.dictionary.presentation.dictionary
 
-import com.rickclephas.kmm.viewmodel.KMMViewModel
-import com.rickclephas.kmm.viewmodel.MutableStateFlow
-import com.rickclephas.kmm.viewmodel.coroutineScope
-import com.rickclephas.kmp.nativecoroutines.NativeCoroutinesState
 import com.translator.uzbek.english.dictionary.data.database.dao.DictionaryDao
 import com.translator.uzbek.english.dictionary.data.database.dao.WordDao
 import com.translator.uzbek.english.dictionary.data.database.model.DictionaryModel
+import dev.icerock.moko.mvvm.viewmodel.ViewModel
+import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.flow.update
@@ -14,14 +12,12 @@ import kotlinx.coroutines.launch
 import org.koin.core.component.KoinComponent
 import org.koin.core.component.inject
 
-class DictionaryViewModel : KMMViewModel(), KoinComponent {
+class DictionaryViewModel : ViewModel(), KoinComponent {
 
     private val dictionaryDao by inject<DictionaryDao>()
     private val wordDao by inject<WordDao>()
 
-    private val stateData = MutableStateFlow(viewModelScope, DictionaryState())
-
-    @NativeCoroutinesState
+    private val stateData = MutableStateFlow(DictionaryState())
     val state = stateData.asStateFlow()
 
     init {
@@ -39,7 +35,7 @@ class DictionaryViewModel : KMMViewModel(), KoinComponent {
     private fun fetchDictionaries() {
         setLoading()
 
-        viewModelScope.coroutineScope.launch {
+        viewModelScope.launch {
             dictionaryDao.fetchDictionaries().collectLatest { dictionaries ->
                 setSuccess(dictionaries)
             }
@@ -47,15 +43,15 @@ class DictionaryViewModel : KMMViewModel(), KoinComponent {
     }
 
     private fun resetProgress(model: DictionaryModel) {
-        wordDao.resetProgress(model.id)
+        wordDao.resetDictionaryProgress(model.id)
     }
 
     private fun removeDictionary(model: DictionaryModel) {
-        dictionaryDao.delete(model.id)
+        dictionaryDao.deleteDictionary(model.id)
     }
 
     private fun clearDictionary(model: DictionaryModel) {
-        wordDao.clearAll(model.id)
+        wordDao.clearWordsByDictionaryId(model.id)
     }
 
     private fun setLoading() {

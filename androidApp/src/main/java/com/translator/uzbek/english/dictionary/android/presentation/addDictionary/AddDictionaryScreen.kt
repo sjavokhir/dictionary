@@ -28,7 +28,6 @@ import com.translator.uzbek.english.dictionary.presentation.addDictionary.AddDic
 @Composable
 fun AddDictionaryScreen(
     id: String,
-    title: String = "",
     viewModel: AddDictionaryViewModel = viewModel(),
     resultNavigator: ResultBackNavigator<Boolean>
 ) {
@@ -36,8 +35,8 @@ fun AddDictionaryScreen(
 
     val state by viewModel.state.collectAsStateWithLifecycle()
 
-    LaunchedEffect(id, title) {
-        viewModel.onEvent(AddDictionaryEvent.SetDictionaryDetails(id, title))
+    LaunchedEffect(id) {
+        viewModel.onEvent(AddDictionaryEvent.FetchDictionary(id))
     }
 
     LaunchedEffect(state.isSuccess) {
@@ -47,7 +46,7 @@ fun AddDictionaryScreen(
     }
 
     DictContainer(
-        title = if (title.isEmpty()) strings.addDictionary else strings.editDictionary,
+        title = if (state.isNewDictionary) strings.addDictionary else strings.editDictionary,
         onNavigateUp = {
             resultNavigator.navigateBack(result = false)
         }
@@ -55,7 +54,6 @@ fun AddDictionaryScreen(
         AddDictionaryScreenContent(
             strings = strings,
             state = state,
-            isNewDictionary = title.isEmpty(),
             onEvent = viewModel::onEvent
         )
     }
@@ -65,7 +63,6 @@ fun AddDictionaryScreen(
 private fun AddDictionaryScreenContent(
     strings: StringResources,
     state: AddDictionaryState,
-    isNewDictionary: Boolean,
     onEvent: (AddDictionaryEvent) -> Unit
 ) {
     LazyColumn(
@@ -87,7 +84,7 @@ private fun AddDictionaryScreenContent(
         }
         item {
             DictFilledButton(
-                text = if (isNewDictionary) strings.add else strings.save,
+                text = if (state.isNewDictionary) strings.add else strings.save,
                 enabled = state.isEnabled && !state.isLoading
             ) {
                 onEvent(AddDictionaryEvent.Insert)

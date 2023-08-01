@@ -16,6 +16,7 @@ import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.material3.CircularProgressIndicator
+import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
@@ -40,12 +41,12 @@ import com.translator.uzbek.english.dictionary.android.core.extensions.clickable
 import com.translator.uzbek.english.dictionary.android.core.extensions.defaultPadding
 import com.translator.uzbek.english.dictionary.android.design.components.DictContainer
 import com.translator.uzbek.english.dictionary.android.design.components.DictIcon
-import com.translator.uzbek.english.dictionary.android.design.components.DictTextField
 import com.translator.uzbek.english.dictionary.android.design.components.DividerContent
 import com.translator.uzbek.english.dictionary.android.design.localization.LocalStrings
 import com.translator.uzbek.english.dictionary.android.design.localization.StringResources
 import com.translator.uzbek.english.dictionary.android.design.theme.DividerColor
 import com.translator.uzbek.english.dictionary.android.design.theme.WindowBackground
+import com.translator.uzbek.english.dictionary.android.navigation.toArgs
 import com.translator.uzbek.english.dictionary.android.presentation.destinations.AddDictionaryScreenDestination
 import com.translator.uzbek.english.dictionary.android.presentation.destinations.DictionaryWordsScreenDestination
 import com.translator.uzbek.english.dictionary.android.presentation.destinations.SearchForWordsScreenDestination
@@ -81,12 +82,7 @@ fun DictionaryScreen(
         },
         onEdit = {
             selectedDictionary?.let {
-                navigator.navigate(
-                    AddDictionaryScreenDestination(
-                        id = it.id,
-                        title = it.title
-                    )
-                )
+                navigator.navigate(AddDictionaryScreenDestination(it.id))
             }
         },
         onRemove = {
@@ -101,7 +97,18 @@ fun DictionaryScreen(
         },
     )
 
-    DictContainer(strings.dictionary) {
+    DictContainer(
+        title = strings.dictionary,
+        actions = {
+            IconButton(
+                onClick = {
+                    navigator.navigate(SearchForWordsScreenDestination)
+                }
+            ) {
+                DictIcon(painter = painterResource(id = R.drawable.ic_search))
+            }
+        }
+    ) {
         DictionaryScreenContent(
             strings = strings,
             state = state,
@@ -127,22 +134,6 @@ private fun DictionaryScreenContent(
         contentPadding = PaddingValues(20.dp),
         verticalArrangement = Arrangement.spacedBy(20.dp)
     ) {
-        item {
-            DictTextField(
-                baseModifier = Modifier.clickableSingle {
-                    onNavigate(SearchForWordsScreenDestination)
-                },
-                placeholder = strings.searchForWords,
-                leadingIcon = {
-                    DictIcon(
-                        painter = painterResource(id = R.drawable.ic_search),
-                        color = MaterialTheme.colorScheme.outline
-                    )
-                }
-            ) {
-                onNavigate(SearchForWordsScreenDestination)
-            }
-        }
         item {
             AddDictionaryItemContent(strings) {
                 onNavigate(AddDictionaryScreenDestination(randomUUID()))
@@ -175,16 +166,11 @@ private fun DictionaryScreenContent(
                         .background(MaterialTheme.colorScheme.background),
                 ) {
                     state.dictionaries.forEachIndexed { index, model ->
-                        DictionaryItemContent(strings = strings,
+                        DictionaryItemContent(
+                            strings = strings,
                             model = model,
                             onClick = {
-                                onNavigate(
-                                    DictionaryWordsScreenDestination(
-                                        dictionaryId = model.id,
-                                        dictionaryTitle = model.title,
-                                        isDefault = model.isDefault
-                                    )
-                                )
+                                onNavigate(DictionaryWordsScreenDestination(model.toArgs()))
                             },
                             onLongClick = {
                                 onBottomSheetActions(model)

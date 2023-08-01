@@ -9,8 +9,8 @@ import com.translator.uzbek.english.dictionary.android.design.theme.ChartColor2
 import com.translator.uzbek.english.dictionary.android.design.theme.ChartColor3
 import com.translator.uzbek.english.dictionary.android.design.theme.ChartColor4
 import com.translator.uzbek.english.dictionary.data.database.model.WordModel
-import com.translator.uzbek.english.dictionary.data.model.mode.FirstLanguageMode
 import com.translator.uzbek.english.dictionary.data.model.mode.ThemeMode
+import com.translator.uzbek.english.dictionary.presentation.learn.LearnState
 
 @Composable
 fun WordModel.WordStatus.color(): Color {
@@ -23,11 +23,12 @@ fun WordModel.WordStatus.color(): Color {
 }
 
 @Composable
-fun FirstLanguageMode.localized(): String {
+fun WordModel.WordStatus.localized(repeats: Int): String {
     return when (this) {
-        FirstLanguageMode.Uzbek -> LocalStrings.current.uzbek
-        FirstLanguageMode.English -> LocalStrings.current.english
-        FirstLanguageMode.Random -> LocalStrings.current.random
+        WordModel.WordStatus.Learned -> LocalStrings.current.learned
+        WordModel.WordStatus.New -> LocalStrings.current.new
+        WordModel.WordStatus.Learning -> LocalStrings.current.learningRepeats(repeats)
+        WordModel.WordStatus.Skipped -> LocalStrings.current.skipped
     }
 }
 
@@ -75,5 +76,16 @@ fun List<Boolean>.weekdays(strings: StringResources): String {
         days.zip(this)
             .filter { it.second }
             .joinToString(", ") { it.first }
+    }
+}
+
+@Composable
+fun LearnState.Title.localized(): String {
+    return when (this) {
+        LearnState.Title.Empty -> ""
+        LearnState.Title.Morning -> LocalStrings.current.goodMorning
+        LearnState.Title.Afternoon -> LocalStrings.current.goodAfternoon
+        LearnState.Title.Evening -> LocalStrings.current.goodEvening
+        LearnState.Title.Night -> LocalStrings.current.goodNight
     }
 }

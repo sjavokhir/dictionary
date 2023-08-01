@@ -5,12 +5,13 @@ import database.Word
 
 data class WordModel(
     val id: String,
-    val createdAt: Long,
+    val createdAt: Long? = null,
     val dictionaryId: String,
     val dictionaryTitle: String? = null,
     val word: String,
     val translation: String,
     val transcription: String? = null,
+    val repeats: Int,
     val status: WordStatus,
 ) {
     enum class WordStatus {
@@ -29,6 +30,7 @@ fun Word.toModel(): WordModel {
         word = word,
         translation = translation,
         transcription = transcription,
+        repeats = repeats.toInt(),
         status = when (status.toInt()) {
             WordModel.WordStatus.Learned.ordinal -> WordModel.WordStatus.Learned
             WordModel.WordStatus.Learning.ordinal -> WordModel.WordStatus.Learning
@@ -41,12 +43,11 @@ fun Word.toModel(): WordModel {
 fun SearchWords.toModel(): WordModel {
     return WordModel(
         id = id,
-        createdAt = createdAt,
         dictionaryId = dictionaryId,
         dictionaryTitle = dictionaryTitle,
         word = word,
         translation = translation,
-        transcription = transcription,
+        repeats = repeats.toInt(),
         status = when (status.toInt()) {
             WordModel.WordStatus.Learned.ordinal -> WordModel.WordStatus.Learned
             WordModel.WordStatus.Learning.ordinal -> WordModel.WordStatus.Learning

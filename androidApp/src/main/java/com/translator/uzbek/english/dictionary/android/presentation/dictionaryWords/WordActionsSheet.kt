@@ -29,7 +29,7 @@ fun WordActionsSheet(
     selectedWord: WordModel?,
     onDismiss: () -> Unit,
     onStatus: (String, WordModel.WordStatus) -> Unit,
-    onCopy: () -> Unit,
+    onCopy: (() -> Unit)? = null,
     onEdit: (WordModel) -> Unit,
     onRemove: (String) -> Unit,
 ) {
@@ -54,9 +54,7 @@ fun WordActionsSheet(
                     onStatus(selectedWord.id, WordModel.WordStatus.Learning)
                     onDismiss()
                 },
-                onCopy = {
-                    onDismiss()
-                },
+                onCopy = onCopy,
                 onEdit = {
                     onEdit(selectedWord)
                     onDismiss()
@@ -90,7 +88,7 @@ private fun WordActionsContent(
     onReset: () -> Unit,
     onLearned: () -> Unit,
     onLearning: () -> Unit,
-    onCopy: () -> Unit,
+    onCopy: (() -> Unit)? = null,
     onEdit: () -> Unit,
     onRemove: () -> Unit,
 ) {
@@ -132,13 +130,15 @@ private fun WordActionsContent(
 
         DividerContent()
 
-        ActionItemContent(
-            text = strings.copyToDictionary,
-            icon = R.drawable.ic_word_copy,
-            onClick = onCopy
-        )
+        if (onCopy != null) {
+            ActionItemContent(
+                text = strings.copyToDictionary,
+                icon = R.drawable.ic_word_copy,
+                onClick = onCopy
+            )
 
-        DividerContent()
+            DividerContent()
+        }
 
         ActionItemContent(
             text = strings.edit,

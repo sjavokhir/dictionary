@@ -182,8 +182,6 @@ class DictionaryActivity : ComponentActivity() {
 
                 override fun onAdLoaded(rewardedAd: RewardedAd) {
                     mRewardedAd = rewardedAd
-
-                    showRewardedAd()
                 }
             })
     }
@@ -219,7 +217,7 @@ class DictionaryActivity : ComponentActivity() {
                 override fun onAdDismissedFullScreenContent() {
                     mRewardedAd = null
 
-//                    loadRewardedAd()
+                    loadRewardedAd()
                 }
 
                 override fun onAdShowedFullScreenContent() {

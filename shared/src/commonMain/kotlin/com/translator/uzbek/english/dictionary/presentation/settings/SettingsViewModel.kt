@@ -1,29 +1,28 @@
 package com.translator.uzbek.english.dictionary.presentation.settings
 
-import com.rickclephas.kmm.viewmodel.KMMViewModel
-import com.rickclephas.kmm.viewmodel.MutableStateFlow
-import com.rickclephas.kmp.nativecoroutines.NativeCoroutinesState
 import com.translator.uzbek.english.dictionary.core.datetime.TimeModel
+import com.translator.uzbek.english.dictionary.core.datetime.currentTimestamp
+import com.translator.uzbek.english.dictionary.data.database.dao.WordDao
 import com.translator.uzbek.english.dictionary.data.datastore.AppStore
 import com.translator.uzbek.english.dictionary.data.datastore.DictionaryStore
-import com.translator.uzbek.english.dictionary.data.model.mode.FirstLanguageMode
 import com.translator.uzbek.english.dictionary.data.model.mode.LanguageMode
 import com.translator.uzbek.english.dictionary.data.model.mode.ThemeMode
 import com.translator.uzbek.english.dictionary.shared.Event
 import com.translator.uzbek.english.dictionary.shared.EventChannel
+import dev.icerock.moko.mvvm.viewmodel.ViewModel
+import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.update
 import org.koin.core.component.KoinComponent
 import org.koin.core.component.inject
 
-class SettingsViewModel : KMMViewModel(), KoinComponent {
+class SettingsViewModel : ViewModel(), KoinComponent {
 
     private val appStore by inject<AppStore>()
     private val dictionaryStore by inject<DictionaryStore>()
+    private val wordDao by inject<WordDao>()
 
-    private val stateData = MutableStateFlow(viewModelScope, SettingsState())
-
-    @NativeCoroutinesState
+    private val stateData = MutableStateFlow(SettingsState())
     val state = stateData.asStateFlow()
 
     init {
@@ -33,8 +32,6 @@ class SettingsViewModel : KMMViewModel(), KoinComponent {
     fun onEvent(event: SettingsEvent) {
         when (event) {
             is SettingsEvent.SetDailyGoal -> setDailyGoal(event.goal)
-            is SettingsEvent.SetNewWordFirstLanguage -> setNewWordFirstLanguage(event.firstLanguage)
-            is SettingsEvent.SetRepeatedFirstLanguage -> setRepeatedFirstLanguage(event.firstLanguage)
             is SettingsEvent.ShowTranscription -> showTranscription(event.show)
             is SettingsEvent.SetAppLanguage -> setAppLanguage(event.language)
             is SettingsEvent.SetThemeMode -> setThemeMode(event.themeMode)
@@ -42,6 +39,7 @@ class SettingsViewModel : KMMViewModel(), KoinComponent {
             is SettingsEvent.SetReminder -> setReminder(event)
             is SettingsEvent.CheckSoundEffects -> checkSoundEffects(event.checked)
             is SettingsEvent.CheckAutoPronounce -> checkAutoPronounce(event.checked)
+            SettingsEvent.ResetProgress -> resetProgress()
         }
     }
 
@@ -49,8 +47,6 @@ class SettingsViewModel : KMMViewModel(), KoinComponent {
         stateData.update {
             it.copy(
                 dailyGoal = dictionaryStore.getDailyGoal(),
-                newWordFirstLanguage = dictionaryStore.getNewWordFirstLanguage(),
-                repeatedFirstLanguage = dictionaryStore.getRepeatedFirstLanguage(),
                 showTranscription = dictionaryStore.showTranscription(),
                 appLanguage = appStore.getAppLanguage(),
                 themeMode = appStore.getThemeMode(),
@@ -67,18 +63,6 @@ class SettingsViewModel : KMMViewModel(), KoinComponent {
         dictionaryStore.setDailyGoal(goal)
 
         stateData.update { it.copy(dailyGoal = goal) }
-    }
-
-    private fun setNewWordFirstLanguage(firstLanguage: FirstLanguageMode) {
-        dictionaryStore.setNewWordFirstLanguage(firstLanguage)
-
-        stateData.update { it.copy(newWordFirstLanguage = firstLanguage) }
-    }
-
-    private fun setRepeatedFirstLanguage(firstLanguage: FirstLanguageMode) {
-        dictionaryStore.setRepeatedFirstLanguage(firstLanguage)
-
-        stateData.update { it.copy(repeatedFirstLanguage = firstLanguage) }
     }
 
     private fun showTranscription(show: Boolean) {
@@ -133,5 +117,10 @@ class SettingsViewModel : KMMViewModel(), KoinComponent {
         dictionaryStore.setAutoPronounceEnabled(checked)
 
         stateData.update { it.copy(isAutoPronounceEnabled = checked) }
+    }
+
+    private fun resetProgress() {
+        wordDao.resetAllProgress()
+        dictionaryStore.setStartOfLearning(currentTimestamp())
     }
 }

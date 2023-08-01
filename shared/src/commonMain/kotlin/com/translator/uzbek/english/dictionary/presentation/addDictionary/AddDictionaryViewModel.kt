@@ -1,54 +1,53 @@
 package com.translator.uzbek.english.dictionary.presentation.addDictionary
 
-import com.rickclephas.kmm.viewmodel.KMMViewModel
-import com.rickclephas.kmm.viewmodel.MutableStateFlow
-import com.rickclephas.kmp.nativecoroutines.NativeCoroutinesState
 import com.translator.uzbek.english.dictionary.data.database.dao.DictionaryDao
+import dev.icerock.moko.mvvm.viewmodel.ViewModel
+import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
+import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.flow.update
+import kotlinx.coroutines.launch
 import org.koin.core.component.KoinComponent
 import org.koin.core.component.inject
 
-class AddDictionaryViewModel : KMMViewModel(), KoinComponent {
+class AddDictionaryViewModel : ViewModel(), KoinComponent {
 
     private val dictionaryDao by inject<DictionaryDao>()
 
-    private val stateData = MutableStateFlow(viewModelScope, AddDictionaryState())
-
-    @NativeCoroutinesState
+    private val stateData = MutableStateFlow(AddDictionaryState())
     val state = stateData.asStateFlow()
+
+    private val dictionaryId = MutableStateFlow("")
+    private val isSelected = MutableStateFlow(false)
 
     fun onEvent(event: AddDictionaryEvent) {
         when (event) {
-            is AddDictionaryEvent.SetDictionaryDetails -> setDictionaryDetails(
-                id = event.id,
-                title = event.title,
-            )
-
+            is AddDictionaryEvent.FetchDictionary -> fetchDictionary(event.id)
             is AddDictionaryEvent.ChangeTitle -> changeTitle(event.title)
 
             AddDictionaryEvent.Insert -> insert()
         }
     }
 
-    private fun insert() {
-        setLoading()
+    private fun fetchDictionary(id: String) {
+        dictionaryId.value = id
 
-        dictionaryDao.insert(
-            id = state.value.id,
-            title = state.value.title,
-        )
+        viewModelScope.launch {
+            dictionaryDao.fetchDictionaryById(id).collectLatest { model ->
+                isSelected.value = model?.isSelected ?: false
 
-        setSuccess()
-    }
-
-    private fun setDictionaryDetails(id: String, title: String) {
-        stateData.update {
-            it.copy(
-                id = id,
-                title = title,
-                isEnabled = title.isNotBlank(),
-            )
+                stateData.update {
+                    if (model != null) {
+                        it.copy(
+                            title = model.title,
+                            isNewDictionary = false,
+                            isEnabled = model.title.isNotBlank(),
+                        )
+                    } else {
+                        it.copy(isNewDictionary = true)
+                    }
+                }
+            }
         }
     }
 
@@ -59,6 +58,18 @@ class AddDictionaryViewModel : KMMViewModel(), KoinComponent {
                 isEnabled = title.isNotBlank(),
             )
         }
+    }
+
+    private fun insert() {
+        setLoading()
+
+        dictionaryDao.insertDictionary(
+            id = dictionaryId.value,
+            title = state.value.title,
+            isSelected = isSelected.value
+        )
+
+        setSuccess()
     }
 
     private fun setLoading() {

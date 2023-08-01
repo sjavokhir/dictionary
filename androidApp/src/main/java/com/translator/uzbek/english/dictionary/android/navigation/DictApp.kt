@@ -15,12 +15,14 @@ import com.translator.uzbek.english.dictionary.android.presentation.destinations
 import com.translator.uzbek.english.dictionary.android.presentation.destinations.DailyGoalScreenDestination
 import com.translator.uzbek.english.dictionary.android.presentation.destinations.Destination
 import com.translator.uzbek.english.dictionary.android.presentation.destinations.DictionaryScreenDestination
+import com.translator.uzbek.english.dictionary.android.presentation.destinations.DictionarySelectionScreenDestination
 import com.translator.uzbek.english.dictionary.android.presentation.destinations.DictionaryWordsScreenDestination
 import com.translator.uzbek.english.dictionary.android.presentation.destinations.FeedbackScreenDestination
-import com.translator.uzbek.english.dictionary.android.presentation.destinations.FirstLanguageScreenDestination
 import com.translator.uzbek.english.dictionary.android.presentation.destinations.LearnScreenDestination
+import com.translator.uzbek.english.dictionary.android.presentation.destinations.LearnWordsScreenDestination
 import com.translator.uzbek.english.dictionary.android.presentation.destinations.PremiumScreenDestination
 import com.translator.uzbek.english.dictionary.android.presentation.destinations.ReminderScreenDestination
+import com.translator.uzbek.english.dictionary.android.presentation.destinations.RepeatWordsScreenDestination
 import com.translator.uzbek.english.dictionary.android.presentation.destinations.SearchForWordsScreenDestination
 import com.translator.uzbek.english.dictionary.android.presentation.destinations.SettingsScreenDestination
 import com.translator.uzbek.english.dictionary.android.presentation.destinations.StatisticsScreenDestination
@@ -77,13 +79,16 @@ private val Destination.shouldShowBottomBar
         FeedbackScreenDestination,
         AppLanguageScreenDestination,
         ThemeModeScreenDestination,
-        FirstLanguageScreenDestination,
         DailyGoalScreenDestination,
         ReminderScreenDestination -> true
+
         AddDictionaryScreenDestination,
         SearchForWordsScreenDestination,
         DictionaryWordsScreenDestination,
         AddWordScreenDestination,
+        DictionarySelectionScreenDestination,
+        LearnWordsScreenDestination,
+        RepeatWordsScreenDestination,
         PremiumScreenDestination -> false
     }
 

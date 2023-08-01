@@ -44,15 +44,15 @@ class WordDao(database: AppDatabase) {
             .flowOn(ioDispatcher)
     }
 
-    fun countStatusWords(status: WordModel.WordStatus): Flow<Int> {
-        return queries.countStatusWords(status.ordinal.toLong())
+    fun getCountStatusWords(status: WordModel.WordStatus): Flow<Int> {
+        return queries.getCountStatusWords(status.ordinal.toLong())
             .asFlow()
             .mapToOneOrNull(ioDispatcher)
             .map { (it ?: 0L).toInt() }
             .flowOn(ioDispatcher)
     }
 
-    fun insert(
+    fun insertWord(
         id: String,
         dictionaryId: String,
         word: String,
@@ -73,14 +73,6 @@ class WordDao(database: AppDatabase) {
         )
     }
 
-    fun delete(id: String) {
-        queries.deleteWord(id)
-    }
-
-    fun clearAll(dictionaryId: String) {
-        queries.clearWords(dictionaryId)
-    }
-
     fun updateWordStatus(wordId: String, status: WordModel.WordStatus) {
         queries.updateWordStatus(
             status = status.ordinal.toLong(),
@@ -88,11 +80,19 @@ class WordDao(database: AppDatabase) {
         )
     }
 
-    fun resetProgress(dictionaryId: String) {
+    fun resetDictionaryProgress(dictionaryId: String) {
         queries.resetProgress(dictionaryId)
     }
 
     fun resetAllProgress() {
         queries.resetAllProgress()
+    }
+
+    fun deleteWordById(id: String) {
+        queries.deleteWord(id)
+    }
+
+    fun clearWordsByDictionaryId(dictionaryId: String) {
+        queries.clearWords(dictionaryId)
     }
 }

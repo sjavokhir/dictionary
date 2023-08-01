@@ -1,8 +1,5 @@
 package com.translator.uzbek.english.dictionary.presentation.settings
 
-import com.rickclephas.kmm.viewmodel.KMMViewModel
-import com.rickclephas.kmm.viewmodel.MutableStateFlow
-import com.rickclephas.kmp.nativecoroutines.NativeCoroutinesState
 import com.translator.uzbek.english.dictionary.core.datetime.TimeModel
 import com.translator.uzbek.english.dictionary.core.datetime.currentTimestamp
 import com.translator.uzbek.english.dictionary.data.database.dao.WordDao
@@ -12,20 +9,20 @@ import com.translator.uzbek.english.dictionary.data.model.mode.LanguageMode
 import com.translator.uzbek.english.dictionary.data.model.mode.ThemeMode
 import com.translator.uzbek.english.dictionary.shared.Event
 import com.translator.uzbek.english.dictionary.shared.EventChannel
+import dev.icerock.moko.mvvm.viewmodel.ViewModel
+import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.update
 import org.koin.core.component.KoinComponent
 import org.koin.core.component.inject
 
-class SettingsViewModel : KMMViewModel(), KoinComponent {
+class SettingsViewModel : ViewModel(), KoinComponent {
 
     private val appStore by inject<AppStore>()
     private val dictionaryStore by inject<DictionaryStore>()
     private val wordDao by inject<WordDao>()
 
-    private val stateData = MutableStateFlow(viewModelScope, SettingsState())
-
-    @NativeCoroutinesState
+    private val stateData = MutableStateFlow(SettingsState())
     val state = stateData.asStateFlow()
 
     init {

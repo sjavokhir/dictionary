@@ -56,7 +56,7 @@ import com.translator.uzbek.english.dictionary.presentation.learn.LearnViewModel
 @Composable
 fun LearnScreen(
     viewModel: LearnViewModel = viewModel(),
-    navigator: DestinationsNavigator
+    navigator: DestinationsNavigator,
 ) {
     val strings = LocalStrings.current
     val hasSubscription = LocalSubscription.current
@@ -214,7 +214,7 @@ fun RepeatWordsContent(
             Text(
                 text = when {
                     state.repeatedWords == 0 -> strings.youHaventRepeatedWords
-                    state.chosenDictionaries.isEmpty() -> strings.chooseCategoriesToRepeat
+                    state.chosenDictionaries.isEmpty() -> strings.chooseDictionariesToRepeat
                     else -> strings.wordsToRepeat(state.repeatedWords)
                 },
                 style = MaterialTheme.typography.bodyMedium,

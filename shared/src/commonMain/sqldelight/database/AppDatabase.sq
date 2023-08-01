@@ -2,7 +2,8 @@ CREATE TABLE Dictionary(
     id TEXT NOT NULL PRIMARY KEY,
     createdAt INTEGER NOT NULL,
     title TEXT NOT NULL,
-    isDefault INTEGER NOT NULL
+    isDefault INTEGER NOT NULL,
+    isSelected INTEGER NOT NULL
 );
 
 fetchDictionaries:
@@ -11,10 +12,25 @@ SELECT
     d.createdAt,
     d.title,
     d.isDefault,
+    d.isSelected,
     COUNT(w.id) AS wordsCount,
     SUM(CASE WHEN w.status = 0 THEN 1 END) AS learnedWordsCount
 FROM Dictionary d
 LEFT JOIN Word w ON d.id = w.dictionaryId
+GROUP BY d.id;
+
+fetchSelectedDictionaries:
+SELECT
+    d.id,
+    d.createdAt,
+    d.title,
+    d.isDefault,
+    d.isSelected,
+    COUNT(w.id) AS wordsCount,
+    SUM(CASE WHEN w.status = 0 THEN 1 END) AS learnedWordsCount
+FROM Dictionary d
+LEFT JOIN Word w ON d.id = w.dictionaryId
+WHERE d.isSelected = 1
 GROUP BY d.id;
 
 fetchDictionaryById:
@@ -22,10 +38,17 @@ SELECT *
 FROM Dictionary
 WHERE id = ?;
 
+
 insertDictionary:
 INSERT OR REPLACE
-INTO Dictionary(id, createdAt, title, isDefault)
-VALUES (?,?,?,?);
+INTO Dictionary(id, createdAt, title, isDefault, isSelected)
+VALUES (?,?,?,?,?);
+
+updateDictionarySelected:
+UPDATE Dictionary
+SET isSelected = ?
+WHERE id = ?;
+
 
 deleteDictionary:
 DELETE FROM Dictionary
@@ -69,23 +92,22 @@ WHERE w.word LIKE '%' || :searchKeyword || '%'
    OR w.translation LIKE '%' || :searchKeyword || '%'
    OR w.transcription LIKE '%' || :searchKeyword || '%';
 
+getCountStatusWords:
+SELECT COUNT(*)
+FROM Word
+WHERE status = ?;
+
+
 insertWord:
 INSERT OR REPLACE
 INTO Word(id, createdAt, dictionaryId, word, translation, transcription, repeats, status)
 VALUES (?,?,?,?,?,?,?,?);
 
-deleteWord:
-DELETE FROM Word
-WHERE id = ?;
-
-clearWords:
-DELETE FROM Word
-WHERE dictionaryId = ?;
-
 updateWordStatus:
 UPDATE Word
 SET status = ?
 WHERE id = ?;
+
 
 resetProgress:
 UPDATE Word
@@ -96,7 +118,11 @@ resetAllProgress:
 UPDATE Word
 SET status = 1;
 
-countStatusWords:
-SELECT COUNT(*)
-FROM Word
-WHERE status = ?;
+
+deleteWord:
+DELETE FROM Word
+WHERE id = ?;
+
+clearWords:
+DELETE FROM Word
+WHERE dictionaryId = ?;

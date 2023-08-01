@@ -26,11 +26,10 @@ google-firebase-bom = "32.2.0"
 google-firebase-crashlytics = "2.9.2"
 
 navigation = "1.9.42-beta"
+mvvm-core = "0.16.1"
 koin = "3.4.2"
-multiplatformsettings = "1.0.0"
 sqldelight = "2.0.0-alpha05"
-kmm-viewmodel = "1.0.0-ALPHA-4"
-kmm-coroutines = "1.0.0-ALPHA-5"
+settings = "1.0.0"
 snapper = "0.3.0"
 chart = "1.6.5"
 
@@ -66,6 +65,8 @@ google-firebase-analytics = { module = "com.google.firebase:firebase-analytics-k
 navigation-core = { module = "io.github.raamcosta.compose-destinations:core", version.ref = "navigation" }
 navigation-ksp = { module = "io.github.raamcosta.compose-destinations:ksp", version.ref = "navigation" }
 
+mvvm-core = { module = "dev.icerock.moko:mvvm-core", version.ref = "mvvm-core" }
+
 koin-core = { module = "io.insert-koin:koin-core", version.ref = "koin" }
 koin-android = { module = "io.insert-koin:koin-android", version.ref = "koin" }
 
@@ -74,8 +75,7 @@ sqldelight-android = { module = "app.cash.sqldelight:android-driver", version.re
 sqldelight-native = { module = "app.cash.sqldelight:native-driver", version.ref = "sqldelight" }
 sqldelight-extensions = { module = "app.cash.sqldelight:coroutines-extensions", version.ref = "sqldelight" }
 
-multiplatformsettings = { module = "com.russhwolf:multiplatform-settings", version.ref = "multiplatformsettings" }
-kmm-viewmodel = { module = "com.rickclephas.kmm:kmm-viewmodel-core", version.ref = "kmm-viewmodel" }
+settings = { module = "com.russhwolf:multiplatform-settings", version.ref = "settings" }
 snapper = { module = "dev.chrisbanes.snapper:snapper", version.ref = "snapper" }
 chart = { module = "com.patrykandpatrick.vico:compose", version.ref = "chart" }
 chart-core = { module = "com.patrykandpatrick.vico:core", version.ref = "chart" }
@@ -95,4 +95,3 @@ google-services = { id = "com.google.gms.google-services", version.ref = "google
 google-firebase-crashlytics = { id = "com.google.firebase.crashlytics", version.ref = "google-firebase-crashlytics" }
 
 sqldelight = { id = "app.cash.sqldelight", version.ref = "sqldelight" }
-kmm-coroutines = { id = "com.rickclephas.kmp.nativecoroutines", version.ref = "kmm-coroutines" }

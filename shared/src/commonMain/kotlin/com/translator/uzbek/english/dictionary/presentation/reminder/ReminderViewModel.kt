@@ -1,22 +1,19 @@
 package com.translator.uzbek.english.dictionary.presentation.reminder
 
-import com.rickclephas.kmm.viewmodel.KMMViewModel
-import com.rickclephas.kmm.viewmodel.MutableStateFlow
-import com.rickclephas.kmp.nativecoroutines.NativeCoroutinesState
 import com.translator.uzbek.english.dictionary.core.extensions.tryCatch
 import com.translator.uzbek.english.dictionary.data.datastore.DictionaryStore
+import dev.icerock.moko.mvvm.viewmodel.ViewModel
+import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.update
 import org.koin.core.component.KoinComponent
 import org.koin.core.component.inject
 
-class ReminderViewModel : KMMViewModel(), KoinComponent {
+class ReminderViewModel : ViewModel(), KoinComponent {
 
     private val dictionaryStore by inject<DictionaryStore>()
 
-    private val stateData = MutableStateFlow(viewModelScope, ReminderState())
-
-    @NativeCoroutinesState
+    private val stateData = MutableStateFlow(ReminderState())
     val state = stateData.asStateFlow()
 
     init {

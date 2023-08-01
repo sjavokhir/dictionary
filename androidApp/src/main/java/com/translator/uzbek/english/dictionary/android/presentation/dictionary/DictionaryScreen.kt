@@ -166,7 +166,8 @@ private fun DictionaryScreenContent(
                         .background(MaterialTheme.colorScheme.background),
                 ) {
                     state.dictionaries.forEachIndexed { index, model ->
-                        DictionaryItemContent(strings = strings,
+                        DictionaryItemContent(
+                            strings = strings,
                             model = model,
                             onClick = {
                                 onNavigate(DictionaryWordsScreenDestination(model.toArgs()))

@@ -1,7 +1,6 @@
-package com.translator.uzbek.english.dictionary.presentation.dictionary
+package com.translator.uzbek.english.dictionary.presentation.dictionarySelection
 
 import com.translator.uzbek.english.dictionary.data.database.dao.DictionaryDao
-import com.translator.uzbek.english.dictionary.data.database.dao.WordDao
 import com.translator.uzbek.english.dictionary.data.database.model.DictionaryModel
 import dev.icerock.moko.mvvm.viewmodel.ViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -12,23 +11,20 @@ import kotlinx.coroutines.launch
 import org.koin.core.component.KoinComponent
 import org.koin.core.component.inject
 
-class DictionaryViewModel : ViewModel(), KoinComponent {
+class DictionarySelectionViewModel : ViewModel(), KoinComponent {
 
     private val dictionaryDao by inject<DictionaryDao>()
-    private val wordDao by inject<WordDao>()
 
-    private val stateData = MutableStateFlow(DictionaryState())
+    private val stateData = MutableStateFlow(DictionarySelectionState())
     val state = stateData.asStateFlow()
 
     init {
         fetchDictionaries()
     }
 
-    fun onEvent(event: DictionaryEvent) {
+    fun onEvent(event: DictionarySelectionEvent) {
         when (event) {
-            is DictionaryEvent.ResetProgress -> resetProgress(event.model)
-            is DictionaryEvent.RemoveDictionary -> removeDictionary(event.model)
-            is DictionaryEvent.ClearDictionary -> clearDictionary(event.model)
+            is DictionarySelectionEvent.SelectDictionary -> selectDictionary(event.model)
         }
     }
 
@@ -42,16 +38,11 @@ class DictionaryViewModel : ViewModel(), KoinComponent {
         }
     }
 
-    private fun resetProgress(model: DictionaryModel) {
-        wordDao.resetDictionaryProgress(model.id)
-    }
-
-    private fun removeDictionary(model: DictionaryModel) {
-        dictionaryDao.deleteDictionary(model.id)
-    }
-
-    private fun clearDictionary(model: DictionaryModel) {
-        wordDao.clearWordsByDictionaryId(model.id)
+    private fun selectDictionary(model: DictionaryModel) {
+        dictionaryDao.updateDictionarySelected(
+            id = model.id,
+            isSelected = !model.isSelected
+        )
     }
 
     private fun setLoading() {

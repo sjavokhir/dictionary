@@ -1,21 +1,31 @@
 package com.translator.uzbek.english.dictionary.presentation.learn
 
-import com.rickclephas.kmm.viewmodel.KMMViewModel
-import com.rickclephas.kmm.viewmodel.MutableStateFlow
-import com.rickclephas.kmp.nativecoroutines.NativeCoroutinesState
 import com.translator.uzbek.english.dictionary.core.datetime.currentDateTime
+import com.translator.uzbek.english.dictionary.data.database.dao.DictionaryDao
+import com.translator.uzbek.english.dictionary.data.datastore.DictionaryStore
 import com.translator.uzbek.english.dictionary.data.model.common.QuoteModel
+import dev.icerock.moko.mvvm.viewmodel.ViewModel
+import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
+import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.flow.update
+import kotlinx.coroutines.launch
+import org.koin.core.component.KoinComponent
+import org.koin.core.component.inject
 
-class LearnViewModel : KMMViewModel() {
+class LearnViewModel : ViewModel(), KoinComponent {
 
-    private val stateData = MutableStateFlow(viewModelScope, LearnState())
+    private val dictionaryDao by inject<DictionaryDao>()
+    private val dictionaryStore by inject<DictionaryStore>()
 
-    @NativeCoroutinesState
+    private val stateData = MutableStateFlow(LearnState())
     val state = stateData.asStateFlow()
 
     init {
+        fetchLearnStore()
+    }
+
+    private fun fetchLearnStore() {
         val title = when (currentDateTime().hour) {
             in 5..12 -> LearnState.Title.Morning
             in 13..17 -> LearnState.Title.Afternoon
@@ -26,8 +36,15 @@ class LearnViewModel : KMMViewModel() {
         stateData.update {
             it.copy(
                 headerTitle = title,
+                dailyGoal = dictionaryStore.getDailyGoal(),
                 quote = quotes.randomOrNull()
             )
+        }
+
+        viewModelScope.launch {
+            dictionaryDao.fetchSelectedDictionaries().collectLatest { list ->
+                stateData.update { it.copy(chosenDictionaries = list) }
+            }
         }
     }
 

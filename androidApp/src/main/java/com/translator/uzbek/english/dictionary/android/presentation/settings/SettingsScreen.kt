@@ -1,6 +1,7 @@
 package com.translator.uzbek.english.dictionary.android.presentation.settings
 
 import android.content.Context
+import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
 import androidx.compose.foundation.layout.Arrangement
@@ -54,11 +55,13 @@ import com.translator.uzbek.english.dictionary.android.design.localization.Strin
 import com.translator.uzbek.english.dictionary.android.design.mapper.localized
 import com.translator.uzbek.english.dictionary.android.design.mapper.weekdays
 import com.translator.uzbek.english.dictionary.android.design.theme.DividerColor
+import com.translator.uzbek.english.dictionary.android.design.theme.LocalSubscription
 import com.translator.uzbek.english.dictionary.android.design.theme.WindowBackground
 import com.translator.uzbek.english.dictionary.android.navigation.ReminderResult
 import com.translator.uzbek.english.dictionary.android.presentation.destinations.AppLanguageScreenDestination
 import com.translator.uzbek.english.dictionary.android.presentation.destinations.DailyGoalScreenDestination
 import com.translator.uzbek.english.dictionary.android.presentation.destinations.FeedbackScreenDestination
+import com.translator.uzbek.english.dictionary.android.presentation.destinations.PremiumScreenDestination
 import com.translator.uzbek.english.dictionary.android.presentation.destinations.ReminderScreenDestination
 import com.translator.uzbek.english.dictionary.android.presentation.destinations.ThemeModeScreenDestination
 import com.translator.uzbek.english.dictionary.data.model.mode.LanguageMode
@@ -82,6 +85,7 @@ fun SettingsScreen(
 ) {
     val context = LocalContext.current
     val strings = LocalStrings.current
+    val hasSubscription = LocalSubscription.current
 
     val state by viewModel.state.collectAsStateWithLifecycle()
 
@@ -135,6 +139,7 @@ fun SettingsScreen(
             context = context,
             strings = strings,
             state = state,
+            hasSubscription = hasSubscription,
             reminderWeekdays = reminderWeekdays,
             onEvent = viewModel::onEvent,
             onNavigate = navigator::navigate,
@@ -150,6 +155,7 @@ private fun SettingsScreenContent(
     context: Context,
     strings: StringResources,
     state: SettingsState,
+    hasSubscription: Boolean,
     reminderWeekdays: String,
     onEvent: (SettingsEvent) -> Unit,
     onNavigate: (Direction) -> Unit,
@@ -164,7 +170,7 @@ private fun SettingsScreenContent(
     ) {
         item { LearningContent(strings, state, onEvent, onNavigate) }
         item { PreferencesContent(strings, state, onEvent, reminderWeekdays, onNavigate) }
-        item { ProgressContent(strings, onReset) }
+        item { ProgressContent(strings, hasSubscription, onReset, onNavigate) }
         item { GeneralContent(context, strings, onNavigate) }
         item {
             Text(
@@ -301,15 +307,31 @@ private fun PreferencesContent(
 @Composable
 private fun ProgressContent(
     strings: StringResources,
-    onReset: () -> Unit
+    hasSubscription: Boolean,
+    onReset: () -> Unit,
+    onNavigate: (Direction) -> Unit
 ) {
     HeaderContent(strings.progress) {
-        NavigateContent(strings.createBackup) {
+        NavigateContent(
+            title = strings.createBackup,
+            hasSubscription = hasSubscription
+        ) {
+            if (hasSubscription) {
+            } else {
+                onNavigate(PremiumScreenDestination)
+            }
         }
 
         DividerContent()
 
-        NavigateContent(strings.restoreData) {
+        NavigateContent(
+            title = strings.restoreData,
+            hasSubscription = hasSubscription
+        ) {
+            if (hasSubscription) {
+            } else {
+                onNavigate(PremiumScreenDestination)
+            }
         }
 
         DividerContent()
@@ -390,6 +412,7 @@ private fun NavigateContent(
     value: String = "",
     textColor: Color = MaterialTheme.colorScheme.onBackground,
     iconColor: Color = MaterialTheme.colorScheme.outline,
+    hasSubscription: Boolean = true,
     onClick: () -> Unit
 ) {
     Row(
@@ -406,6 +429,13 @@ private fun NavigateContent(
             color = textColor,
             modifier = Modifier.weight(1f)
         )
+
+        if (!hasSubscription) {
+            Image(
+                painter = painterResource(id = R.drawable.ic_subscription),
+                contentDescription = null
+            )
+        }
 
         Row(
             verticalAlignment = Alignment.CenterVertically,

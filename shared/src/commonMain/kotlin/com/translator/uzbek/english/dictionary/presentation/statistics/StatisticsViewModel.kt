@@ -1,12 +1,10 @@
 package com.translator.uzbek.english.dictionary.presentation.statistics
 
-import com.rickclephas.kmm.viewmodel.KMMViewModel
-import com.rickclephas.kmm.viewmodel.MutableStateFlow
-import com.rickclephas.kmm.viewmodel.coroutineScope
-import com.rickclephas.kmp.nativecoroutines.NativeCoroutinesState
 import com.translator.uzbek.english.dictionary.data.database.dao.WordDao
 import com.translator.uzbek.english.dictionary.data.database.model.WordModel
 import com.translator.uzbek.english.dictionary.data.datastore.DictionaryStore
+import dev.icerock.moko.mvvm.viewmodel.ViewModel
+import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.flow.combine
@@ -15,14 +13,12 @@ import kotlinx.coroutines.launch
 import org.koin.core.component.KoinComponent
 import org.koin.core.component.inject
 
-class StatisticsViewModel : KMMViewModel(), KoinComponent {
+class StatisticsViewModel : ViewModel(), KoinComponent {
 
     private val wordDao by inject<WordDao>()
     private val dictionaryStore by inject<DictionaryStore>()
 
-    private val stateData = MutableStateFlow(viewModelScope, StatisticsState())
-
-    @NativeCoroutinesState
+    private val stateData = MutableStateFlow(StatisticsState())
     val state = stateData.asStateFlow()
 
     init {
@@ -33,10 +29,10 @@ class StatisticsViewModel : KMMViewModel(), KoinComponent {
     }
 
     private fun fetchStatisticsStore() {
-        viewModelScope.coroutineScope.launch {
+        viewModelScope.launch {
             combine(
-                wordDao.countStatusWords(WordModel.WordStatus.Learning),
-                wordDao.countStatusWords(WordModel.WordStatus.Learned)
+                wordDao.getCountStatusWords(WordModel.WordStatus.Learning),
+                wordDao.getCountStatusWords(WordModel.WordStatus.Learned)
             ) { allLearning, allLearned ->
                 stateData.update {
                     it.copy(

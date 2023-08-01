@@ -1,11 +1,9 @@
 package com.translator.uzbek.english.dictionary.presentation.addWord
 
-import com.rickclephas.kmm.viewmodel.KMMViewModel
-import com.rickclephas.kmm.viewmodel.MutableStateFlow
-import com.rickclephas.kmm.viewmodel.coroutineScope
-import com.rickclephas.kmp.nativecoroutines.NativeCoroutinesState
 import com.translator.uzbek.english.dictionary.data.database.dao.WordDao
 import com.translator.uzbek.english.dictionary.data.database.model.WordModel
+import dev.icerock.moko.mvvm.viewmodel.ViewModel
+import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.flow.update
@@ -13,17 +11,15 @@ import kotlinx.coroutines.launch
 import org.koin.core.component.KoinComponent
 import org.koin.core.component.inject
 
-class AddWordViewModel : KMMViewModel(), KoinComponent {
+class AddWordViewModel : ViewModel(), KoinComponent {
 
     private val wordDao by inject<WordDao>()
 
-    private val stateData = MutableStateFlow(viewModelScope, AddWordState())
-
-    @NativeCoroutinesState
+    private val stateData = MutableStateFlow(AddWordState())
     val state = stateData.asStateFlow()
 
-    private val wordId = kotlinx.coroutines.flow.MutableStateFlow("")
-    private val dictionaryId = kotlinx.coroutines.flow.MutableStateFlow("")
+    private val wordId = MutableStateFlow("")
+    private val dictionaryId = MutableStateFlow("")
 
     fun onEvent(event: AddWordEvent) {
         when (event) {
@@ -40,7 +36,7 @@ class AddWordViewModel : KMMViewModel(), KoinComponent {
         this.wordId.value = wordId
         this.dictionaryId.value = dictionaryId
 
-        viewModelScope.coroutineScope.launch {
+        viewModelScope.launch {
             wordDao.fetchWordById(wordId).collectLatest { model ->
                 if (model != null) {
                     stateData.update {
@@ -86,7 +82,7 @@ class AddWordViewModel : KMMViewModel(), KoinComponent {
     private fun insert() {
         setLoading()
 
-        wordDao.insert(
+        wordDao.insertWord(
             id = wordId.value,
             dictionaryId = dictionaryId.value,
             word = state.value.word,

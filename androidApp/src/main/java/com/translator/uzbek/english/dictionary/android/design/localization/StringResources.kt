@@ -122,7 +122,8 @@ data class StringResources(
     val memorizedToday: (today: Int, dailyGoal: Int) -> String,
     val repeatWords: String,
     val youHaventRepeatedWords: String,
-    val chooseCategoriesToRepeat: String,
+    val chooseDictionariesToRepeat: String,
     val wordsForRepeat: (minutes: Int) -> String,
     val wordsToRepeat: (count: Int) -> String,
+    val dictionariesSelection: String,
 )

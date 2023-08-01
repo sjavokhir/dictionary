@@ -158,8 +158,9 @@ fun stringResourcesEnglish() = StringResources(
     wordsForRepeat = {
         "Words for repeat will show up in $it"
     },
-    chooseCategoriesToRepeat = "Choose categories to review words from",
+    chooseDictionariesToRepeat = "Choose dictionaries to repeat words from",
     wordsToRepeat = {
         "Words to repeat: $it"
-    }
+    },
+    dictionariesSelection = "Dictionaries selection",
 )
